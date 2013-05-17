@@ -1,8 +1,13 @@
-# /usr/bin/python
+#! /usr/bin/python
 #
-# This program should monitor the power status of all physical nodes
+# This program should keeps track of power status of all physical nodes
 # and running status of service nodes. 
 
-class status_monitor:
+import os, sys, re
 
-	def __init__(self):
+class status_monitor:
+    def __init__ (self):
+        self.blabla = "blahblah"
+
+
+
