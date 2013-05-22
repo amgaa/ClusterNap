@@ -1,17 +1,29 @@
 # Dependencies of physical nodes
 # i.e if HostA is dependent on (SW1 AND HostB) OR (SW1 AND HOSTC): 
-# Parent: child1, child2, ....
-# HostA: SW1, HostB 
-# HostA: SW1, HostC
+#Dependency is written in CNF
+#
 
-guppy1: SW1, guppygw
-guppy1: SW2, guppy-minnie
 
-guppy2: SW1, guppygw
-guppy2: SW2, guppy-minnie
+node:		guppy1
+depends: 	SW1, guppygw | SW2, guppy-minnie
 
-guppy3: SW1, guppygw
-guppy3: SW2, guppy-minnie
+node: 		guppy2
+depends: 	SW1, guppygw | SW2, guppy-minnie
 
-guppy4: SW1, guppygw
-guppy4: SW2, guppy-minnie
+node: 		guppy3
+depends:	SW1, guppygw | SW2, guppy-minnie
+
+node:		guppy4
+depends:	SW1, guppygw | SW2, guppy-minnie
+
+node:		guppygw
+depends:	SW1
+
+node:		guppy-minnie
+depends:	SW1
+
+node:		SW1
+depends:
+
+node:		SW2
+depends:
