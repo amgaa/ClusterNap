@@ -7,46 +7,82 @@ import os, sys, re
 
 class status_monitor:
     def __init__ (self):
-        self.STATE_DIR      = os.path.dirname(os.path.abspath(__file__))
-        self.STATE_DIR     += "/state/"
-        self.PHYS_STATE_DIR = self.STATE_DIR + "physical/"
-        self.SERV_STATE_DIR = self.STATE_DIR + "service/"
+        self.STATE_DIR             = os.path.dirname(os.path.abspath(__file__))
+        self.STATE_DIR            += "/state/"
+        self.PHYS_STATE_DIR        = self.STATE_DIR + "physical/"
+        self.SERV_STATE_DIR        = self.STATE_DIR + "service/"
+        self.NODES_PHYS_STATE_DIR  = os.listdir(self.PHYS_STATE_DIR)
+        self.NODES_SERV_STATE_DIR  = os.listdir(self.SERV_STATE_DIR)
 
     #Returns a list of  node:state pairs
     def all_physical_states(self):
-        return 0
+        physical = list()
+        for node in self.NODES_PHYS_STATE_DIR:
+            pair = list()
+            pair.append(node)
+            pair.append(self.physical_state(node))
+            physical.append(pair)
+        return physical
 
     def all_service_states(self):
-        return 0
+        service = list()
+        for node in self.NODES_SERV_STATE_DIR:
+            pair = list()
+            pair.append(node)
+            pair.append(self.service_state(node))
+            service.append(pair)
+        return service
 
     # Returns: 
     #  1 if ON, 
     #  0 if OFF, 
     # -1 if unknown, 
     def physical_state(self, name):
-        # Error handler should used here!
-        f = open( self.PHYS_STATE_DIR + name, "r" )
-        if not f:
+
+        if name not in self.NODES_PHYS_STATE_DIR:
+            print "Node name \"" + name + "\" is not in the folder \"" + self.PHYS_STATE_DIR + "\""
             return -1
 
-        for state in f:
-            state = state.strip()
-            if state == "1":
-                return 1
-            elif sate == "0":
-                return 0
-            else:
-                return -1
+        f = open( self.PHYS_STATE_DIR + name, "r" )
+        state = f.readline()
+        state = state.strip()
 
+        if state == "1":
+            return 1
+        elif state == "0":
+            return 0
+        else:
+            print "Node \"" + name + "\" has unknown state: \"" + state + "\""
+            return -1
+
+    # Returns: 
+    #  1 if ON, 
+    #  0 if OFF, 
+    # -1 if unknown, 
     def service_state(self, name):
-        return 0
 
+        if name not in self.NODES_SERV_STATE_DIR:
+            print "Node name \"" + name + "\" is not in the folder \"" + self.SERV_STATE_DIR + "\""
+            return -1
+
+        f = open( self.SERV_STATE_DIR + name, "r" )
+        state = f.readline()
+        state = state.strip()
+
+        if state == "1":
+            return 1
+        elif state == "0":
+            return 0
+        else:
+            print "Node \"" + name + "\" has unknown state: \"" + state + "\""
+            return -1
+
+
+    # Returns statuses of physical nodes and service nodes independently. 
+    # Output: 
+    #             (States_phys, States_serv)
     def main(self, argv):
-        print "argv: "
-        print argv
-        print status_monitor().physical_state(argv[1])
-        return 0
-
+        return status_monitor().all_physical_states(), status_monitor().all_service_states()
 
 
 if __name__ == "__main__":
