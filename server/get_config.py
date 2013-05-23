@@ -95,18 +95,6 @@ class get_config:
 
         return self.serv_nodes
     
-    # Gets the power status of physical nodes
-    def get_phys_node_status(self):
-        return 0
-        
-    # Gets the running status of service nodes
-    def get_serv_node_status(self):
-        return 0
-
-    # Get the right graph informations.
-    # The most IMPORTANT function of this class
-    def get_right_nodes(self):
-	return 0
 
     def main(self, argv):
         self.args = argv

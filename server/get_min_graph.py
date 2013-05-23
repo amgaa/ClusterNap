@@ -27,26 +27,27 @@ class get_min_graph:
 
         dependency = self.PHYS_DEP             + self.SERV_DEP
         requested  = self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED
-#        necc       = self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED
-        tmp_necc   = self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED
+        tmp_necc   = self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED # <- This list should be sorted such that one with least OR dependencies has higher priority. 
         
         # The main algorithmic part
-        while tmp_necc != []:
+        while tmp_necc != [] :
             for node in tmp_necc:
                 childs   = self.get_childs(dependency, node)
-                print "childs before remove: "
-                print childs
+#                print "childs before remove: "
+ #               print childs
                 if childs: 
-                    childs   = self.remove_nodes(childs, necc)
-                    print "childs after remove: "
-                    print childs
-                    print "necc at this moment"
-                    print necc
                     necc    += tmp_necc
-                    tmp_necc = list()
+                    tmp_necc = []
+                    childs   = self.remove_nodes(childs, necc)
                     tmp_necc = self.best_childs(childs)
+#                    print "tmp_necc: "
+#                    print tmp_necc
+#                    print "childs after remove: "
+#                    print childs
+#                    print "necc at this moment: "
+#                    print necc
                 else:
-                    tmp_necc = list()
+                    tmp_necc = []
 
         return necc
 
@@ -81,11 +82,9 @@ class get_min_graph:
     #             (States_phys, States_serv)
     def main(self, argv):
         print "Requested nodes "
-        print self.NODES_PHYS_REQUESTED
-        print self.NODES_SERV_REQUESTED
+        print self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED
         print "Dependencies: "
-        print self.PHYS_DEP
-        print self.SERV_DEP
+        print self.PHYS_DEP + self.SERV_DEP
         
         return self.necc_nodes()
 
