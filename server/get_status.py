@@ -81,9 +81,10 @@ class get_status:
     # Returns statuses of physical nodes and service nodes independently. 
     # Output: 
     #             (States_phys, States_serv)
-    def main(self, argv):
-        return get_status().all_physical_states(), get_status().all_service_states()
+    def main(self):
+        return get_status().all_physical_states() + get_status().all_service_states()
 
 
 if __name__ == "__main__":
-    sys.exit(get_status().main(sys.argv))
+    sys.exit(get_status().main())
+#    sys.exit(get_status().main(sys.argv))
