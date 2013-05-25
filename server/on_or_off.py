@@ -6,7 +6,7 @@ import get_min_graph, get_status
 
 class on_or_off:
     def __init__ (self):
-        self.MIN_GRAPH      = get_min_graph.get_min_graph().necc_nodes()
+        self.MIN_GRAPH      = get_min_graph.get_min_graph().main()
         self.STATUSES       = get_status.get_status().main() 
 
     # Returns nodes that are required to be turned-ON. (REQUESTED && NOT ON)

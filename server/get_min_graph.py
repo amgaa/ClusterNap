@@ -15,43 +15,54 @@ class get_min_graph:
         self.NODES_SERV_REQUESTED    = os.listdir(self.SERV_REQUEST_DIR)
         self.PHYS_DEP                = get_config.get_config().get_phys_nodes()
         self.SERV_DEP                = get_config.get_config().get_serv_nodes()
+        self.DEP                     = self.PHYS_DEP + self.SERV_DEP
+        self.NECC                    = list()
+
+    # Returns statuses of physical nodes and service nodes independently. 
+    # Output: 
+    #             (States_phys, States_serv)
+    def main(self):
+        print "Requested nodes: "
+        requested = list()
+        requested  = self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED
+        print requested
+        print "Dependencies: "
+        print self.DEP
+        print "Necessary nodes: "
+        return self.necc_nodes( requested)
+
 
     # Necessary nodes to be ON to make requested nodes ON
-    def necc_nodes(self):
+    def necc_nodes(self, requested ):
 
-        requested  = list()
-        dependency = list()
-        necc       = list()
         tmp_necc   = list()
         childs     = list()
-
-        dependency = self.PHYS_DEP             + self.SERV_DEP
-        requested  = self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED
-        tmp_necc   = self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED # <- This list should be sorted such that one with least OR dependencies has higher priority. 
+        tmp_necc   = requested[:] # <- This list should be sorted such that one with least OR dependencies has higher priority. 
         
         # The main algorithmic part
         # This part has some logical flaw. It does not traverce through the child of child and so. 
         # Depth first or width first traverce-r uzeh ? Whats their time complexity? (for length of at most 10 layer? )
         while tmp_necc != [] :
             for node in tmp_necc:
-                childs   = self.get_childs(dependency, node)
-                print "childs before remove: "
-                print childs
+                childs   = self.get_childs(self.DEP, node)
+#                print "childs before remove: "
+#                print childs
                 if childs: 
-                    necc    += tmp_necc
-                    tmp_necc = []
-                    childs   = self.remove_nodes(childs, necc)
-                    tmp_necc = self.best_childs(childs)
+                    self.NECC += tmp_necc
+                    tmp_necc   = []
+                    childs     = self.remove_nodes(childs, self.NECC)
+                    tmp_necc   = self.best_childs(childs)
+                    self.necc_nodes(tmp_necc) # <- Eniig daraa ni sain bodoh 
 #                    print "tmp_necc: "
 #                    print tmp_necc
-                    print "childs after remove: "
-                    print childs
-                    print "necc at this moment: "
-                    print necc
+#                    print "childs after remove: "
+#                    print childs
+#                    print "necc at this moment: "
+                    print self.NECC
                 else:
                     tmp_necc = []
 
-        return necc
+        return self.NECC
 
     # Chooses best childs from CNForm childs  (childsA OR childsB OR childsC ...)
     def best_childs(self, childs):
@@ -79,16 +90,6 @@ class get_min_graph:
                 return dep[1] # childs in CNForm
 
 
-    # Returns statuses of physical nodes and service nodes independently. 
-    # Output: 
-    #             (States_phys, States_serv)
-    def main(self, argv):
-        print "Requested nodes: "
-        print self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED
-        print "Dependencies: "
-        print self.PHYS_DEP + self.SERV_DEP
-        print "Necessary nodes: "
-        return self.necc_nodes()
 
 if __name__ == "__main__":
-    sys.exit(get_min_graph().main(sys.argv))
+    sys.exit(get_min_graph().main())
