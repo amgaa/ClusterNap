@@ -1,0 +1,12 @@
+# Configuration of physical nodes 
+# This files probably should be on database form
+#<Node name>:	<ON command>	<OFF command>
+
+guppygw:	"ipmitool turn-on guppygw"	"ssh guppygw shutdown"
+guppy-minnie:	
+guppy1:
+guppy2:
+guppy3:
+guppy4:
+SW1: 
+SW2:
