@@ -30,11 +30,13 @@ class get_min_graph:
         tmp_necc   = self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED # <- This list should be sorted such that one with least OR dependencies has higher priority. 
         
         # The main algorithmic part
+        # This part has some logical flaw. It does not traverce through the child of child and so. 
+        # Depth first or width first traverce-r uzeh ? Whats their time complexity? (for length of at most 10 layer? )
         while tmp_necc != [] :
             for node in tmp_necc:
                 childs   = self.get_childs(dependency, node)
-#                print "childs before remove: "
- #               print childs
+                print "childs before remove: "
+                print childs
                 if childs: 
                     necc    += tmp_necc
                     tmp_necc = []
@@ -42,10 +44,10 @@ class get_min_graph:
                     tmp_necc = self.best_childs(childs)
 #                    print "tmp_necc: "
 #                    print tmp_necc
-#                    print "childs after remove: "
-#                    print childs
-#                    print "necc at this moment: "
-#                    print necc
+                    print "childs after remove: "
+                    print childs
+                    print "necc at this moment: "
+                    print necc
                 else:
                     tmp_necc = []
 
@@ -81,11 +83,11 @@ class get_min_graph:
     # Output: 
     #             (States_phys, States_serv)
     def main(self, argv):
-        print "Requested nodes "
+        print "Requested nodes: "
         print self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED
         print "Dependencies: "
         print self.PHYS_DEP + self.SERV_DEP
-        
+        print "Necessary nodes: "
         return self.necc_nodes()
 
 if __name__ == "__main__":
