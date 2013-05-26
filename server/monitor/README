@@ -1,0 +1,5 @@
+Here all the monitoring programs will be written. 
+Users can see present power status of the cluster. 
+
+Therefore, this part shows power status of each physical nodes. 
+Also it would be better if it also shows the running status of services and where they are residing. 

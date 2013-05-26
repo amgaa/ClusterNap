@@ -54,6 +54,8 @@ class get_min_graph:
 
         return self.NECC
 
+
+
     # Chooses best childs from CNForm childs  (childsA OR childsB OR childsC ...)
     def best_childs(self, childs):
         if len(childs) == 0:
@@ -62,7 +64,7 @@ class get_min_graph:
 
 
     
-    # remove nodes, which are already in a list "necc", from CNF form lists
+    # remove nodes, which are already in a list "self.NECC", from CNF form lists
     def remove_nodes(self, CNF, necc):
         if len(CNF) == 0:
             return 
