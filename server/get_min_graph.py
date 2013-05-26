@@ -24,43 +24,33 @@ class get_min_graph:
     def main(self):
         print "Requested nodes: "
         requested = list()
+        necc = list()
         requested  = self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED
         print requested
         print "Dependencies: "
         print self.DEP
         print "Necessary nodes: "
-        return self.necc_nodes( requested)
+        necc = self.necc_nodes(requested)
+        necc.sort()
+        return necc
 
 
     # Necessary nodes to be ON to make requested nodes ON
-    def necc_nodes(self, requested ):
-
+    def necc_nodes(self, requested):
+        
+        # Here we should sort items in "requested" by the number of OR clauses they have.
         tmp_necc   = list()
         childs     = list()
-        tmp_necc   = requested[:] # <- This list should be sorted such that one with least OR dependencies has higher priority. 
-        
+        self.NECC += requested
+
         # The main algorithmic part
-        # This part has some logical flaw. It does not traverce through the child of child and so. 
         # Depth first or width first traverce-r uzeh ? Whats their time complexity? (for length of at most 10 layer? )
-        while tmp_necc != [] :
-            for node in tmp_necc:
-                childs   = self.get_childs(self.DEP, node)
-#                print "childs before remove: "
-#                print childs
-                if childs: 
-                    self.NECC += tmp_necc
-                    tmp_necc   = []
-                    childs     = self.remove_nodes(childs, self.NECC)
-                    tmp_necc   = self.best_childs(childs)
-                    self.necc_nodes(tmp_necc) # <- Eniig daraa ni sain bodoh 
-#                    print "tmp_necc: "
-#                    print tmp_necc
-#                    print "childs after remove: "
-#                    print childs
-#                    print "necc at this moment: "
-                    print self.NECC
-                else:
-                    tmp_necc = []
+        for node in requested:
+            childs   = self.get_childs(self.DEP, node)
+            if childs: 
+                childs     = self.remove_nodes(childs, self.NECC)
+                tmp_necc   = self.best_childs(childs)
+                self.necc_nodes(tmp_necc) # <- Eniig daraa ni sain bodoh 
 
         return self.NECC
 
@@ -69,8 +59,9 @@ class get_min_graph:
         if len(childs) == 0:
             return
         return min(childs, key=len)
-    
 
+
+    
     # remove nodes, which are already in a list "necc", from CNF form lists
     def remove_nodes(self, CNF, necc):
         if len(CNF) == 0:
@@ -80,15 +71,14 @@ class get_min_graph:
                 if node in clause:
                     clause.remove(node)
         return CNF
-        
 
+        
     # Gets childs from dependency lists
     # This should be optimized by using hash table. 
     def get_childs(self, dep_list, parent):
         for dep in dep_list:
             if parent == dep[0]:
                 return dep[1] # childs in CNForm
-
 
 
 if __name__ == "__main__":
