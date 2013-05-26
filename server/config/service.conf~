@@ -1,8 +1,0 @@
-# Configuration of service nodes 
-# This files probably should be on database form
-#<Node name>:   <ON command>    <OFF command>
-
-data1:
-VM1:
-VM2:
-VM3:
