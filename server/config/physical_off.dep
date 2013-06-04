@@ -1,0 +1,25 @@
+# Dependencies of physical nodes
+# i.e if HostA is dependent on (SW1 AND HostB) OR (SW1 AND HOSTC): 
+#Dependency is written in CNF
+#
+
+# Server dependencies
+node:		guppyfs1
+depends:	guppy-minnie
+depends:	guppy-minnie
+node:		guppyfs2
+depends:	guppy-minnie
+node:		guppyfs3
+depends:	guppy-minnie
+node:		guppyfs4
+depends:	guppy-minnie
+node:		guppyfs5
+depends:	guppy-minnie
+node:		guppyfs6
+depends:	guppy-minnie
+node:		guppyfs7
+depends:	guppy-minnie
+node:		guppyfs8
+depends:	guppy-minnie
+node:		guppyfs9
+depends:	guppy-minnie

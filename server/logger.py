@@ -22,8 +22,8 @@ class get_config:
     def __init__(self):
         self.CONFDIR        = os.path.dirname(os.path.abspath(__file__))
         self.CONFDIR       += "/config/"
-        self.DEPENDENCY_PHYSICAL = "physical.dep"
-        self.DEPENDENCY_SERVICE  = "service.dep"
+        self.DEPENDENCY_PHYSICAL = "physical_run.dep"
+        self.DEPENDENCY_SERVICE  = "service_run.dep"
         self.Graph          = nx.DiGraph()
         self.phys_nodes      = list() # Physical nodes and their children
         self.serv_nodes      = list() # Service nodes and their children

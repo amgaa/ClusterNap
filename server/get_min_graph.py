@@ -11,27 +11,41 @@ class get_min_graph:
         self.REQUEST_DIR            += "/requested/"
         self.PHYS_REQUEST_DIR        = self.REQUEST_DIR + "physical/"
         self.SERV_REQUEST_DIR        = self.REQUEST_DIR + "service/"
+
         self.NODES_PHYS_REQUESTED    = os.listdir(self.PHYS_REQUEST_DIR)
         self.NODES_SERV_REQUESTED    = os.listdir(self.SERV_REQUEST_DIR)
-        self.PHYS_DEP                = get_config.get_config().get_phys_nodes()
-        self.SERV_DEP                = get_config.get_config().get_serv_nodes()
-        self.DEP                     = self.PHYS_DEP + self.SERV_DEP
+
+        self.PHYS_DEP = list()
+        self.SERV_DEP = list()
+        self.PHYS_DEP = ( get_config.get_config().get_phys_nodes().items())
+        self.PHYS_DEP = (sorted(self.PHYS_DEP, key=lambda item: len(item[1]) ) ) #Sort by the length of OR clauses a node has
+        self.SERV_DEP = ( get_config.get_config().get_serv_nodes().items())
+        self.SERV_DEP = (sorted(self.SERV_DEP, key=lambda item: len(item[1]) ))  #Sort by the length of OR clauses a node has
+        self.DEP                     = list()
+        self.DEP = self.PHYS_DEP + self.SERV_DEP
         self.NECC                    = list()
 
-    # Returns statuses of physical nodes and service nodes independently. 
-    # Output: 
-    #             (States_phys, States_serv)
+
     def main(self):
-        print "Requested nodes: "
         requested = list()
         necc = list()
         requested  = self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED
-        print requested
+
         print "Dependencies: "
-        print self.DEP
-        print "Necessary nodes: "
+        for dep in  self.DEP:
+            print dep
+
+        print "Requested nodes: "
+        for node in requested:
+            print node
+
         necc = self.necc_nodes(requested)
         necc.sort()
+
+        print "Necessary nodes: "
+        for node in necc:
+            print node
+
         return necc
 
 
@@ -39,18 +53,19 @@ class get_min_graph:
     def necc_nodes(self, requested):
         
         # Here we should sort items in "requested" by the number of OR clauses they have.
+        self.NECC += requested
         tmp_necc   = list()
         childs     = list()
-        self.NECC += requested
 
         # The main algorithmic part
         # Depth first or width first traverce-r uzeh ? Whats their time complexity? (for length of at most 10 layer? )
         for node in requested:
-            childs   = self.get_childs(self.DEP, node)
+#            if self.DEP.has_key(node):
+            childs = self.get_childs(self.DEP, node)
             if childs: 
                 childs     = self.remove_nodes(childs, self.NECC)
                 tmp_necc   = self.best_childs(childs)
-                self.necc_nodes(tmp_necc) # <- Eniig daraa ni sain bodoh 
+                self.necc_nodes(tmp_necc) 
 
         return self.NECC
 

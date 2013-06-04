@@ -36,7 +36,7 @@ class on_or_off:
                     return 1
                 else: 
                     return 0
-        print "Node \"" + node + "\"'s status could not be find in status folder" 
+        print "Node \"" + node + "\"'s status could not be found in the status folder" 
         return 0
 
     def main(self):

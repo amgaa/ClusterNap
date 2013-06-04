@@ -1,0 +1,260 @@
+# Dependencies of physical nodes
+# i.e if HostA is dependent on (SW1 AND HostB) OR (SW1 AND HOSTC): 
+#Dependency is written in CNF
+#
+
+
+# Switch dependencies
+node:		SW11
+depends:	SW01
+node:		SW21
+depends:	SW01
+node:		SW31
+depends:	SW01
+node:		SW41
+depends:	SW01
+node:		SW51
+depends:	SW01
+node:		SW61
+depends:	SW01
+node:		SW71
+depends:	SW01
+node:		SW81
+depends:	SW01
+node:		SW91
+depends:	SW01
+node:		SWA
+depends:	
+
+node:		SW12
+depends:	SW02
+node:		SW22
+depends:	SW02
+node:		SW32
+depends:	SW02
+node:		SW42
+depends:	SW02
+node:		SW52
+depends:	SW02
+node:		SW62
+depends:	SW02
+node:		SW72
+depends:	SW02
+node:		SW82
+depends:	SW02
+node:		SW92
+depends:	SW02
+
+# Minnie dependencies
+node:		guppy-minnie
+depends:	SW01 | SW02
+
+# Server dependencies
+node:		guppyfs1
+depends:	RAID1, SW11 | RAID1, SW12
+node:		guppyfs2
+depends:	RAID2, SW21 | RAID2, SW22
+node:		guppyfs3
+depends:	RAID3, SW31 | RAID3, SW32
+node:		guppyfs4
+depends:	RAID4, SW41 | RAID4, SW42
+node:		guppyfs5
+depends:	RAID5, SW51 | RAID5, SW52
+node:		guppyfs6
+depends:	RAID6, SW61 | RAID6, SW62
+node:		guppyfs7
+depends:	RAID7, SW71 | RAID7, SW72
+node:		guppyfs8
+depends:	RAID8, SW81 | RAID8, SW82
+node:		guppyfs9
+depends:	RAID9, SW91 | RAID9, SW92
+
+node:		guppy10
+depends:	SW11, guppyfs1 | SW12, guppyfs1
+node:		guppy11
+depends:	SW11, guppyfs1 | SW12, guppyfs1
+node:		guppy12
+depends:	SW11, guppyfs1 | SW12, guppyfs1
+node:		guppy13
+depends:	SW11, guppyfs1 | SW12, guppyfs1
+node:		guppy14
+depends:	SW11, guppyfs1 | SW12, guppyfs1
+node:		guppy15
+depends:	SW11, guppyfs1 | SW12, guppyfs1
+node:		guppy16
+depends:	SW11, guppyfs1 | SW12, guppyfs1
+node:		guppy17
+depends:	SW11, guppyfs1 | SW12, guppyfs1
+node:		guppy18
+depends:	SW11, guppyfs1 | SW12, guppyfs1
+node:		guppy19
+depends:	SW11, guppyfs1 | SW12, guppyfs1
+
+node:		guppy20
+depends:	SW21, guppyfs2 | SW22, guppyfs2
+node:		guppy21
+depends:	SW21, guppyfs2 | SW22, guppyfs2
+node:		guppy22
+depends:	SW21, guppyfs2 | SW22, guppyfs2
+node:		guppy23
+depends:	SW21, guppyfs2 | SW22, guppyfs2
+node:		guppy24
+depends:	SW21, guppyfs2 | SW22, guppyfs2
+node:		guppy25
+depends:	SW21, guppyfs2 | SW22, guppyfs2
+node:		guppy26
+depends:	SW21, guppyfs2 | SW22, guppyfs2
+node:		guppy27
+depends:	SW21, guppyfs2 | SW22, guppyfs2
+node:		guppy28
+depends:	SW21, guppyfs2 | SW22, guppyfs2
+node:		guppy29
+depends:	SW21, guppyfs2 | SW22, guppyfs2
+
+node:		guppy30
+depends:	SW31, guppyfs3 | SW32, guppyfs3
+node:		guppy31
+depends:	SW31, guppyfs3 | SW32, guppyfs3
+node:		guppy32
+depends:	SW31, guppyfs3 | SW32, guppyfs3
+node:		guppy33
+depends:	SW31, guppyfs3 | SW32, guppyfs3
+node:		guppy34
+depends:	SW31, guppyfs3 | SW32, guppyfs3
+node:		guppy35
+depends:	SW31, guppyfs3 | SW32, guppyfs3
+node:		guppy36
+depends:	SW31, guppyfs3 | SW32, guppyfs3
+node:		guppy37
+depends:	SW31, guppyfs3 | SW32, guppyfs3
+node:		guppy38
+depends:	SW31, guppyfs3 | SW32, guppyfs3
+node:		guppy39
+depends:	SW31, guppyfs3 | SW32, guppyfs3
+node:		guppy30
+
+node:		guppy40
+depends:	SW41, guppyfs4 | SW42, guppyfs4
+node:		guppy41
+depends:	SW41, guppyfs4 | SW42, guppyfs4
+node:		guppy42
+depends:	SW41, guppyfs4 | SW42, guppyfs4
+node:		guppy43
+depends:	SW41, guppyfs4 | SW42, guppyfs4
+node:		guppy44
+depends:	SW41, guppyfs4 | SW42, guppyfs4
+node:		guppy45
+depends:	SW41, guppyfs4 | SW42, guppyfs4
+node:		guppy46
+depends:	SW41, guppyfs4 | SW42, guppyfs4
+node:		guppy47
+depends:	SW41, guppyfs4 | SW42, guppyfs4
+node:		guppy48
+depends:	SW41, guppyfs4 | SW42, guppyfs4
+node:		guppy49
+depends:	SW41, guppyfs4 | SW42, guppyfs4
+
+node:		guppy50
+depends:	SW51, guppyfs5 | SW52, guppyfs5
+node:		guppy51
+depends:	SW51, guppyfs5 | SW52, guppyfs5
+node:		guppy52
+depends:	SW51, guppyfs5 | SW52, guppyfs5
+node:		guppy53
+depends:	SW51, guppyfs5 | SW52, guppyfs5
+node:		guppy54
+depends:	SW51, guppyfs5 | SW52, guppyfs5
+node:		guppy55
+depends:	SW51, guppyfs5 | SW52, guppyfs5
+node:		guppy56
+depends:	SW51, guppyfs5 | SW52, guppyfs5
+node:		guppy57
+depends:	SW51, guppyfs5 | SW52, guppyfs5
+node:		guppy58
+depends:	SW51, guppyfs5 | SW52, guppyfs5
+node:		guppy59
+depends:	SW51, guppyfs5 | SW52, guppyfs5
+
+node:		guppy60
+depends:	SW61, guppyfs6 | SW62, guppyfs6
+node:		guppy61
+depends:	SW61, guppyfs6 | SW62, guppyfs6
+node:		guppy62
+depends:	SW61, guppyfs6 | SW62, guppyfs6
+node:		guppy63
+depends:	SW61, guppyfs6 | SW62, guppyfs6
+node:		guppy64
+depends:	SW61, guppyfs6 | SW62, guppyfs6
+node:		guppy65
+depends:	SW61, guppyfs6 | SW62, guppyfs6
+node:		guppy66
+depends:	SW61, guppyfs6 | SW62, guppyfs6
+node:		guppy67
+depends:	SW61, guppyfs6 | SW62, guppyfs6
+node:		guppy68
+depends:	SW61, guppyfs6 | SW62, guppyfs6
+node:		guppy69
+depends:	SW61, guppyfs6 | SW62, guppyfs6
+
+node:		guppy70
+depends:	SW71, guppyfs7 | SW72, guppyfs7
+node:		guppy71
+depends:	SW71, guppyfs7 | SW72, guppyfs7
+node:		guppy72
+depends:	SW71, guppyfs7 | SW72, guppyfs7
+node:		guppy73
+depends:	SW71, guppyfs7 | SW72, guppyfs7
+node:		guppy74
+depends:	SW71, guppyfs7 | SW72, guppyfs7
+node:		guppy75
+depends:	SW71, guppyfs7 | SW72, guppyfs7
+node:		guppy76
+depends:	SW71, guppyfs7 | SW72, guppyfs7
+node:		guppy77
+depends:	SW71, guppyfs7 | SW72, guppyfs7
+node:		guppy78
+depends:	SW71, guppyfs7 | SW72, guppyfs7
+node:		guppy79
+depends:	SW71, guppyfs7 | SW72, guppyfs7
+
+node:		guppy80
+depends:	SW81, guppyfs8 | SW82, guppyfs8
+node:		guppy81
+depends:	SW81, guppyfs8 | SW82, guppyfs8
+node:		guppy82
+depends:	SW81, guppyfs8 | SW82, guppyfs8
+node:		guppy83
+depends:	SW81, guppyfs8 | SW82, guppyfs8
+node:		guppy84
+depends:	SW81, guppyfs8 | SW82, guppyfs8
+node:		guppy85
+depends:	SW81, guppyfs8 | SW82, guppyfs8
+node:		guppy86
+depends:	SW81, guppyfs8 | SW82, guppyfs8
+node:		guppy87
+depends:	SW81, guppyfs8 | SW82, guppyfs8
+node:		guppy88
+depends:	SW81, guppyfs8 | SW82, guppyfs8
+node:		guppy89
+depends:	SW81, guppyfs8 | SW82, guppyfs8
+
+node:		guppy90
+depends:	SW91, guppyfs9 | SW92, guppyfs9
+node:		guppy91
+depends:	SW91, guppyfs9 | SW92, guppyfs9
+node:		guppy92
+depends:	SW91, guppyfs9 | SW92, guppyfs9
+node:		guppy93
+depends:	SW91, guppyfs9 | SW92, guppyfs9
+node:		guppy94
+depends:	SW91, guppyfs9 | SW92, guppyfs9
+node:		guppy95
+depends:	SW91, guppyfs9 | SW92, guppyfs9
+node:		guppy96
+depends:	SW91, guppyfs9 | SW92, guppyfs9
+node:		guppy97
+depends:	SW91, guppyfs9 | SW92, guppyfs9
+node:		guppy98
+depends:	SW91, guppyfs9 | SW92, guppyfs9
+node:		guppy99
+depends:	SW91, guppyfs9 | SW92, guppyfs9

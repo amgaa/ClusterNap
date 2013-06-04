@@ -13,25 +13,28 @@ class get_status:
         self.SERV_STATE_DIR        = self.STATE_DIR + "service/"
         self.NODES_PHYS_STATE_DIR  = os.listdir(self.PHYS_STATE_DIR)
         self.NODES_SERV_STATE_DIR  = os.listdir(self.SERV_STATE_DIR)
+        self.STATES                = {}
 
     #Returns a list of  node:state pairs
     def all_physical_states(self):
-        physical = list()
+#        physical = list()
         for node in self.NODES_PHYS_STATE_DIR:
-            pair = list()
-            pair.append(node)
-            pair.append(self.physical_state(node))
-            physical.append(pair)
-        return physical
+#            pair = list()
+#            pair.append(node)
+#            pair.append(self.physical_state(node))
+#            physical.append(pair)
+            self.STATES[node] = self.physical_state(node)
+
 
     def all_service_states(self):
-        service = list()
+#        service = list()
         for node in self.NODES_SERV_STATE_DIR:
-            pair = list()
-            pair.append(node)
-            pair.append(self.service_state(node))
-            service.append(pair)
-        return service
+#            pair = list()
+#            pair.append(node)
+#            pair.append(self.service_state(node))
+#            service.append(pair)
+            self.STATES[node] = self.service_state(node)
+#        return service
 
     # Returns: 
     #  1 if ON, 
@@ -82,7 +85,10 @@ class get_status:
     # Output: 
     #             (States_phys, States_serv)
     def main(self):
-        return get_status().all_physical_states() + get_status().all_service_states()
+        self.all_physical_states() 
+        self.all_service_states()
+        return self.STATES
+#       return get_status().all_physical_states() + get_status().all_service_states()
 
 
 if __name__ == "__main__":
