@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys, os, re
+import itertools
 import time
 import networkx as nx
 
@@ -26,26 +27,42 @@ class get_config:
         self.serv_nodes      = {}  # list() # Service nodes and their children
         self.right_nodes     = list() # Nodes which we consider when controlling cluster power state
 
-    #Gets physical nodes from the corresponding config file (physical.dep)
-    def get_phys_nodes(self):
+
+    # Returns combination RUN and ON dependencies of physical nodes
+    def get_phys_run_on_dep(self):
         names = self.CONFDIR + self.RUN_DEPENDENCY_PHYSICAL, self.CONFDIR + self.ON_DEPENDENCY_PHYSICAL
         deps = {}
         for name in names:
             deps.update(self.get_phys_dep(name))
         return deps
 
-    def get_serv_nodes(self):
+    # Returns combination RUN and ON dependencies of service nodes
+    def get_serv_run_on_dep(self):
         names = self.CONFDIR + self.RUN_DEPENDENCY_SERVICE, self.CONFDIR + self.ON_DEPENDENCY_SERVICE
         deps = {}
         for name in names:
             deps.update(self.get_serv_dep(name))
         return deps
 
+    # Returns RUN dependency of physical nodes
+    def get_phys_run_dep(self):
+        return self.get_phys_dep(self.CONFDIR + self.RUN_DEPENDENCY_PHYSICAL)
+
+    # Returns RUN dependency of service nodes
+    def get_serv_run_dep(self):
+        return self.get_serv_dep(self.CONFDIR + self.RUN_DEPENDENCY_SERVICE)
+
+    # Returns OFF dependency of physical nodes
+    def get_phys_off_dep(self):
+        return self.get_phys_dep(self.CONFDIR + self.OFF_DEPENDENCY_PHYSICAL)
+
+    # Returns OFF dependency of service nodes
+    def get_serv_off_dep(self):
+        return self.get_serv_dep(self.CONFDIR + self.OFF_DEPENDENCY_SERVICE)
+
+
     def get_phys_dep(self, filename):
-#    def get_phys_nodes(self, filenames):
-#        f = open(self.CONFDIR + self.RUN_DEPENDENCY_PHYSICAL, "r")
         f = open(filename, "r")
-        
         for line in f:
             line = line.strip()
 
@@ -70,7 +87,8 @@ class get_config:
                             tmp_body = []      # make sure it has no dependents by making it empty instead of [['']]
                     pair.append(tmp_body)
                     if self.phys_nodes.has_key(pair[0]):
-                        self.phys_nodes[pair[0]] += pair[1]
+                        product = [ x+y for x in self.phys_nodes[pair[0]] for y in pair[1]]
+                        self.phys_nodes[pair[0]] = product
                     else:
                         self.phys_nodes[pair[0]] = pair[1]
 
@@ -108,7 +126,8 @@ class get_config:
 
                     pair.append(tmp_body)
                     if self.serv_nodes.has_key(pair[0]):
-                        self.serv_nodes[pair[0]] += pair[1]
+                        product = [ x+y for x in self.serv_nodes[pair[0]] for y in pair[1]]
+                        self.serv_nodes[pair[0]] = product
                     else:
                         self.serv_nodes[pair[0]] = pair[1]
 
@@ -123,9 +142,9 @@ class get_config:
         self.args = argv
         # print get_graph().get_physical().edges(data=True)
         print "services:  " 
-        print get_config().get_serv_nodes()
+        print get_config().get_serv_run_on_dep()
         print "physical nodes:  "
-        print get_config().get_phys_nodes()
+        print get_config().get_phys_run_on_dep()
 
 
 if __name__ == "__main__":

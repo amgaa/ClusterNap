@@ -21,23 +21,24 @@ class on_or_off:
     # Returns nodes that are unnecessary to be ON. (NOT-REQUESTED && ON)
     def nodes2off(self):
         tmp_min_graph = list()
-        for pair in self.STATUSES:
-            if pair[0] not in self.MIN_GRAPH:
-                if self.is_ON(pair[0]):
-                    tmp_min_graph.append(pair[0])
+        for node in self.STATUSES.keys():
+            if node not in self.MIN_GRAPH:
+                if self.is_ON(node):
+                    tmp_min_graph.append(node)
         return tmp_min_graph
 
-    # 
+    # Checks if a node is ON. 
     def is_ON(self, node):
-        for pair in self.STATUSES:
-#            print pair[1]
-            if pair[0] == node:
-                if pair[1] == 1:
-                    return 1
-                else: 
-                    return 0
-        print "Node \"" + node + "\"'s status could not be found in the status folder" 
-        return 0
+        if not self.STATUSES.has_key(node):
+            print "Node \"" + node + "\"'s status could not be found in the status folder" 
+            return 0
+        if self.STATUSES[node] == 1:
+            return 1
+        elif self.STATUSES[node] == 0:
+            return 0
+        else:
+            return -1
+
 
     def main(self):
         print "nodes2ON: "

@@ -44,6 +44,8 @@ class on_or_off:
         print self.nodes2on()
         print "nodes2OFF: "
         print self.nodes2off()
+
+        list1 = 
         return
 
 if __name__ == "__main__":

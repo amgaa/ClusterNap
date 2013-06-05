@@ -6,7 +6,6 @@
 # Server dependencies
 node:		guppyfs1
 depends:	guppy-minnie
-depends:	guppy-minnie
 node:		guppyfs2
 depends:	guppy-minnie
 node:		guppyfs3

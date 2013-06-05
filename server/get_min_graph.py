@@ -3,6 +3,7 @@
 # This program gets minimum number of nodes which are required for requested nodes. 
 
 import os, sys, re
+import itertools
 import get_config
 
 class get_min_graph:
@@ -15,14 +16,34 @@ class get_min_graph:
         self.NODES_PHYS_REQUESTED    = os.listdir(self.PHYS_REQUEST_DIR)
         self.NODES_SERV_REQUESTED    = os.listdir(self.SERV_REQUEST_DIR)
 
-        self.PHYS_DEP = list()
-        self.SERV_DEP = list()
-        self.PHYS_DEP = ( get_config.get_config().get_phys_nodes().items())
-        self.PHYS_DEP = (sorted(self.PHYS_DEP, key=lambda item: len(item[1]) ) ) #Sort by the length of OR clauses a node has
-        self.SERV_DEP = ( get_config.get_config().get_serv_nodes().items())
-        self.SERV_DEP = (sorted(self.SERV_DEP, key=lambda item: len(item[1]) ))  #Sort by the length of OR clauses a node has
+        self.PHYS_RUN_ON_DEP = list()
+        self.PHYS_RUN_DEP    = list()
+        self.PHYS_OFF_DEP    = list()
+
+        self.SERV_RUN_ON_DEP = list()
+        self.SERV_RUN_DEP    = list()
+        self.SERV_OFF_DEP    = list()
+
+        self.PHYS_RUN_ON_DEP = get_config.get_config().get_phys_run_on_dep().items()
+        self.PHYS_RUN_DEP    = get_config.get_config().get_phys_run_dep().items()
+        self.PHYS_OFF_DEP    = get_config.get_config().get_phys_off_dep().items()
+
+        self.SERV_RUN_ON_DEP = get_config.get_config().get_serv_run_on_dep().items()
+        self.SERV_RUN_DEP    = get_config.get_config().get_serv_run_dep().items()
+        self.SERV_OFF_DEP    = get_config.get_config().get_serv_off_dep().items()
+
+
+#        self.PHYS_DEP = list()
+#        self.SERV_DEP = list()
+#        self.PHYS_DEP = ( get_config.get_config().get_phys_nodes().items())
+#        self.PHYS_DEP = (sorted(self.PHYS_DEP, key=lambda item: len(item[1]) ) ) #Sort by the length of OR clauses a node has
+#        self.SERV_DEP = ( get_config.get_config().get_serv_nodes().items())
+#        self.SERV_DEP = (sorted(self.SERV_DEP, key=lambda item: len(item[1]) ))  #Sort by the length of OR clauses a node has
         self.DEP                     = list()
-        self.DEP = self.PHYS_DEP + self.SERV_DEP
+        self.DEP = self.PHYS_RUN_ON_DEP + self.SERV_RUN_ON_DEP
+        print "MERGED DEP:"
+        for dep in self.DEP:
+            print dep
         self.NECC                    = list()
 
 
