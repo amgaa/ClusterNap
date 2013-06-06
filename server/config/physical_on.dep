@@ -5,20 +5,21 @@
 
 # Server dependencies
 node:		guppyfs1
-depends:	guppy-minnie
+depends:	guppy-minnie | guppy-minny
 node:		guppyfs2
-depends:	guppy-minnie
+depends:	guppy-minnie | guppy-minny
 node:		guppyfs3
-depends:	guppy-minnie
+depends:	guppy-minnie | guppy-minny
 node:		guppyfs4
-depends:	guppy-minnie
+depends:	guppy-minnie | guppy-minny
 node:		guppyfs5
-depends:	guppy-minnie
+depends:	guppy-minnie | guppy-minny
 node:		guppyfs6
-depends:	guppy-minnie
+depends:	guppy-minnie | guppy-minny
 node:		guppyfs7
-depends:	guppy-minnie
+depends:	guppy-minnie | guppy-minny
 node:		guppyfs8
-depends:	guppy-minnie
+depends:	guppy-minnie | guppy-minny
 node:		guppyfs9
-depends:	guppy-minnie
+depends:	guppy-minnie | guppy-minny
+
