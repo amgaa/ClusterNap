@@ -140,11 +140,18 @@ class get_config:
 
     def main(self, argv):
         self.args = argv
-        # print get_graph().get_physical().edges(data=True)
-        print "services:  " 
-        print get_config().get_serv_run_on_dep()
-        print "physical nodes:  "
-        print get_config().get_phys_run_on_dep()
+        print "services RUN_ON_DEP:  " 
+        for item in get_config().get_serv_run_on_dep().items():
+            print item
+        print "physical nodes RUN_ON_DEP:  "
+        for item in get_config().get_phys_run_on_dep().items():
+            print item
+        print "physical nodes RUN_DEP:  "
+        for item in get_config().get_phys_run_dep().items():
+            print item
+        print "services RUN_DEP:  " 
+        for item in get_config().get_serv_run_dep().items():
+            print item
 
 
 if __name__ == "__main__":
