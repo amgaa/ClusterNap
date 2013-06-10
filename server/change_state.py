@@ -1,5 +1,64 @@
-# Changes state of a node. 
-# OFF -> ON
-# ON  -> OFF
-# For now just change the value of nodes in the folder "state/{service, physical}/"
-# If node does not exists, just create it. 
+#! /usr/bin/python
+
+"""  
+ Changes state of a node. 
+ OFF -> ON
+ ON  -> OFF
+ For now just change the value of nodes in the folder "state/{service, physical}/"
+ If node does not exists, just create it. 
+"""
+
+import os, sys, re
+
+
+# Temporary state changing functions. 
+# In reality, they should really change the state of real nodes 
+# by getting necessary information from corresponding config folders.
+
+class change_state:
+    def __init__(self):
+        self.CUR_DIR        = os.path.dirname(os.path.abspath(__file__))
+        self.STATE_DIR_PHYS = self.CUR_DIR + "/state/physical/"
+        self.STATE_DIR_SERV = self.CUR_DIR + "/state/service/"
+    
+
+    def change_state(self, name, to_state, kind):
+        if kind == "physical":
+            return self.change_physical(name, to_state)
+        elif kind == "service":
+            return self.change_service(name, to_state)
+        else:
+            print "Unknown type of node: " + kind
+            return -1
+
+        
+    def change_physical(self, name, to_state):
+        f = open( self.STATE_DIR_PHYS + name, "w")
+        if to_state == "ON":
+            f.write("1\n")
+        elif to_state == "OFF":
+            f.write("0\n")
+        else:
+            f.write("-1\n")
+
+
+    def change_service(self, name, to_state):
+        f = open( self.STATE_DIR_SERV + name, "w")
+        if to_state == "ON":
+            f.write("1\n")
+        elif to_state == "OFF":
+            f.write("0\n")
+        else:
+            f.write("-1\n")
+
+
+    def main(self, argv):
+        args     = argv
+        node     = argv[1]
+        to_state = argv[2]
+        self.change_physical(node, to_state)
+
+
+
+if __name__ == "__main__":
+    sys.exit(change_state().main(sys.argv))

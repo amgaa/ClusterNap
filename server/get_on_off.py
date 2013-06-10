@@ -160,7 +160,7 @@ class get_on_off:
         for node in finals_to_on:
             print node
             
-        return finals_to_on, nodes_to_off
+        return finals_to_on, nodes_to_off, self.STATES, self.DEP_RUN_ON, self.DEP_OFF
 
 
 
