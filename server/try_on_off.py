@@ -80,6 +80,8 @@ class try_on_off:
             for node in clause:
                 if self.STATES.has_key(node) and self.STATES[node] != 1:
                     flag = 1
+                if not self.STATES.has_key(node):
+                    flag = 1
             if flag == 0:
                 return 1
             
@@ -99,6 +101,8 @@ class try_on_off:
             flag = 0
             for node in clause:
                 if self.STATES.has_key(node) and self.STATES[key] != 1:
+                    flag = 1
+                if not self.STATES.has_key(node):
                     flag = 1
             if flag == 0:
                 return 1

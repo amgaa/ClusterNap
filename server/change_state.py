@@ -53,6 +53,11 @@ class change_state:
 
 
     def main(self, argv):
+        if len(argv) != 3:
+            print "Usage of change_state.py: "
+            print "./change_state.py <Node_name> <to_state>"
+            return
+        
         args     = argv
         node     = argv[1]
         to_state = argv[2]

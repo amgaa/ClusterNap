@@ -5,6 +5,11 @@
 
 
 # Switch dependencies
+node:		SW01
+depends:	guppyfs1 | guppyfs2 | guppyfs3 | guppyfs4 | guppyfs5 | guppyfs6 | guppyfs7 | guppyfs8 | guppyfs9
+node:		SW02
+depends:	guppyfs1 | guppyfs2 | guppyfs3 | guppyfs4 | guppyfs5 | guppyfs6 | guppyfs7 | guppyfs8 | guppyfs9
+
 node:		SW11
 depends:	SW01
 node:		SW21
@@ -44,6 +49,26 @@ node:		SW82
 depends:	SW02
 node:		SW92
 depends:	SW02
+
+# Storage dependencies
+node:		RAID1
+depends:	guppyfs1
+node:		RAID2
+depends:	guppyfs2
+node:		RAID3
+depends:	guppyfs3
+node:		RAID4
+depends:	guppyfs4
+node:		RAID5
+depends:	guppyfs5
+node:		RAID6
+depends:	guppyfs6
+node:		RAID7
+depends:	guppyfs7
+node:		RAID8
+depends:	guppyfs8
+node:		RAID9
+depends:	guppyfs9
 
 # Minnie dependencies
 node:		guppy-minnie
