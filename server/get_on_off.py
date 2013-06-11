@@ -87,12 +87,17 @@ class get_on_off:
         self.DEP_RUN_ON      = self.PHYS_RUN_ON_DEP + self.SERV_RUN_ON_DEP
         self.DEP_RUN         = self.PHYS_RUN_DEP    + self.SERV_RUN_DEP
         self.DEP_OFF         = self.PHYS_OFF_DEP    + self.SERV_OFF_DEP
-
+        
+#        print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+#        print self.DEP_RUN_ON 
+#        print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
     # Returnsa pair of lists:
     # list 1: nodes that should be ON (currently ON or OFF) 
     # list 2: nodes that should be OFF (but currently are ON)
     def main(self):
+
+
 
         # Define necessary lists (variables)
         necc_run_on        = list()
@@ -102,19 +107,39 @@ class get_on_off:
         nodes_to_on_to_off = list()
         tmp_list           = list()
         finals_to_on       = list()
+        
+        tmp_dep_run_on     = list()
+        tmp_dep_run        = list()
+        tmp_dep_off        = list()
+
+#        tmp_dep_run_on     = self.DEP_RUN_ON[:]
+#        tmp_dep_run        = self.DEP_RUN[:] 
+#        tmp_dep_off        = self.DEP_OFF[:]
+
+#        print "!!!!!!!XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+#        print tmp_dep_run_on 
+  #      print "!!!!!!!XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
         # Get neccessary nodes to make requested OFF nodes 
         necc_run_on  = self.necc(    necc_run_on, \
                                     self.DEP_RUN_ON, \
+#                                    tmp_dep_run_on, \
                                     self.NODES_PHYS_REQUESTED_OFF +  self.NODES_SERV_REQUESTED_OFF)
+
+#        print "22222!!!!!!!XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+#        print tmp_dep_run_on 
+#        print "22222!!!!!!!XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+
 
         # Get neccessary nodes to keep requested ON nodes 
         necc_run     = self.necc(   necc_run, \
                                     self.DEP_RUN, \
+#                                    tmp_dep_run, \
                                     self.NODES_PHYS_REQUESTED_ON +  self.NODES_SERV_REQUESTED_ON)
 
         necc_run_on.sort()
         necc_run.sort()
+
 
         # Get nodes that are unnecessarily being ON
         # We should turn-off these nodes
@@ -123,7 +148,8 @@ class get_on_off:
                 nodes_to_off.append(node)
 
         # Get nodes that should be ON to turn off above unnecessary nodes
-        nodes_to_on_to_off = self.necc(necc_off, self.DEP_OFF, nodes_to_off)
+#        nodes_to_on_to_off = self.necc(necc_off, self.DEP_OFF, nodes_to_off)
+        nodes_to_on_to_off = self.necc(necc_off, tmp_dep_off, nodes_to_off)
         for node in nodes_to_on_to_off:
             if node not in necc_off:
                 tmp_list.append(node)
@@ -159,8 +185,9 @@ class get_on_off:
         print "Final nodes to ON to OFF:"
         for node in finals_to_on:
             print node
-            
-        return finals_to_on, nodes_to_off, self.STATES, self.DEP_RUN_ON, self.DEP_OFF
+
+        
+        return finals_to_on, nodes_to_off #, self.STATES #, self.DEP_RUN_ON, self.DEP_OFF
 
 
 
@@ -180,7 +207,6 @@ class get_on_off:
                 tmp_necc   = self.best_childs(childs)
                 self.necc(necc, dependency, tmp_necc) 
         return necc
-
 
     # Necessary nodes to be ON to make requested nodes ON
 #    def necc_nodes(self, requested):
@@ -202,13 +228,11 @@ class get_on_off:
 #        return self.NECC
 
 
-
     # Chooses best childs from CNForm childs  (childsA OR childsB OR childsC ...)
     def best_childs(self, childs):
         if len(childs) == 0:
             return
         return min(childs, key=len)
-
 
     
     # remove nodes, which are already in a list "self.NECC", from CNF form lists

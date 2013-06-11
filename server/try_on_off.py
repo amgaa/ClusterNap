@@ -10,8 +10,8 @@
 
 import sys, os, re
 import get_on_off
-
-
+import get_config
+import get_status
 
 class try_on_off:
     def __init__(self):
@@ -21,15 +21,29 @@ class try_on_off:
         self.DEP_RUN_ON   = {}
         self.DEP_OFF      = {}
 
+        # Dependency-g get config-s avah
         self.NODES_TO_ON,      \
-            self.NODES_TO_OFF, \
-            self.STATES,       \
-            self.DEP_RUN_ON,   \
-            self.DEP_OFF        = get_on_off.get_on_off().main()
+            self.NODES_TO_OFF = get_on_off.get_on_off().main()
+#            self.STATES 
+#            self.DEP_RUN_ON,   \
+#            self.DEP_OFF       \
+        
+        self.STATES = get_status.get_status().main()
+        self.DEP_RUN_ON = get_config.get_config().get_phys_run_on_dep()
+        self.DEP_RUN_ON.update(get_config.get_config().get_serv_run_on_dep())
+        self.DEP_OFF    = get_config.get_config().get_phys_off_dep()
+        self.DEP_OFF.update(get_config.get_config().get_serv_off_dep())  
+ 
+#        print self.DEP_RUN_ON
+#        self.tr_run_on = get_config.get_config().get_phys_run_on_dep()
+#        print "from get congif: "
+#        print self.tr_run_on
 
         self.STATES     = dict(self.STATES)
-        self.DEP_RUN_ON = dict(self.DEP_RUN_ON)
-        self.DEP_OFF    = dict(self.DEP_OFF)
+#        self.DEP_RUN_ON = dict(self.DEP_RUN_ON)
+#        self.DEP_OFF    = dict(self.DEP_OFF)
+        
+
 
         # Leave only OFF nodes in  self.NODES_TO_ON. 
         # Here we also leave Unknown state nodes untouched.
@@ -70,7 +84,7 @@ class try_on_off:
     def on_able(self, node):
 
         if not self.DEP_RUN_ON.has_key(node):
-            print "No dependency found for node " + node
+            print "No RUN-ON-dependency found for node " + node
             return 0
 
         # When the first occurence of all nodes in any of clause os ON, return 1
@@ -83,8 +97,9 @@ class try_on_off:
                 if not self.STATES.has_key(node):
                     flag = 1
             if flag == 0:
+#                print childs
                 return 1
-            
+ #       print childs
         return 0
 
     
@@ -92,7 +107,7 @@ class try_on_off:
     # Checks if an ON node is OFF-able (necessary childs are ON)
     def off_able(self, node):
         if not self.DEP_OFF.has_key(node):
-            print "No dependency found for node " + node
+            print "No OFF-dependency found for node " + node
             return 0
         
         # When the first occurence of all nodes in any of clause os ON, return 1
@@ -100,7 +115,7 @@ class try_on_off:
         for clause in childs:
             flag = 0
             for node in clause:
-                if self.STATES.has_key(node) and self.STATES[key] != 1:
+                if self.STATES.has_key(node) and self.STATES[node] != 1:
                     flag = 1
                 if not self.STATES.has_key(node):
                     flag = 1

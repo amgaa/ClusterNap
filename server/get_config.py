@@ -153,7 +153,7 @@ class get_config:
         for item in get_config().get_serv_run_dep().items():
             print item
 
-        return self.RUN_ON_DEP
+#        return self.DEP_RUN_ON
 
 if __name__ == "__main__":
     sys.exit(get_config().main(sys.argv))

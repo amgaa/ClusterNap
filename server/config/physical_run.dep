@@ -28,8 +28,6 @@ node:		SW81
 depends:	SW01
 node:		SW91
 depends:	SW01
-node:		SWA
-depends:	
 
 node:		SW12
 depends:	SW02
@@ -54,21 +52,21 @@ depends:	SW02
 node:		RAID1
 depends:	guppyfs1
 node:		RAID2
-depends:	guppyfs2
+depends:	guppyfs1
 node:		RAID3
-depends:	guppyfs3
+depends:	guppyfs1
 node:		RAID4
-depends:	guppyfs4
+depends:	guppyfs1
 node:		RAID5
-depends:	guppyfs5
+depends:	guppyfs1
 node:		RAID6
-depends:	guppyfs6
+depends:	guppyfs1
 node:		RAID7
-depends:	guppyfs7
+depends:	guppyfs1
 node:		RAID8
-depends:	guppyfs8
+depends:	guppyfs1
 node:		RAID9
-depends:	guppyfs9
+depends:	guppyfs1
 
 # Minnie dependencies
 node:		guppy-minnie
@@ -156,7 +154,6 @@ node:		guppy38
 depends:	SW31, guppyfs3 | SW32, guppyfs3
 node:		guppy39
 depends:	SW31, guppyfs3 | SW32, guppyfs3
-node:		guppy30
 
 node:		guppy40
 depends:	SW41, guppyfs4 | SW42, guppyfs4
