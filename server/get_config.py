@@ -26,6 +26,26 @@ class get_config:
         self.phys_nodes      = {}  # list() # Physical nodes and their children
         self.serv_nodes      = {}  # list() # Service nodes and their children
         self.right_nodes     = list() # Nodes which we consider when controlling cluster power state
+        self.TYPE            = {}
+        
+    def get_type(self):
+        types     = {}
+        phys_nodes = list()
+        serv_nodes = list()
+        phys_nodes = self.get_phys_run_on_dep().keys()
+        phys_nodes += self.get_phys_off_dep().keys()
+
+        serv_nodes = self.get_serv_run_on_dep().keys()
+        serv_nodes += self.get_serv_off_dep().keys()
+
+        for phys_node in phys_nodes:
+            types[phys_node] = 'physical'
+        for serv_node in serv_nodes:
+            types[serv_node] = 'service'
+
+        return types
+            
+        
 
 
     # Returns combination RUN and ON dependencies of physical nodes
@@ -153,6 +173,15 @@ class get_config:
         for item in get_config().get_serv_run_dep().items():
             print item
 
+#        print "types: "
+#        types = self.get_type()
+#        keys = types.keys()
+#        sorted(keys)
+#        for pair in keys:
+#            print pair + " : " + types[pair]  
+        return
+
+    
 #        return self.DEP_RUN_ON
 
 if __name__ == "__main__":

@@ -12,6 +12,7 @@ import sys, os, re
 import get_on_off
 import get_config
 import get_status
+import change_state
 
 class try_on_off:
     def __init__(self):
@@ -28,7 +29,12 @@ class try_on_off:
 #            self.DEP_RUN_ON,   \
 #            self.DEP_OFF       \
         
-        self.STATES = get_status.get_status().main()
+        print "NODES TO ON:"
+        print self.NODES_TO_ON 
+        print "NODES TO OFF:"
+        print self.NODES_TO_OFF 
+
+        self.STATES = dict(get_status.get_status().main())
         self.DEP_RUN_ON = get_config.get_config().get_phys_run_on_dep()
         self.DEP_RUN_ON.update(get_config.get_config().get_serv_run_on_dep())
         self.DEP_OFF    = get_config.get_config().get_phys_off_dep()
@@ -39,25 +45,34 @@ class try_on_off:
 #        print "from get congif: "
 #        print self.tr_run_on
 
-        self.STATES     = dict(self.STATES)
+#        self.STATES     = dict(self.STATES)
 #        self.DEP_RUN_ON = dict(self.DEP_RUN_ON)
 #        self.DEP_OFF    = dict(self.DEP_OFF)
-        
+#        print self.STATES
 
 
         # Leave only OFF nodes in  self.NODES_TO_ON. 
         # Here we also leave Unknown state nodes untouched.
-        for node in self.NODES_TO_ON:
+        tmp_list = list()
+        tmp_list = self.NODES_TO_ON[:]
+        for node in tmp_list:
             if self.STATES.has_key(node):
-                if self.STATES[node] != -1:
+                if self.STATES[node] != 0:
                     self.NODES_TO_ON.remove(node)
 
         # Leave only ON nodes in self.NODES_TO_OFF
         # Here we also leave Unknown state nodes untouched.
-        for node in self.NODES_TO_OFF:
+        tmp_list = self.NODES_TO_OFF[:]
+        for node in tmp_list:
             if self.STATES.has_key(node):
                 if self.STATES[node] != 1:
                     self.NODES_TO_OFF.remove(node)
+
+        print "NODES TO ON:"
+        print self.NODES_TO_ON 
+        print "NODES TO OFF:"
+        print self.NODES_TO_OFF 
+
 
         return
 
@@ -65,8 +80,11 @@ class try_on_off:
     # Turns on ON-able OFF nodes
     def try_on(self, nodes_to_on):
         for node in nodes_to_on:
+            if self.STATES[node] == 1: # Already ON
+                continue
             if self.on_able(node):
-                print "Can turn on " + node
+                change_state.change_state().change_state(node, 'ON')
+                print "Turn-On command sent (Turned-ON) " + node
             else:
                 print "Cannot turn on " + node + " for now"
 
@@ -74,8 +92,11 @@ class try_on_off:
     # Turns off OFF-able ON nodes
     def try_off(self, nodes_to_off):
         for node in nodes_to_off:
+            if self.STATES[node] == 0: # Already OFF
+                continue
             if self.off_able(node):
-                print "Can turn off " + node
+                change_state.change_state().change_state(node, 'OFF')
+                print "Turn off command sent (Turned off) " + node
             else:
                 print "Cannot turn off " + node + " for now"
 

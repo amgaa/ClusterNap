@@ -51,18 +51,26 @@ class get_on_off:
             if self.STATES.has_key(node):
                 if self.STATES[node] == 1:
                     self.NODES_PHYS_REQUESTED_ON.append(node)
-            else:
-                # Here we take OFF or UNKNOWN state as only OFF. later need to reconsider this. 
-                self.NODES_PHYS_REQUESTED_OFF.append(node)
+                else:
+                    # Here we take OFF or UNKNOWN state as only OFF. later need to reconsider this. 
+                    self.NODES_PHYS_REQUESTED_OFF.append(node)
         
         for node in self.NODES_SERV_REQUESTED:
             if self.STATES.has_key(node):
                 if self.STATES[node] == 1:
                     self.NODES_SERV_REQUESTED_ON.append(node)
-            else:
-                # Here we take OFF or UNKNOWN state as only OFF. later need to reconsider this. 
-                self.NODES_SERV_REQUESTED_OFF.append(node)
-                
+                else:
+                    # Here we take OFF or UNKNOWN state as only OFF. later need to reconsider this. 
+                    self.NODES_SERV_REQUESTED_OFF.append(node)
+
+#        print "self.STATES"
+#        print self.STATES
+
+#        print "PHYS REQ: "
+#        print self.NODES_PHYS_REQUESTED
+#        print "SERV REQ:"
+#        print self.NODES_SERV_REQUESTED
+
 #        print "PHYS REQ ON: "
 #        print self.NODES_PHYS_REQUESTED_ON
 #        print "SERV REQ ON:"
@@ -123,9 +131,9 @@ class get_on_off:
         # Get neccessary nodes to make requested OFF nodes 
         necc_run_on  = self.necc(    necc_run_on, \
                                     self.DEP_RUN_ON, \
-#                                    tmp_dep_run_on, \
                                     self.NODES_PHYS_REQUESTED_OFF +  self.NODES_SERV_REQUESTED_OFF)
-
+#        print self.NODES_PHYS_REQUESTED_OFF +  self.NODES_SERV_REQUESTED_OFF
+#        print necc_run_on
 #        print "22222!!!!!!!XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 #        print tmp_dep_run_on 
 #        print "22222!!!!!!!XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
@@ -148,8 +156,8 @@ class get_on_off:
                 nodes_to_off.append(node)
 
         # Get nodes that should be ON to turn off above unnecessary nodes
-#        nodes_to_on_to_off = self.necc(necc_off, self.DEP_OFF, nodes_to_off)
-        nodes_to_on_to_off = self.necc(necc_off, tmp_dep_off, nodes_to_off)
+        nodes_to_on_to_off = self.necc(necc_off, self.DEP_OFF, nodes_to_off)
+#        nodes_to_on_to_off = self.necc(necc_off, tmp_dep_off, nodes_to_off)
         for node in nodes_to_on_to_off:
             if node not in necc_off:
                 tmp_list.append(node)
@@ -165,26 +173,33 @@ class get_on_off:
         print "requested nodes:"
         for node in self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED:
             print node
+        print ":::::::::::::End of requested nodes::::::::::::\n"
         
-        print "Necessary nodes RUN_ON: "
-        for node in necc_run_on:
-            print node
+#        print "Necessary nodes RUN_ON: "
+#        for node in necc_run_on:
+#            print node
+#        print "::::::::End of Necessary nodes RUN_ON::::::::::\n "
 
-        print "Necessary nodes RUN: "
-        for node in necc_run:
+#        print "Necessary nodes RUN: "
+#        for node in necc_run:
+#            print node
+#        print "::::::::::End of Necessary nodes RUN:::::::::::\n "
+
+
+#        print "Nodes to ON to OFF:"
+#        for node in nodes_to_on_to_off:
+#            print node
+#        print ":::::::::::End of nodes to ON to OFF:::::::::::\n"
+
+        print "Final nodes to ON:"
+        for node in finals_to_on:
             print node
+        print "::::::::::::End of Final nodes to ON:::::::::::\n"
 
         print "Nodes to OFF:"
         for node in nodes_to_off:
             print node
-
-        print "Nodes to ON to OFF:"
-        for node in nodes_to_on_to_off:
-            print node
-
-        print "Final nodes to ON to OFF:"
-        for node in finals_to_on:
-            print node
+        print "::::::::::::::End of nodes to OFF::::::::::::::\n"
 
         
         return finals_to_on, nodes_to_off #, self.STATES #, self.DEP_RUN_ON, self.DEP_OFF

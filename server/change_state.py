@@ -9,7 +9,7 @@
 """
 
 import os, sys, re
-
+import get_config
 
 # Temporary state changing functions. 
 # In reality, they should really change the state of real nodes 
@@ -20,12 +20,22 @@ class change_state:
         self.CUR_DIR        = os.path.dirname(os.path.abspath(__file__))
         self.STATE_DIR_PHYS = self.CUR_DIR + "/state/physical/"
         self.STATE_DIR_SERV = self.CUR_DIR + "/state/service/"
-    
+        self.TYPE           = {}
+        self.TYPE           = get_config.get_config().get_type()
+        
+    def change_state(self, name, to_state):
+        
+        if  to_state != 'ON' and to_state != 'OFF':
+            print "Error: Unknown to_state: " + to_state
+            return -1
 
-    def change_state(self, name, to_state, kind):
-        if kind == "physical":
+        if not self.TYPE.has_key(name):
+            print "Error: Cannot change state. Node " + name + " is not defined in config folder! "
+            return -1
+        
+        if  self.TYPE[name] == "physical":
             return self.change_physical(name, to_state)
-        elif kind == "service":
+        elif self.TYPE[name] == "service":
             return self.change_service(name, to_state)
         else:
             print "Unknown type of node: " + kind
@@ -61,7 +71,7 @@ class change_state:
         args     = argv
         node     = argv[1]
         to_state = argv[2]
-        self.change_physical(node, to_state)
+        self.change_state(node, to_state)
 
 
 
