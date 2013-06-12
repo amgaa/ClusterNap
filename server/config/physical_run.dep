@@ -49,24 +49,24 @@ node:		SW92
 depends:	SW02
 
 # Storage dependencies
-node:		RAID1
-depends:	guppyfs1
-node:		RAID2
-depends:	guppyfs1
-node:		RAID3
-depends:	guppyfs1
-node:		RAID4
-depends:	guppyfs1
-node:		RAID5
-depends:	guppyfs1
-node:		RAID6
-depends:	guppyfs1
-node:		RAID7
-depends:	guppyfs1
-node:		RAID8
-depends:	guppyfs1
-node:		RAID9
-depends:	guppyfs1
+#node:		RAID1
+#depends:	guppyfs1
+#node:		RAID2
+#depends:	guppyfs1
+#node:		RAID3
+#depends:	guppyfs1
+#node:		RAID4
+#depends:	guppyfs1
+#node:		RAID5
+#depends:	guppyfs1
+#node:		RAID6
+#depends:	guppyfs1
+#node:		RAID7
+#depends:	guppyfs1
+#node:		RAID8
+#depends:	guppyfs1
+#node:		RAID9
+#depends:	guppyfs1
 
 # Minnie dependencies
 node:		guppy-minnie

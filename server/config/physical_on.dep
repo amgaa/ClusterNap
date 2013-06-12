@@ -23,3 +23,22 @@ depends:	guppy-minnie | guppy-minny
 node:		guppyfs9
 depends:	guppy-minnie | guppy-minny
 
+# Storage dependencies
+node:		RAID1
+depends:	guppy-minnie | guppy-minny
+node:		RAID2
+depends:	guppy-minnie | guppy-minny
+node:		RAID3
+depends:	guppy-minnie | guppy-minny
+node:		RAID4
+depends:	guppy-minnie | guppy-minny
+node:		RAID5
+depends:	guppy-minnie | guppy-minny
+node:		RAID6
+depends:	guppy-minnie | guppy-minny
+node:		RAID7
+depends:	guppy-minnie | guppy-minny
+node:		RAID8
+depends:	guppy-minnie | guppy-minny
+node:		RAID9
+depends:	guppy-minnie | guppy-minny

@@ -28,7 +28,8 @@ class try_on_off:
 #            self.STATES 
 #            self.DEP_RUN_ON,   \
 #            self.DEP_OFF       \
-        
+        self.tmp_nodestoon = self.NODES_TO_ON[:]
+        self.tmp_nodestooff = self.NODES_TO_OFF[:]
         print "NODES TO ON:"
         print self.NODES_TO_ON 
         print "NODES TO OFF:"
@@ -67,12 +68,6 @@ class try_on_off:
             if self.STATES.has_key(node):
                 if self.STATES[node] != 1:
                     self.NODES_TO_OFF.remove(node)
-
-        print "NODES TO ON:"
-        print self.NODES_TO_ON 
-        print "NODES TO OFF:"
-        print self.NODES_TO_OFF 
-
 
         return
 
@@ -151,11 +146,20 @@ class try_on_off:
 
 #        print self.DEP_RUN_ON
         print "NODES TO ON and their states: "
-        for node in self.NODES_TO_ON:
+        for node in self.tmp_nodestoon:
             if self.STATES.has_key(node):
                 print node + ": " + str(self.STATES[node])
             else:
                 print node + ": state unwritten"
+        print "\n\n"
+
+        print "NODES TO OFF and their states: "
+        for node in self.tmp_nodestooff:
+            if self.STATES.has_key(node):
+                print node + ": " + str(self.STATES[node])
+            else:
+                print node + ": state unwritten"
+        print "\n\n"
 
         self.try_on(self.NODES_TO_ON)
         self.try_off(self.NODES_TO_OFF)
