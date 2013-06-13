@@ -1,17 +1,17 @@
 #! /usr/bin/python
 
-""" 
- Tries to change states of nodes according to the information from 
- get_on_off.py by checking their dependencies and their childs' states. 
+''' 
+ Tries to change states of nodes according to the information (what nodes should be ON and which ones should be off)
+ from get_on_off.py by checking their dependencies and their childs' states. 
 
  Tries to make all necessary nodes ON 
  Tries to make all unnecessary nodes OFF
-"""
+'''
 
 import sys, os, re
 import get_on_off
 import get_dependency
-import get_status
+import get_state
 import change_state
 
 class try_on_off:
@@ -19,9 +19,9 @@ class try_on_off:
         self.NODES_TO_ON  = list()
         self.NODES_TO_OFF = list()
         self.STATES       = {}
+        self.DEP_RUN      = {}
         self.DEP_RUN_ON   = {}
         self.DEP_OFF      = {}
-
         # Dependency-g get config-s avah
         self.NODES_TO_ON,      \
             self.NODES_TO_OFF = get_on_off.get_on_off().main()
@@ -35,9 +35,14 @@ class try_on_off:
         print "NODES TO OFF:"
         print self.NODES_TO_OFF 
 
-        self.STATES = dict(get_status.get_status().main())
+        self.STATES = dict(get_state.get_state().main())
+
+        self.DEP_RUN = get_dependency.get_dependency().get_phys_run_dep()
+        self.DEP_RUN.update(get_dependency.get_dependency().get_serv_run_dep())
+
         self.DEP_RUN_ON = get_dependency.get_dependency().get_phys_run_on_dep()
         self.DEP_RUN_ON.update(get_dependency.get_dependency().get_serv_run_on_dep())
+
         self.DEP_OFF    = get_dependency.get_dependency().get_phys_off_dep()
         self.DEP_OFF.update(get_dependency.get_dependency().get_serv_off_dep())  
  
@@ -127,6 +132,8 @@ class try_on_off:
             return 0
         
         # When the first occurence of all nodes in any of clause os ON, return 1
+        # We also need to check if given "node" is parent of any other ON node by "RUN_DEP". 
+        # In this case, we cannot turn off the given node. 
         childs = self.DEP_OFF[node]
         for clause in childs:
             flag = 0

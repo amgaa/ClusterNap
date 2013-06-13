@@ -1,6 +1,14 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 
+''' 
+This program gets the dependencies of nodes from corresponding files.
+
+Returns a hash table of { node: [dependency list] } .
+Dependency list is in boolean CNF form. 
+
+
+'''
 import sys, os, re
 import itertools
 import time

@@ -1,11 +1,23 @@
 #! /usr/bin/python
 #
-# This program gets minimum number of nodes which are required for requested nodes. 
+
+''' 
+ Returns: 
+            List of node that should be ON: 
+            List of node that can be OFF: 
+
+
+ Given the dependencies of all nodes (D), requested nodes (R) and current states of all nodes (S)
+ This program gets minimum number of nodes which are required for requested nodes to be ON. 
+ It also returns the list of nodes which we can turn-off. 
+ However this program does not tell how to turn-on all of requested nodes, (i.e. by what order ...).
+ try_on_off.py does this. 
+'''
 
 import os, sys, re
 import itertools
 import get_dependency
-import get_status
+import get_state
 
 class get_on_off:
     def __init__ (self):
@@ -18,7 +30,7 @@ class get_on_off:
         self.NODES_SERV_REQUESTED    = os.listdir(self.SERV_REQUEST_DIR)
 
         self.STATES                  = {}
-        self.STATES                  = get_status.get_status().main()
+        self.STATES                  = get_state.get_state().main()
 
         self.NODES_PHYS_REQUESTED_ON = list()
         self.NODES_SERV_REQUESTED_ON = list()
@@ -170,7 +182,7 @@ class get_on_off:
                 finals_to_on.append(node)
         finals_to_on.sort()
 
-        print "requested nodes:"
+        print ":::::::::::::::Requested nodes:::::::::::::::::"
         for node in self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED:
             print node
         print ":::::::::::::End of requested nodes::::::::::::\n"
@@ -191,12 +203,12 @@ class get_on_off:
 #            print node
 #        print ":::::::::::End of nodes to ON to OFF:::::::::::\n"
 
-        print "Final nodes to ON:"
+        print ":::::::::::::::Final nodes to ON:::::::::::::::"
         for node in finals_to_on:
             print node
         print "::::::::::::End of Final nodes to ON:::::::::::\n"
 
-        print "Nodes to OFF:"
+        print "::::::::::::::::::Nodes to OFF:::::::::::::::::"
         for node in nodes_to_off:
             print node
         print "::::::::::::::End of nodes to OFF::::::::::::::\n"
