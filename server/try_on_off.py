@@ -135,6 +135,10 @@ class try_on_off:
         # We also need to check if given "node" is parent of any other ON node by "RUN_DEP". 
         # In this case, we cannot turn off the given node. 
         childs = self.DEP_OFF[node]
+        run_childs = list()
+        if self.DEP_RUN.has_key(node):
+            run_childs = self.DEP_RUN[node]
+
         for clause in childs:
             flag = 0
             for node in clause:
@@ -142,6 +146,12 @@ class try_on_off:
                     flag = 1
                 if not self.STATES.has_key(node):
                     flag = 1
+
+            # When RUN_DEP child is ON, we cannot turn-off node.  
+            for node in self.NODES_TO_OFF:
+                for clause in run_childs:
+                    if node in clause and self.STATES[node] == 1:
+                        flag = 1
             if flag == 0:
                 return 1
 
