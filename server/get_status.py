@@ -1,7 +1,5 @@
 #! /usr/bin/python
-#
-# This program should keeps track of power status of all physical nodes
-# and running status of service nodes. 
+
 
 import os, sys, re
 
@@ -15,33 +13,21 @@ class get_status:
         self.NODES_SERV_STATE_DIR  = os.listdir(self.SERV_STATE_DIR)
         self.STATES                = {}
 
-    #Returns a list of  node:state pairs
+    #Returns a dictionary of  node:state pairs
     def all_physical_states(self):
-#        physical = list()
         for node in self.NODES_PHYS_STATE_DIR:
-#            pair = list()
-#            pair.append(node)
-#            pair.append(self.physical_state(node))
-#            physical.append(pair)
             self.STATES[node] = self.physical_state(node)
 
-
+    #Returns a dictionary of  node:state pairs
     def all_service_states(self):
-#        service = list()
         for node in self.NODES_SERV_STATE_DIR:
-#            pair = list()
-#            pair.append(node)
-#            pair.append(self.service_state(node))
-#            service.append(pair)
             self.STATES[node] = self.service_state(node)
-#        return service
 
     # Returns: 
     #  1 if ON, 
     #  0 if OFF, 
     # -1 if unknown, 
     def physical_state(self, name):
-
         if name not in self.NODES_PHYS_STATE_DIR:
             print "Node name \"" + name + "\" is not in the folder \"" + self.PHYS_STATE_DIR + "\""
             return -1

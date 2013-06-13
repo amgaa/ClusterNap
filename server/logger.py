@@ -17,7 +17,7 @@ import networkx as nx
 
 """
 
-class get_config:
+class get_dependency:
 
     def __init__(self):
         self.CONFDIR        = os.path.dirname(os.path.abspath(__file__))
@@ -100,11 +100,11 @@ class get_config:
         self.args = argv
         # print get_graph().get_physical().edges(data=True)
         print "services:  " 
-        print get_config().get_serv_nodes()
+        print get_dependency().get_serv_nodes()
         print "physical nodes:  "
-        print get_config().get_phys_nodes()
+        print get_dependency().get_phys_nodes()
 
 
 
 if __name__ == "__main__":
-    sys.exit(get_config().main(sys.argv))
+    sys.exit(get_dependency().main(sys.argv))

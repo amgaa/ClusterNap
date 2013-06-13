@@ -9,7 +9,7 @@
 """
 
 import os, sys, re
-import get_config
+import get_dependency
 
 # Temporary state changing functions. 
 # In reality, they should really change the state of real nodes 
@@ -21,7 +21,7 @@ class change_state:
         self.STATE_DIR_PHYS = self.CUR_DIR + "/state/physical/"
         self.STATE_DIR_SERV = self.CUR_DIR + "/state/service/"
         self.TYPE           = {}
-        self.TYPE           = get_config.get_config().get_type()
+        self.TYPE           = get_dependency.get_dependency().get_type()
         
     def change_state(self, name, to_state):
         

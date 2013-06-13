@@ -4,7 +4,7 @@
 
 import os, sys, re
 import itertools
-import get_config
+import get_dependency
 import get_status
 
 class get_on_off:
@@ -80,13 +80,13 @@ class get_on_off:
 #        print "SERV REQ OFF: "
 #        print self.NODES_SERV_REQUESTED_OFF
 
-        self.PHYS_RUN_ON_DEP = get_config.get_config().get_phys_run_on_dep().items()
-        self.PHYS_RUN_DEP    = get_config.get_config().get_phys_run_dep().items()
-        self.PHYS_OFF_DEP    = get_config.get_config().get_phys_off_dep().items()
+        self.PHYS_RUN_ON_DEP = get_dependency.get_dependency().get_phys_run_on_dep().items()
+        self.PHYS_RUN_DEP    = get_dependency.get_dependency().get_phys_run_dep().items()
+        self.PHYS_OFF_DEP    = get_dependency.get_dependency().get_phys_off_dep().items()
 
-        self.SERV_RUN_ON_DEP = get_config.get_config().get_serv_run_on_dep().items()
-        self.SERV_RUN_DEP    = get_config.get_config().get_serv_run_dep().items()
-        self.SERV_OFF_DEP    = get_config.get_config().get_serv_off_dep().items()
+        self.SERV_RUN_ON_DEP = get_dependency.get_dependency().get_serv_run_on_dep().items()
+        self.SERV_RUN_DEP    = get_dependency.get_dependency().get_serv_run_dep().items()
+        self.SERV_OFF_DEP    = get_dependency.get_dependency().get_serv_off_dep().items()
 
         self.SERV_RUN_ON_DEP = sorted(self.SERV_RUN_ON_DEP, key=lambda item: len(item[1]))
         self.SERV_RUN_DEP    = sorted(self.SERV_RUN_DEP,    key=lambda item: len(item[1]))

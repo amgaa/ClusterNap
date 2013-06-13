@@ -10,7 +10,7 @@
 
 import sys, os, re
 import get_on_off
-import get_config
+import get_dependency
 import get_status
 import change_state
 
@@ -36,13 +36,13 @@ class try_on_off:
         print self.NODES_TO_OFF 
 
         self.STATES = dict(get_status.get_status().main())
-        self.DEP_RUN_ON = get_config.get_config().get_phys_run_on_dep()
-        self.DEP_RUN_ON.update(get_config.get_config().get_serv_run_on_dep())
-        self.DEP_OFF    = get_config.get_config().get_phys_off_dep()
-        self.DEP_OFF.update(get_config.get_config().get_serv_off_dep())  
+        self.DEP_RUN_ON = get_dependency.get_dependency().get_phys_run_on_dep()
+        self.DEP_RUN_ON.update(get_dependency.get_dependency().get_serv_run_on_dep())
+        self.DEP_OFF    = get_dependency.get_dependency().get_phys_off_dep()
+        self.DEP_OFF.update(get_dependency.get_dependency().get_serv_off_dep())  
  
 #        print self.DEP_RUN_ON
-#        self.tr_run_on = get_config.get_config().get_phys_run_on_dep()
+#        self.tr_run_on = get_dependency.get_dependency().get_phys_run_on_dep()
 #        print "from get congif: "
 #        print self.tr_run_on
 
