@@ -11,7 +11,7 @@
  This program gets minimum number of nodes which are required for requested nodes to be ON. 
  It also returns the list of nodes which we can turn-off. 
  However this program does not tell how to turn-on all of requested nodes, (i.e. by what order ...).
- try_on_off.py does this. 
+ action_on_off.py does this. 
 '''
 
 import os, sys, re
