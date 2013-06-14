@@ -115,8 +115,10 @@ class try_on_off:
             for node in clause:
                 if self.STATES.has_key(node) and self.STATES[node] != 1:
                     flag = 1
+                    break
                 if not self.STATES.has_key(node):
                     flag = 1
+                    break
             if flag == 0:
 #                print childs
                 return 1
