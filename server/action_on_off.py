@@ -23,11 +23,7 @@ class action_on_off:
         self.DEP_RUN_ON   = {}
         self.DEP_OFF      = {}
         # Dependency-g get config-s avah
-        self.NODES_TO_ON,      \
-            self.NODES_TO_OFF = get_on_off.get_on_off().main()
-#            self.STATES 
-#            self.DEP_RUN_ON,   \
-#            self.DEP_OFF       \
+        self.NODES_TO_ON, self.NODES_TO_OFF = get_on_off.get_on_off().main()
         self.tmp_nodestoon = self.NODES_TO_ON[:]
         self.tmp_nodestooff = self.NODES_TO_OFF[:]
         print "NODES TO ON:"

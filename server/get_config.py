@@ -2,57 +2,42 @@
 # -*- coding: utf-8 -*-
 
 ''' 
-This program gets the dependencies of nodes from corresponding files.
+This program gets the configurations of nodes from corresponding files.
 
-Returns a hash table of { node: [dependency list] } .
-Dependency list is in boolean CNF form. 
+Returns a hash table of nodes {node_name: {'on_script' , 
+                                           'on_host'   , 
+                                           'on_user'   ,
+                                           'off_script',
+                                           'off_host'  , 
+                                           'off_user' 
+                                           }}
 '''
 
 import sys, os, re
 import itertools
 import time
-import networkx as nx
 
-class get_dependency:
+class get_config:
 
     def __init__(self):
-        self.DEPDIR        = os.path.dirname(os.path.abspath(__file__))
-        self.DEPDIR       += "/dependency/"
+        self.CONFDIR        = os.path.dirname(os.path.abspath(__file__))
+        self.CONFDIR       += "/config/"
 
-        self.DEPDIR_PHYS     = self.DEPDIR      + "/physical/" 
-        self.DEPDIR_PHYS_RUN = self.DEPDIR_PHYS + "/run/" 
-        self.DEPDIR_PHYS_ON  = self.DEPDIR_PHYS + "/on/" 
-        self.DEPDIR_PHYS_OFF = self.DEPDIR_PHYS + "/off/" 
+        self.CONFDIR_PHYS     = self.CONFDIR      + "/physical/" 
+        self.CONFDIR_SERV     = self.CONFDIR      + "/service/" 
 
-        self.DEPDIR_SERV     = self.DEPDIR      + "/service/" 
-        self.DEPDIR_SERV_RUN = self.DEPDIR_SERV + "/run/" 
-        self.DEPDIR_SERV_ON  = self.DEPDIR_SERV + "/on/" 
-        self.DEPDIR_SERV_OFF = self.DEPDIR_SERV + "/off/" 
+        self.CONFS_PHYS = list()
+        self.CONFS_SERV = list()
 
-        self.RUN_DEPS_PHYS = list()
-        self.RUN_DEPS_SERV = list()
-        self.ON_DEPS_PHYS  = list()
-        self.ON_DEPS_SERV  = list()
-        self.OFF_DEPS_PHYS = list()
-        self.OFF_DEPS_SERV = list()
+        # Get config file names from corresponding folders
+        self.CONFS_PHYS = os.listdir( self.CONFDIR_PHYS )
+        self.CONFS_DEPS = os.listdir( self.CONFDIR_SERV )
 
-        # Get dependency file names from corresponding folders
-        self.RUN_DEPS_PHYS = os.listdir( self.DEPDIR_PHYS_RUN )
-        self.RUN_DEPS_SERV = os.listdir( self.DEPDIR_SERV_RUN )
-        self.ON_DEPS_PHYS  = os.listdir( self.DEPDIR_PHYS_ON  )
-        self.ON_DEPS_SERV  = os.listdir( self.DEPDIR_SERV_ON  )
-        self.OFF_DEPS_PHYS = os.listdir( self.DEPDIR_PHYS_OFF )
-        self.OFF_DEPS_SERV = os.listdir( self.DEPDIR_SERV_OFF )
+        # Get config files which only has '.conf' extension
+        self.CONFS_PHYS[:] = [ conf for conf in self.CONFS_PHYS if conf[-5:] == '.conf' ] 
+        self.CONFS_SERV[:] = [ conf for conf in self.CONFS_SERV if conf[-5:] == '.conf' ]
 
-        # Get dep files which only has '.dep' extension
-        self.RUN_DEPS_PHYS[:] = [ dep for dep in self.RUN_DEPS_PHYS if dep[-4:] == '.dep' ] 
-        self.RUN_DEPS_SERV[:] = [ dep for dep in self.RUN_DEPS_SERV if dep[-4:] == '.dep' ]
-        self.ON_DEPS_PHYS[:]  = [ dep for dep in self.ON_DEPS_PHYS  if dep[-4:] == '.dep' ]
-        self.ON_DEPS_SERV[:]  = [ dep for dep in self.ON_DEPS_SERV  if dep[-4:] == '.dep' ]
-        self.OFF_DEPS_PHYS[:] = [ dep for dep in self.OFF_DEPS_PHYS if dep[-4:] == '.dep' ]
-        self.OFF_DEPS_SERV[:] = [ dep for dep in self.OFF_DEPS_SERV if dep[-4:] == '.dep' ]
 
-        self.Graph           = nx.DiGraph()
         self.phys_nodes      = {}  # list() # Physical nodes and their children
         self.serv_nodes      = {}  # list() # Service nodes and their children
         self.right_nodes     = list() # Nodes which we consider when controlling cluster power state
@@ -65,11 +50,8 @@ class get_dependency:
         types     = {}
         phys_nodes = list()
         serv_nodes = list()
-        phys_nodes = self.get_phys_run_on_dep().keys()
-        phys_nodes += self.get_phys_off_dep().keys()
-
-        serv_nodes = self.get_serv_run_on_dep().keys()
-        serv_nodes += self.get_serv_off_dep().keys()
+        phys_nodes = self.get_phys_conf().keys()
+        serv_nodes = self.get_serv_conf().keys()
 
         for phys_node in phys_nodes:
             types[phys_node] = 'physical'
@@ -77,64 +59,24 @@ class get_dependency:
             types[serv_node] = 'service'
 
         return types
+
             
-    # Returns combination RUN and ON dependencies of physical nodes
-    def get_phys_run_on_dep(self):
-        deps = {}
-        deps = self.get_phys_run_dep()
-        deps.update( self.get_phys_on_dep() )
-        return deps
-
-    # Returns combination RUN and ON dependencies of service nodes
-    def get_serv_run_on_dep(self):
-        deps = {}
-        deps = self.get_serv_run_dep()
-        deps.update( self.get_serv_on_dep() )
-        return deps
-
     # Returns RUN dependencies of physical nodes
-    def get_phys_run_dep(self):
-        deps = {}
-        for name in self.RUN_DEPS_PHYS:
-            deps.update(self.get_phys_dep(self.DEPDIR_PHYS_RUN + name))
-        return deps    
+    def get_phys_conf(self):
+        confs = {}
+        for name in self.CONFS_PHYS:
+            confs.update(self.get_phys_conf(self.CONFDIR_PHYS + name))
+        return confs    
+
 
     # Returns RUN dependencies of service nodes
-    def get_serv_run_dep(self):
-        deps = {}
-        for name in self.RUN_DEPS_SERV:
-            deps.update(self.get_serv_dep(self.DEPDIR_SERV_RUN + name))
-        return deps    
+    def get_serv_conf(self):
+        confs = {}
+        for name in self.CONFS_SERV:
+            confs.update(self.get_serv_conf(self.CONFDIR_SERV + name))
+        return confs    
 
-    # Returns ON dependencies of physical nodes
-    def get_phys_on_dep(self):
-        deps = {}
-        for name in self.ON_DEPS_PHYS:
-            deps.update(self.get_phys_dep(self.DEPDIR_PHYS_ON + name))
-        return deps    
-
-    # Returns ON dependencies of service nodes
-    def get_serv_on_dep(self):
-        deps = {}
-        for name in self.ON_DEPS_SERV:
-            deps.update(self.get_serv_dep(self.DEPDIR_SERV_ON + name))
-        return deps    
-
-    # Returns OFF dependencies of physical nodes
-    def get_phys_off_dep(self):
-        deps = {}
-        for name in self.OFF_DEPS_PHYS:
-            deps.update(self.get_phys_dep(self.DEPDIR_PHYS_OFF + name))
-        return deps    
-
-    # Returns OFF dependencies of service nodes
-    def get_serv_off_dep(self):
-        deps = {}
-        for name in self.OFF_DEPS_SERV:
-            deps.update(self.get_serv_dep(self.DEPDIR_SERV_OFF + name))
-        return deps    
-
-    def get_phys_dep(self, filename):
+    def get_phys_conf(self, filename):
         f = open(filename, "r")
         for line in f:
             line = line.strip()
@@ -172,7 +114,8 @@ class get_dependency:
         return self.phys_nodes
 
     # Gets service nodes from the corresponding config file (service.dep)
-    def get_serv_dep(self, filename):        
+    def get_serv_conf(self, filename):        
+#        f = open(self.DEPDIR + self.RUN_DEPENDENCY_SERVICE, "r")
         f = open(filename, "r")
         
         for line in f:
