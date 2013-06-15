@@ -73,8 +73,24 @@ class action_on_off:
             if self.STATES.has_key(node):
                 if self.STATES[node] != 1:
                     self.NODES_TO_OFF.remove(node)
+                    
+        
+        self.HAS_RUN_DEP_ON_CHILD = {}
+        for node in self.NODES_TO_OFF:
+            self.HAS_RUN_DEP_ON_CHILD[node] = 0
+ 
+        for node in self.NODES_TO_OFF:
+            childs = list()
+            if self.DEP_RUN.has_key(node):
+                childs = self.DEP_RUN[node]
 
-        return
+            for clause in childs:
+                for nodeA in clause:
+                    if nodeA in self.NODES_TO_OFF:
+                        print "RUN DEP NODE OF "+  nodeA + " is " + node 
+                        self.HAS_RUN_DEP_ON_CHILD[nodeA] = 1
+
+#        return
 
 
     # Turns on ON-able OFF nodes
@@ -105,7 +121,7 @@ class action_on_off:
     def on_able(self, node):
 
         if not self.DEP_RUN_ON.has_key(node):
-            print "No RUN-ON-dependency found for node " + node
+#            print "No RUN-ON-dependency found for node " + node
             return 0
 
         # When the first occurence of all nodes in any of clause os ON, return 1
@@ -125,14 +141,18 @@ class action_on_off:
  #       print childs
         return 0
 
-    
-
     # Checks if an ON node is OFF-able (necessary childs are ON)
     def off_able(self, node):
         if not self.DEP_OFF.has_key(node):
             print "No OFF-dependency found for node " + node
             return 0
-        
+
+        # Need to know if there is RUN_dependencies among nodes_to_off.
+        # If so, we should start from the childs
+        if self.HAS_RUN_DEP_ON_CHILD[node]:
+            print node + " has some child nodes working. Cannot turn off"
+            return 0
+
         # When the first occurence of all nodes in any of clause os ON, return 1
         # We also need to check if given "node" is parent of any other ON node by "RUN_DEP". 
         # In this case, we cannot turn off the given node. 
@@ -145,21 +165,19 @@ class action_on_off:
                     flag = 1
                 if not self.STATES.has_key(node):
                     flag = 1
-
-            # When RUN_DEP child is ON, we cannot turn-off node.  
-#            for node in self.NODES_TO_OFF:
-#                for clause in run_childs:
-#                    if node in clause and self.STATES[node] == 1:
-#                        flag = 1
             if flag == 0:
                 return 1
 
         return 0
 
-    
+    # Checks if a node has RUN dependency running child(s) in nodes_to_off nodes. 
+    def has_running_childs(self, node):
+        if self.HAS_RUNNING_OFF_TO_CHILD[node]:
+            return 1
+        return 0
+
     
     def main(self):
-
 #        print self.DEP_RUN_ON
         print "NODES TO ON and their states: "
         for node in self.tmp_nodestoon:
