@@ -1,0 +1,3 @@
+service: data1
+depends: guppyfs1, guppyfs2
+
