@@ -11,7 +11,6 @@ Dependency list is in boolean CNF form.
 import sys, os, re
 import itertools
 import time
-import networkx as nx
 
 class get_dependency:
 
@@ -52,7 +51,6 @@ class get_dependency:
         self.OFF_DEPS_PHYS[:] = [ dep for dep in self.OFF_DEPS_PHYS if dep[-4:] == '.dep' ]
         self.OFF_DEPS_SERV[:] = [ dep for dep in self.OFF_DEPS_SERV if dep[-4:] == '.dep' ]
 
-        self.Graph           = nx.DiGraph()
         self.phys_nodes      = {}  # list() # Physical nodes and their children
         self.serv_nodes      = {}  # list() # Service nodes and their children
         self.right_nodes     = list() # Nodes which we consider when controlling cluster power state
