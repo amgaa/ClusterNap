@@ -101,22 +101,15 @@ class action_on_off:
                 continue
 
             if self.on_able(node):
-                self.exec_on_host(self.ON_SCRIPTS[node]['host'], \
-                                      self.ON_SCRIPTS[node]['path'],\
-                                      self.ON_SCRIPTS[node]['user'],\
-                                      node,\
-                                      'ON')
 
-#                command  = "ssh -t -q root@" + self.ON_SCRIPTS[node]['host']
-#                command += " \'su - " + self.ON_SCRIPTS[node]['user']
-#                command += " -c \"" + "sh " + self.ON_SCRIPTS[node]['path'] + "\"\'"
-#                command += " >> " + self.COMMAND_OUT_LOG
-#
-#                if os.system(command) == 0:  # Successfully executed
-#                    print "Turn-On command ( " + command + " ) sent (Turned-ON) " + node
-#                    change_state.change_state().change_state(node, 'ON') # <- This should be removed
-#                else: 
-#                    print "Turn-On command error! Cannot run command: " + command
+                for host in self.ON_SCRIPTS[node]: # When there are multiple hosts from which we can execute on/off script , we need to select one. In out case, just choose first host that is ON
+                    if self.STATES.has_key(host['host']) and self.STATES[host['host']] == 1:
+                        self.exec_on_host(host['host'], \
+                                              host['path'],\
+                                              host['user'],\
+                                              node,\
+                                              'ON')
+                        break
             else:
                 print "Cannot turn on " + node + " for now"
 
@@ -133,22 +126,15 @@ class action_on_off:
                 continue
 
             if self.off_able(node):
-                self.exec_on_host(self.OFF_SCRIPTS[node]['host'], \
-                                      self.OFF_SCRIPTS[node]['path'],\
-                                      self.OFF_SCRIPTS[node]['user'],\
-                                      node,\
-                                      'OFF')
-#                command  = "ssh -t -q root@" + self.OFF_SCRIPTS[node]['host']
-#                command += " \'su - " + self.OFF_SCRIPTS[node]['user']
-#                command += " -c \"" + "sh " + self.OFF_SCRIPTS[node]['path'] + "\"\'"
-#                command += " >> " + self.COMMAND_OUT_LOG
-#
-#                if os.system(command) == 0:  # Successfully executed
-#                    os.system(command)
-#                    print "Turn off command ( " + command + " ) sent (Turned off)" + node
-#                    change_state.change_state().change_state(node, 'OFF') # <- This should be removed
-#                else:
-#                    print "Turn-off command error! Cannot run command: " + command
+                for host in self.OFF_SCRIPTS[node]: # When there are multiple hosts from which we can execute on/off script , we need to select one. In out case, just choose first host that is ON
+                    if self.STATES.has_key(host['host']) and self.STATES[host['host']] == 1:
+                        self.exec_on_host(host['host'],\
+                                              host['path'],\
+                                              host['user'],\
+                                              node,\
+                                              'OFF')
+                        break
+
             else:
                 print "Cannot turn off " + node + " for now"
 
@@ -249,10 +235,7 @@ class action_on_off:
         self.try_on(self.NODES_TO_ON)
         self.try_off(self.NODES_TO_OFF)
 
-#        print self.ON_SCRIPTS
-#        print self.OFF_SCRIPTS
         return
-
 
 if __name__ == "__main__":
     sys.exit(action_on_off().main())

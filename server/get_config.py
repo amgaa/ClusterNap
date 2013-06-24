@@ -93,7 +93,8 @@ class get_config:
             script.update( self.get_config( self.SERV_SCRIPT_STATE + conf_file) )
         return script
 
-    # Returns  hash table of: script[name] = {'host': "", 'user':"", 'path':""}
+    # Returns  hash table of: 
+    # script[name] = [{'host': "", 'user':"", 'path':""}, {'host': "", 'user':"", 'path':""} ... ]
     def get_config(self, filepath):
         f = open(filepath, "r")
         script = {}
@@ -111,14 +112,18 @@ class get_config:
 
             if head == "Name": 
                 name = body.strip()
-                script[name] = {'host': "", 'user':"", 'path':""}
+                script[name] = list()
+                
 
             elif head == "Host/user/path":
+                tmp_hash = {'host': "", 'user':"", 'path':""}
+
                 host, user, script_path = body.split(",")
                 if script.has_key(name):
-                    script[name]['host']        = host.strip()
-                    script[name]['user']        = user.strip()
-                    script[name]['path'] = script_path.strip()
+                    tmp_hash['host']        = host.strip()
+                    tmp_hash['user']        = user.strip()
+                    tmp_hash['path'] = script_path.strip()
+                    script[name].append(tmp_hash)
                 else:
                     print "Script host name error: " + name
 
