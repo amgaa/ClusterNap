@@ -101,7 +101,7 @@ class action_on_off:
                 continue
 
             if self.on_able(node):
-
+                flag = 0
                 for host in self.ON_SCRIPTS[node]: # When there are multiple hosts from which we can execute on/off script , we need to select one. In out case, just choose first host that is ON
                     if self.STATES.has_key(host['host']) and self.STATES[host['host']] == 1:
                         self.exec_on_host(host['host'], \
@@ -109,7 +109,11 @@ class action_on_off:
                                               host['user'],\
                                               node,\
                                               'ON')
+                        flag = 1
                         break
+                if flag == 0: # No host was available
+                    print "Error: No ON script has been run for node " + node + "!"
+                    
             else:
                 print "Cannot turn on " + node + " for now"
 
@@ -126,6 +130,7 @@ class action_on_off:
                 continue
 
             if self.off_able(node):
+                flag = 0
                 for host in self.OFF_SCRIPTS[node]: # When there are multiple hosts from which we can execute on/off script , we need to select one. In out case, just choose first host that is ON
                     if self.STATES.has_key(host['host']) and self.STATES[host['host']] == 1:
                         self.exec_on_host(host['host'],\
@@ -133,7 +138,10 @@ class action_on_off:
                                               host['user'],\
                                               node,\
                                               'OFF')
+                        flag = 1
                         break
+                if flag == 0: # No host was available
+                    print "Error: No OFF script has been run for node " + node + "!"
 
             else:
                 print "Cannot turn off " + node + " for now"
@@ -173,9 +181,7 @@ class action_on_off:
                     flag = 1
                     break
             if flag == 0:
-#                print childs
                 return 1
- #       print childs
         return 0
 
     # Checks if an ON node is OFF-able (necessary childs are ON)

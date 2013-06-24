@@ -293,3 +293,7 @@ Domain fs1 is being shutdown
 
 Domain fs1 is being shutdown
 
+Domain fs1 started
+
+error: Domain is already active
+
