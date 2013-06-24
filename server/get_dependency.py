@@ -16,14 +16,14 @@ class get_dependency:
 
     def __init__(self):
         self.DEPDIR        = os.path.dirname(os.path.abspath(__file__))
-        self.DEPDIR       += "/dependency/"
+        self.DEPDIR       += "/dependency"
 
-        self.DEPDIR_PHYS     = self.DEPDIR      + "/physical/" 
+        self.DEPDIR_PHYS     = self.DEPDIR      + "/physical" 
         self.DEPDIR_PHYS_RUN = self.DEPDIR_PHYS + "/run/" 
         self.DEPDIR_PHYS_ON  = self.DEPDIR_PHYS + "/on/" 
         self.DEPDIR_PHYS_OFF = self.DEPDIR_PHYS + "/off/" 
 
-        self.DEPDIR_SERV     = self.DEPDIR      + "/service/" 
+        self.DEPDIR_SERV     = self.DEPDIR      + "/service" 
         self.DEPDIR_SERV_RUN = self.DEPDIR_SERV + "/run/" 
         self.DEPDIR_SERV_ON  = self.DEPDIR_SERV + "/on/" 
         self.DEPDIR_SERV_OFF = self.DEPDIR_SERV + "/off/" 
@@ -164,7 +164,7 @@ class get_dependency:
                         self.phys_nodes[pair[0]] = pair[1]
 
                 else:
-                    print "Unknown Syntax: " + head.strip()
+                    print "Unknown Syntax in " + filename + ": " + head.strip()
                     exit(1)
         f.close()
         return self.phys_nodes
@@ -202,7 +202,7 @@ class get_dependency:
                         self.serv_nodes[pair[0]] = pair[1]
 
                 else:
-                    print "Unknown Syntax: " + head.strip()
+                    print "Unknown Syntax in " + filename + ": " + head.strip()
                     exit(1)
         f.close()
         return self.serv_nodes

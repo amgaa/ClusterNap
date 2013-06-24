@@ -1,0 +1,44 @@
+Name: fs1
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/fs1
+
+Name: fs2
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/fs2
+
+Name: fs3
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/fs3
+
+Name: fs4
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/fs4
+
+Name: fs5
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/fs5
+
+Name: worker11
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/worker11
+
+Name: worker12
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/worker12
+
+Name: worker21
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/worker21
+
+Name: worker22
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/worker22
+
+Name: worker31
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/worker31
+
+Name: worker32
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/worker32
+
+Name: worker41
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/worker41
+
+Name: worker42
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/worker42
+
+Name: worker51
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/worker51
+
+Name: worker52
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/worker52

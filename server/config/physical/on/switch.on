@@ -1,0 +1,17 @@
+# Name of node
+# Script path
+# Host of script
+
+Name: guppyfs1
+Host/user/path: host1, root, '/path/to/script'
+
+Name: guppyfs2
+Host/user/path: host1, root, '/path/to/script'
+Host/user/path: host2, root, '/path/to/script'
+Host/user/path: host3, root, '/path/to/script'
+
+Name: guppyfs3
+Host/user/path: host1, root, '/path/to/script'
+Host/user/path: host2, root, '/path/to/script'
+Host/user/path: host3, root, '/path/to/script'
+Host/user/path: host4, root, '/path/to/script'

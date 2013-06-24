@@ -1,3 +1,35 @@
 service: data1
 depends: guppyfs1, guppyfs2
 
+#VMs
+service:	fs1
+depends:	localhost
+service:	fs2
+depends:	localhost
+service:	fs3
+depends:	localhost
+service:	fs4
+depends:	localhost
+service:	fs5
+depends:	localhost
+
+service:	worker11
+depends:	fs1
+service:	worker12
+depends:	fs1
+service:	worker21
+depends:	fs2
+service:	worker22
+depends:	fs2
+service:	worker31
+depends:	fs3
+service:	worker32
+depends:	fs3
+service:	worker41
+depends:	fs4
+service:	worker42
+depends:	fs4
+service:	worker51
+depends:	fs5
+service:	worker52
+depends:	fs5

@@ -13,6 +13,7 @@ import get_on_off
 import get_dependency
 import get_state
 import change_state
+import get_config
 
 class action_on_off:
     def __init__(self):
@@ -41,17 +42,16 @@ class action_on_off:
 
         self.DEP_OFF    = get_dependency.get_dependency().get_phys_off_dep()
         self.DEP_OFF.update(get_dependency.get_dependency().get_serv_off_dep())  
- 
-#        print self.DEP_RUN_ON
-#        self.tr_run_on = get_dependency.get_dependency().get_phys_run_on_dep()
-#        print "from get congif: "
-#        print self.tr_run_on
+        
+        # ON and OFF scripts: 
+        # On what "host", which "script" should be executed, "who" should run that script 
+        self.ON_SCRIPTS = get_config.get_config().get_phys_on()
+        self.ON_SCRIPTS.update( get_config.get_config().get_serv_on() )
 
-#        self.STATES     = dict(self.STATES)
-#        self.DEP_RUN_ON = dict(self.DEP_RUN_ON)
-#        self.DEP_OFF    = dict(self.DEP_OFF)
-#        print self.STATES
+        self.OFF_SCRIPTS = get_config.get_config().get_phys_off()
+        self.OFF_SCRIPTS.update( get_config.get_config().get_serv_off() )
 
+        self.COMMAND_OUT_LOG = os.path.dirname(os.path.abspath(__file__)) + "/logs/command_out.log"
 
         # Leave only OFF nodes in  self.NODES_TO_ON. 
         # Here we also leave Unknown state nodes untouched.
@@ -94,9 +94,29 @@ class action_on_off:
         for node in nodes_to_on:
             if self.STATES[node] == 1: # Already ON
                 continue
+
+            # In case no script is defined
+            if not self.ON_SCRIPTS.has_key(node):
+                print "node " + node + " has no script to make it ON in config/scripts/{physical, service}/on/ folder. Please define it there"
+                continue
+
             if self.on_able(node):
-                change_state.change_state().change_state(node, 'ON')
-                print "Turn-On command sent (Turned-ON) " + node
+                self.exec_on_host(self.ON_SCRIPTS[node]['host'], \
+                                      self.ON_SCRIPTS[node]['path'],\
+                                      self.ON_SCRIPTS[node]['user'],\
+                                      node,\
+                                      'ON')
+
+#                command  = "ssh -t -q root@" + self.ON_SCRIPTS[node]['host']
+#                command += " \'su - " + self.ON_SCRIPTS[node]['user']
+#                command += " -c \"" + "sh " + self.ON_SCRIPTS[node]['path'] + "\"\'"
+#                command += " >> " + self.COMMAND_OUT_LOG
+#
+#                if os.system(command) == 0:  # Successfully executed
+#                    print "Turn-On command ( " + command + " ) sent (Turned-ON) " + node
+#                    change_state.change_state().change_state(node, 'ON') # <- This should be removed
+#                else: 
+#                    print "Turn-On command error! Cannot run command: " + command
             else:
                 print "Cannot turn on " + node + " for now"
 
@@ -106,12 +126,47 @@ class action_on_off:
         for node in nodes_to_off:
             if self.STATES[node] == 0: # Already OFF
                 continue
+
+            # In case no script is defined
+            if not self.OFF_SCRIPTS.has_key(node):
+                print "node " + node + " has no script to make it OFF in config/scripts/{physical, service}/on/ folder. Please define it there"
+                continue
+
             if self.off_able(node):
-                change_state.change_state().change_state(node, 'OFF')
-                print "Turn off command sent (Turned off) " + node
+                self.exec_on_host(self.OFF_SCRIPTS[node]['host'], \
+                                      self.OFF_SCRIPTS[node]['path'],\
+                                      self.OFF_SCRIPTS[node]['user'],\
+                                      node,\
+                                      'OFF')
+#                command  = "ssh -t -q root@" + self.OFF_SCRIPTS[node]['host']
+#                command += " \'su - " + self.OFF_SCRIPTS[node]['user']
+#                command += " -c \"" + "sh " + self.OFF_SCRIPTS[node]['path'] + "\"\'"
+#                command += " >> " + self.COMMAND_OUT_LOG
+#
+#                if os.system(command) == 0:  # Successfully executed
+#                    os.system(command)
+#                    print "Turn off command ( " + command + " ) sent (Turned off)" + node
+#                    change_state.change_state().change_state(node, 'OFF') # <- This should be removed
+#                else:
+#                    print "Turn-off command error! Cannot run command: " + command
             else:
                 print "Cannot turn off " + node + " for now"
 
+    # Executes a script on given host as given user
+    def exec_on_host (self, host, path_script, user, node, onoff):
+        command  = "ssh -t -q root@" + host
+        command += " \'su - " + user
+        command += " -c \"" + "sh " + path_script + "\"\'"
+        command += " >> " + self.COMMAND_OUT_LOG
+
+        if os.system(command) == 0:  # Successfully executed
+            os.system(command)
+            print "Turn " + onoff + " command sent: " + command
+            change_state.change_state().change_state(node, onoff) # <- This should be removed
+        else:
+            print "Turn-off command error! Cannot run command: " + command
+        
+        
 
     # Checks if an OFF node is ON-able (necessary childs are ON)
     def on_able(self, node):
@@ -194,6 +249,8 @@ class action_on_off:
         self.try_on(self.NODES_TO_ON)
         self.try_off(self.NODES_TO_OFF)
 
+#        print self.ON_SCRIPTS
+#        print self.OFF_SCRIPTS
         return
 
 
