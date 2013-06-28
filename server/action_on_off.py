@@ -110,6 +110,7 @@ class action_on_off:
                                               node,\
                                               'ON')
                         flag = 1
+                        print "Turn ON command sent to " + node
                         break
                 if flag == 0: # No host was available
                     print "Error: No ON script has been run for node " + node + "!"
@@ -138,6 +139,7 @@ class action_on_off:
                                               host['user'],\
                                               node,\
                                               'OFF')
+                        print "Turn OFF command sent to " + node
                         flag = 1
                         break
                 if flag == 0: # No host was available
@@ -150,8 +152,9 @@ class action_on_off:
     def exec_on_host (self, host, path_script, user, node, onoff):
         command  = "ssh -t -q root@" + host
         command += " \'su - " + user
-        command += " -c \"" + "sh " + path_script + "\"\'"
+        command += " -c \"" + "sh " + path_script + " &\" \'"
         command += " >> " + self.COMMAND_OUT_LOG
+#        command += " &"      # <- This "&" makes some nodes do not start. Reason unclear! 
 
         if os.system(command) == 0:  # Successfully executed
             os.system(command)
