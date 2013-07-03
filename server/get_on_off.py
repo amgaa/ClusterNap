@@ -132,34 +132,18 @@ class get_on_off:
         tmp_dep_run        = list()
         tmp_dep_off        = list()
 
-#        tmp_dep_run_on     = self.DEP_RUN_ON[:]
-#        tmp_dep_run        = self.DEP_RUN[:] 
-#        tmp_dep_off        = self.DEP_OFF[:]
-
-#        print "!!!!!!!XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-#        print tmp_dep_run_on 
-  #      print "!!!!!!!XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-
         # Get neccessary nodes to make requested OFF nodes 
         necc_run_on  = self.necc(    necc_run_on, \
                                     self.DEP_RUN_ON, \
                                     self.NODES_PHYS_REQUESTED_OFF +  self.NODES_SERV_REQUESTED_OFF)
-#        print self.NODES_PHYS_REQUESTED_OFF +  self.NODES_SERV_REQUESTED_OFF
-#        print necc_run_on
-#        print "22222!!!!!!!XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-#        print tmp_dep_run_on 
-#        print "22222!!!!!!!XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-
 
         # Get neccessary nodes to keep requested ON nodes 
         necc_run     = self.necc(   necc_run, \
                                     self.DEP_RUN, \
-#                                    tmp_dep_run, \
                                     self.NODES_PHYS_REQUESTED_ON +  self.NODES_SERV_REQUESTED_ON)
 
         necc_run_on.sort()
         necc_run.sort()
-
 
         # Get nodes that are unnecessarily being ON
         # We should turn-off these nodes
@@ -169,7 +153,6 @@ class get_on_off:
 
         # Get nodes that should be ON to turn off above unnecessary nodes
         nodes_to_on_to_off = self.necc(necc_off, self.DEP_OFF, nodes_to_off)
-#        nodes_to_on_to_off = self.necc(necc_off, tmp_dep_off, nodes_to_off)
         for node in nodes_to_on_to_off:
             if node not in necc_off:
                 tmp_list.append(node)
@@ -187,22 +170,6 @@ class get_on_off:
             print node
         print ":::::::::::::End of requested nodes::::::::::::\n"
         
-#        print "Necessary nodes RUN_ON: "
-#        for node in necc_run_on:
-#            print node
-#        print "::::::::End of Necessary nodes RUN_ON::::::::::\n "
-
-#        print "Necessary nodes RUN: "
-#        for node in necc_run:
-#            print node
-#        print "::::::::::End of Necessary nodes RUN:::::::::::\n "
-
-
-#        print "Nodes to ON to OFF:"
-#        for node in nodes_to_on_to_off:
-#            print node
-#        print ":::::::::::End of nodes to ON to OFF:::::::::::\n"
-
         print ":::::::::::::::Final nodes to ON:::::::::::::::"
         for node in finals_to_on:
             print node
@@ -215,8 +182,6 @@ class get_on_off:
 
         
         return finals_to_on, nodes_to_off #, self.STATES #, self.DEP_RUN_ON, self.DEP_OFF
-
-
 
 
     # takes dependency and requested nodes, 
@@ -234,25 +199,6 @@ class get_on_off:
                 tmp_necc   = self.best_childs(childs)
                 self.necc(necc, dependency, tmp_necc) 
         return necc
-
-    # Necessary nodes to be ON to make requested nodes ON
-#    def necc_nodes(self, requested):
-        
-        # Here we should sort items in "requested" by the number of OR clauses they have.
-#        self.NECC += requested
-#        tmp_necc   = list()
-#        childs     = list()
-
-        # The main algorithmic part
-        # Depth first or width first traverce-r uzeh ? Whats their time complexity? (for length of at most 10 layer? )
-#        for node in requested:
-#            if self.DEP.has_key(node):
-#            childs = self.get_childs(self.DEP, node)
-#            if childs: 
-#                childs     = self.remove_nodes(childs, self.NECC)
-#                tmp_necc   = self.best_childs(childs)
-#                self.necc_nodes(tmp_necc) 
-#        return self.NECC
 
 
     # Chooses best childs from CNForm childs  (childsA OR childsB OR childsC ...)
