@@ -1,3 +1,6 @@
+Name: Manage
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/Manage
+
 Name: fs1
 Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/fs1
 

@@ -1,0 +1,31 @@
+# Dependencies of service services are written here
+
+service:	fs1
+depends: 	localhost
+service:	fs2
+depends: 	localhost
+service:	fs3
+depends: 	localhost
+service:	fs4
+depends: 	localhost
+service:	fs5
+depends: 	localhost
+
+
+service:	RAID1
+depends: 	fs1 | fs4
+
+service:	RAID2
+depends: 	fs2 | fs4
+
+service:	RAID3
+depends: 	fs3 | fs4
+
+service:	RAID4
+depends: 	fs1 | fs5
+
+service:	RAID5
+depends: 	fs2 | fs5
+
+service:	RAID6
+depends: 	fs3 | fs5

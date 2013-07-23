@@ -1,0 +1,8 @@
+# Switches
+
+Name: SW0
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/SW0
+Name: SW1
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/SW1
+Name: SW2
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/SW2

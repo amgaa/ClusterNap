@@ -1,0 +1,14 @@
+# RAIDS
+
+Name: RAID1
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/RAID1
+Name: RAID2
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/RAID2
+Name: RAID3
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/RAID3
+Name: RAID4
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/RAID4
+Name: RAID5
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/RAID5
+Name: RAID6
+Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/on/RAID6

@@ -1,0 +1,26 @@
+# CPUs
+
+Name: local_cpu1
+Host/user/path: localhost, root, /home/amgaa/ClusterNap/server/config/script_files/off/local_cpu1
+
+Name: local_cpu2
+Host/user/path: localhost, root, /home/amgaa/ClusterNap/server/config/script_files/off/local_cpu2
+
+Name: local_cpu3
+Host/user/path: localhost, root, /home/amgaa/ClusterNap/server/config/script_files/off/local_cpu3
+
+Name: local_cpu4
+Host/user/path: localhost, root, /home/amgaa/ClusterNap/server/config/script_files/off/local_cpu4
+
+Name: local_cpu5
+Host/user/path: localhost, root, /home/amgaa/ClusterNap/server/config/script_files/off/local_cpu5
+
+Name: local_cpu6
+Host/user/path: localhost, root, /home/amgaa/ClusterNap/server/config/script_files/off/local_cpu6
+
+Name: local_cpu7
+Host/user/path: localhost, root, /home/amgaa/ClusterNap/server/config/script_files/off/local_cpu7
+
+Name: local_cpu8
+Host/user/path: localhost, root, /home/amgaa/ClusterNap/server/config/script_files/off/local_cpu8
+

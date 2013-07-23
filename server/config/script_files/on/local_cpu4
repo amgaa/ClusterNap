@@ -1,0 +1,1 @@
+echo 1 >  /sys/devices/system/node/node0/cpu3/online

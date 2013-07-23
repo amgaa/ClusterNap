@@ -1,0 +1,5 @@
+# Switch dependencies
+node:		SW01
+depends:	guppyfs1 | guppyfs2 | guppyfs3 | guppyfs4 | guppyfs5 | guppyfs6 | guppyfs7 | guppyfs8 | guppyfs9
+node:		SW02
+depends:	guppyfs1 | guppyfs2 | guppyfs3 | guppyfs4 | guppyfs5 | guppyfs6 | guppyfs7 | guppyfs8 | guppyfs9

@@ -70,7 +70,7 @@ class action_on_off:
                 if self.STATES[node] != 1:
                     self.NODES_TO_OFF.remove(node)
                     
-        
+        # Shows if a node has RUN-dep ON child
         self.HAS_RUN_DEP_ON_CHILD = {}
         for node in self.NODES_TO_OFF:
             self.HAS_RUN_DEP_ON_CHILD[node] = 0
@@ -86,12 +86,34 @@ class action_on_off:
                         print "RUN DEP NODE OF "+  nodeA + " is " + node 
                         self.HAS_RUN_DEP_ON_CHILD[nodeA] = 1
 
+        # Shows if a node has OFF-dep ON child
+        self.HAS_OFF_DEP_ON_CHILD = {}
+        for node in self.NODES_TO_OFF:
+            self.HAS_OFF_DEP_ON_CHILD[node] = 0
+ 
+        for node in self.NODES_TO_OFF:
+            childs = list()
+            if self.DEP_OFF.has_key(node):
+                childs = self.DEP_OFF[node]
+
+            for clause in childs:
+                for nodeA in clause:
+                    if nodeA in self.NODES_TO_OFF:
+                        print "OFF DEP NODE OF "+  nodeA + " is " + node 
+                        self.HAS_OFF_DEP_ON_CHILD[nodeA] = 1
+
+
 #        return
 
 
     # Turns on ON-able OFF nodes
     def try_on(self, nodes_to_on):
         for node in nodes_to_on:
+            if not self.STATES.has_key(node): # Already ON
+                print "Node " + node + "'s state is not define in folder states/{physical. service}/"
+                print "Please define it. (Create a file named \"" + node + "\" in there.)"
+                continue
+
             if self.STATES[node] == 1: # Already ON
                 continue
 
@@ -170,7 +192,8 @@ class action_on_off:
 
         if not self.DEP_RUN_ON.has_key(node):
 #            print "No RUN-ON-dependency found for node " + node
-            return 0
+#            return 0
+            return 1
 
         # When the first occurence of all nodes in any of clause os ON, return 1
         childs = self.DEP_RUN_ON[node]
@@ -196,6 +219,10 @@ class action_on_off:
         # Need to know if there is RUN_dependencies among nodes_to_off.
         # If so, we should start from the childs
         if self.HAS_RUN_DEP_ON_CHILD[node]:
+            print node + " has some child nodes working. Cannot turn off"
+            return 0
+
+        if self.HAS_OFF_DEP_ON_CHILD[node]:
             print node + " has some child nodes working. Cannot turn off"
             return 0
 

@@ -1,46 +1,81 @@
 # Dependencies of service services are written here
-service: data1
-depends: guppyfs1, guppyfs2
 
-service: VM1
-depends: guppy12, data1
-
-service: VM2
-depends: guppy13, VM1
-
-
-service: VM3
-depends: guppy22 , VM1 | guppy31, VM2
 #VMs
 service:	fs1
-depends:	localhost
+depends:	localhost, RAID1, SW1
 service:	fs2
-depends:	localhost
-service:	fs3
-depends:	localhost
-service:	fs4
-depends:	localhost
-service:	fs5
-depends:	localhost
+depends:	localhost, RAID2, SW2
+#service:	fs3
+#depends:	localhost, RAID3, SW2
+#service:	fs4
+#depends:	localhost, RAID4, SW2
+#service:	fs5
+#depends:	localhost, RAID5, SW2
 
 service:	worker11
-depends:	fs1
+depends:	fs1, SW1
 service:	worker12
-depends:	fs1
+depends:	fs1, SW1
 service:	worker21
-depends:	fs2
+depends:	fs2, SW2
 service:	worker22
-depends:	fs2
+depends:	fs2, SW2
 service:	worker31
-depends:	fs3
-service:	worker32
-depends:	fs3
-service:	worker41
-depends:	fs4
-service:	worker42
-depends:	fs4
-service:	worker51
-depends:	fs5
-service:	worker52
-depends:	fs5
+#depends:	fs3, SW2
+#service:	worker32
+#depends:	fs3, SW2
+#service:	worker41
+#depends:	fs4, SW2
+#service:	worker42
+#depends:	fs4, SW2
+#service:	worker51
+#depends:	fs5, SW2
+#service:	worker52
+#depends:	fs5, SW2
 
+service:	RAID1
+depends: 	SW1
+service:	RAID2
+depends: 	SW2
+#service:	RAID3
+#depends: 	SW2
+#service:	RAID4
+#depends: 	SW2
+#service:	RAID5
+#depends: 	SW2
+
+service:	SW0
+depends: 	localhost
+service:	SW1
+depends: 	SW0
+service:	SW2
+depends: 	SW0
+
+service:	local_cpu2
+depends:	localhost
+
+service:	local_cpu3
+depends:	local_cpu2
+
+service:	local_cpu4
+depends:	local_cpu3
+
+service:	local_cpu5
+depends:	local_cpu4
+
+service:	local_cpu6
+depends:	local_cpu5
+
+service:	local_cpu7
+depends:	local_cpu6
+
+service:	local_cpu8
+depends:	local_cpu7
+
+
+
+service:	localhost
+depends:	localhost
+
+service:	Manage
+depends:	localhost

@@ -31,7 +31,7 @@ class get_on_off:
 
         self.STATES                  = {}
         self.STATES                  = get_state.get_state().main()
-
+        print self.STATES
         self.NODES_PHYS_REQUESTED_ON = list()
         self.NODES_SERV_REQUESTED_ON = list()
         self.NODES_PHYS_REQUESTED_OFF= list()
@@ -45,7 +45,7 @@ class get_on_off:
         self.SERV_RUN_DEP    = list()
         self.SERV_OFF_DEP    = list()
 
-        self.DEP_RUN_O       = list()
+        self.DEP_RUN_ON      = list()
         self.DEP_RUN         = list()
         self.DEP_OFF         = list()
         
@@ -112,7 +112,7 @@ class get_on_off:
 #        print self.DEP_RUN_ON 
 #        print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
-    # Returnsa pair of lists:
+    # Returns a pair of lists:
     # list 1: nodes that should be ON (currently ON or OFF) 
     # list 2: nodes that should be OFF (but currently are ON)
     def main(self):
@@ -132,9 +132,10 @@ class get_on_off:
         tmp_dep_run        = list()
         tmp_dep_off        = list()
 
-        # Get neccessary nodes to make requested OFF nodes 
-        necc_run_on  = self.necc(    necc_run_on, \
+        # Get neccessary nodes to make requested ON nodes 
+        necc_run_on  = self.necc_run_on(    necc_run_on, \
                                     self.DEP_RUN_ON, \
+                                    self.DEP_RUN, \
                                     self.NODES_PHYS_REQUESTED_OFF +  self.NODES_SERV_REQUESTED_OFF)
 
         # Get neccessary nodes to keep requested ON nodes 
@@ -153,13 +154,26 @@ class get_on_off:
 
         # Get nodes that should be ON to turn off above unnecessary nodes
         nodes_to_on_to_off = self.necc(necc_off, self.DEP_OFF, nodes_to_off)
-        for node in nodes_to_on_to_off:
-            if node not in necc_off:
-                tmp_list.append(node)
+        print "START: NODES TO ON TO OFF"
+        print nodes_to_on_to_off
+        print "END:   NODES TO ON TO OFF"
 
-        nodes_to_on_to_off = tmp_list[:]
+        # What is above doing ??
+#        for node in nodes_to_on_to_off:
+#            if node not in necc_off:
+#            if node not in nodes_to_off:
+#                tmp_list.append(node)
+#
+#        nodes_to_on_to_off = tmp_list[:]
+        
         
         # Nodes that should be ON (finally)
+        print "NECC_RUN_ON:"
+        print necc_run_on
+
+        print "NECC_RUN:"
+        print necc_run
+
         for node in (necc_run_on + necc_run + nodes_to_on_to_off):
             if node not in finals_to_on:
                 finals_to_on.append(node)
@@ -198,6 +212,39 @@ class get_on_off:
                 childs     = self.remove_nodes(childs, necc)
                 tmp_necc   = self.best_childs(childs)
                 self.necc(necc, dependency, tmp_necc) 
+        return necc
+
+
+    # Same function as "necc". But takes OFF nodes as argument for DEP_RUN_ON
+    def necc_run_on(self, necc, dependency, run_dependency, requested):
+        tmp_necc = list()
+        tmp_off  = list()
+        tmp_on   = list()
+        childs   = list()
+        necc    += requested
+        
+        for node in requested:
+            childs = self.get_childs(dependency, node)
+            if childs: 
+                childs     = self.remove_nodes(childs, necc)
+                tmp_necc   = self.best_childs(childs)
+                # Trial:
+                print "NODE: " + node
+                print "BEST CHILD (before): "
+                print tmp_necc
+                tmp_on  = [x for x in tmp_necc if self.STATES.has_key(x) and self.STATES[x] == 1]
+                tmp_off = [x for x in tmp_necc if self.STATES.has_key(x) and self.STATES[x] != 1]
+#                for tmp_node in tmp_necc:
+#                    print "tmp_node: " + tmp_node
+#                    print "tmp_state" 
+#                    print self.STATES[tmp_node]
+#                    if self.STATES.has_key(tmp_node) and self.STATES[tmp_node] == 1:
+#                        tmp_necc.remove(tmp_node)
+                print "BEST CHILD (after): "
+                print tmp_necc
+                self.necc_run_on(necc, dependency, run_dependency, tmp_off) 
+                necc = self.necc(necc, run_dependency, tmp_on) 
+
         return necc
 
 
