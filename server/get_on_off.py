@@ -234,12 +234,7 @@ class get_on_off:
                 print tmp_necc
                 tmp_on  = [x for x in tmp_necc if self.STATES.has_key(x) and self.STATES[x] == 1]
                 tmp_off = [x for x in tmp_necc if self.STATES.has_key(x) and self.STATES[x] != 1]
-#                for tmp_node in tmp_necc:
-#                    print "tmp_node: " + tmp_node
-#                    print "tmp_state" 
-#                    print self.STATES[tmp_node]
-#                    if self.STATES.has_key(tmp_node) and self.STATES[tmp_node] == 1:
-#                        tmp_necc.remove(tmp_node)
+
                 print "BEST CHILD (after): "
                 print tmp_necc
                 self.necc_run_on(necc, dependency, run_dependency, tmp_off) 
