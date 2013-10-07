@@ -3,8 +3,8 @@
 
 ''' 
  Returns: 
-            List of node that should be ON: 
-            List of node that can be OFF: 
+            List of OFF-nodes that should be ON: 
+            List of ON-nodes that can be OFF: 
 
 
  Given the dependencies of all nodes (D), requested nodes (R) and current states of all nodes (S)
@@ -116,8 +116,6 @@ class get_on_off:
     # list 1: nodes that should be ON (currently ON or OFF) 
     # list 2: nodes that should be OFF (but currently are ON)
     def main(self):
-
-
 
         # Define necessary lists (variables)
         necc_run_on        = list()
@@ -237,7 +235,7 @@ class get_on_off:
 
                 print "BEST CHILD (after): "
                 print tmp_necc
-                self.necc_run_on(necc, dependency, run_dependency, tmp_off) 
+                necc = self.necc_run_on(necc, dependency, run_dependency, tmp_off) 
                 necc = self.necc(necc, run_dependency, tmp_on) 
 
         return necc
