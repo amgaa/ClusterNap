@@ -181,7 +181,7 @@ class action_on_off:
         if os.system(command) == 0:  # Successfully executed
             os.system(command)
             print "Turn " + onoff + " command sent: " + command
-            change_state.change_state().change_state(node, onoff) # <- This should be removed
+#            change_state.change_state().change_state(node, onoff) # <- This should be removed
         else:
             print "Turn-off command error! Cannot run command: " + command
         
