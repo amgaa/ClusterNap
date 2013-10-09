@@ -223,6 +223,13 @@ class get_dependency:
         for item in get_dependency().get_serv_run_dep().items():
             print item
 
+        print "physical OFF_DEP:  " 
+        for item in get_dependency().get_phys_off_dep().items():
+            print item
+
+        print "services OFF_DEP:  " 
+        for item in get_dependency().get_serv_off_dep().items():
+            print item
         return
 
     

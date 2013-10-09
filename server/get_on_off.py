@@ -107,7 +107,8 @@ class get_on_off:
         self.DEP_RUN_ON      = self.PHYS_RUN_ON_DEP + self.SERV_RUN_ON_DEP
         self.DEP_RUN         = self.PHYS_RUN_DEP    + self.SERV_RUN_DEP
         self.DEP_OFF         = self.PHYS_OFF_DEP    + self.SERV_OFF_DEP
-        
+
+
 #        print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 #        print self.DEP_RUN_ON 
 #        print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
@@ -125,10 +126,24 @@ class get_on_off:
         nodes_to_on_to_off = list()
         tmp_list           = list()
         finals_to_on       = list()
-        
+	finals_to_off	   = list()	
         tmp_dep_run_on     = list()
         tmp_dep_run        = list()
         tmp_dep_off        = list()
+        
+#        tmp_dep_run_on     = self.DEP_RUN_ON[:]
+#        tmp_dep_run        = self.DEP_RUN[:]
+
+        tmp_dep_run_on     = get_dependency.get_dependency().get_phys_run_on_dep().items() + \
+            get_dependency.get_dependency().get_serv_run_on_dep().items()
+
+        tmp_dep_run        = get_dependency.get_dependency().get_phys_run_dep().items() + \
+            get_dependency.get_dependency().get_serv_run_dep().items()
+
+        tmp_dep_off        = get_dependency.get_dependency().get_phys_off_dep().items() + \
+            get_dependency.get_dependency().get_serv_off_dep().items()
+
+
 
         # Get neccessary nodes to make requested ON nodes 
         necc_run_on  = self.necc_run_on(    necc_run_on, \
@@ -150,20 +165,26 @@ class get_on_off:
             if node not in (necc_run_on + necc_run):
                 nodes_to_off.append(node)
 
+
         # Get nodes that should be ON to turn off above unnecessary nodes
         nodes_to_on_to_off = self.necc(necc_off, self.DEP_OFF, nodes_to_off)
-        print "START: NODES TO ON TO OFF"
-        print nodes_to_on_to_off
-        print "END:   NODES TO ON TO OFF"
+        t_list = list()
+        print "OFF DEPENDENCY copied 1"
+        print tmp_dep_off
 
-        # What is above doing ??
-#        for node in nodes_to_on_to_off:
-#            if node not in necc_off:
-#            if node not in nodes_to_off:
-#                tmp_list.append(node)
-#
-#        nodes_to_on_to_off = tmp_list[:]
-        
+	for node in nodes_to_on_to_off:
+            childs = self.get_childs(tmp_dep_off, node)
+ #           print "parent: " + node
+ #           print childs
+            if childs != None:
+                for child in childs:
+                    for chi in child:
+                        if chi in nodes_to_on_to_off and chi not in t_list:
+                            t_list.append(chi)
+        nodes_to_on_to_off = t_list[:]
+        print ":::::::::::::Nodes to on to off::::::::::::::"
+        print nodes_to_on_to_off
+        print ":::::::::::::::::::::::::::::::::::::::::::::\n"
         
         # Nodes that should be ON (finally)
         print "NECC_RUN_ON:"
@@ -177,7 +198,12 @@ class get_on_off:
                 finals_to_on.append(node)
         finals_to_on.sort()
 
-        print ":::::::::::::::Requested nodes:::::::::::::::::"
+	for node in nodes_to_off:
+	    if node not in finals_to_on:
+                finals_to_off.append(node)
+	finals_to_off.sort()	
+
+        print ":::::::::::::::Requeste nodes:::::::::::::::::"
         for node in self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED:
             print node
         print ":::::::::::::End of requested nodes::::::::::::\n"
@@ -188,12 +214,13 @@ class get_on_off:
         print "::::::::::::End of Final nodes to ON:::::::::::\n"
 
         print "::::::::::::::::::Nodes to OFF:::::::::::::::::"
-        for node in nodes_to_off:
+        for node in finals_to_off:
             print node
         print "::::::::::::::End of nodes to OFF::::::::::::::\n"
 
         
-        return finals_to_on, nodes_to_off #, self.STATES #, self.DEP_RUN_ON, self.DEP_OFF
+#        return finals_to_on, nodes_to_off #, self.STATES #, self.DEP_RUN_ON, self.DEP_OFF
+        return finals_to_on, finals_to_off #, self.STATES #, self.DEP_RUN_ON, self.DEP_OFF
 
 
     # takes dependency and requested nodes, 

@@ -1,1 +1,1 @@
-virsh shutdown fs4 
+virsh destroy fs4 

@@ -1,1 +1,1 @@
-virsh shutdown RAID1
+virsh destroy RAID1

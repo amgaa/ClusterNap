@@ -1,1 +1,1 @@
-virsh shutdown SW1
+virsh destroy SW1

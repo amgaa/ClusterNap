@@ -1,1 +1,1 @@
-virsh shutdown RAID6
+virsh destroy RAID6

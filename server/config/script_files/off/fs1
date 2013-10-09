@@ -1,1 +1,1 @@
-virsh shutdown fs1 
+virsh destroy fs1 

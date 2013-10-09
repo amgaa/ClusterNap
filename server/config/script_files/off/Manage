@@ -1,1 +1,1 @@
-virsh shutdown Manage
+virsh destroy Manage

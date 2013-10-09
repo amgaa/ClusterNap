@@ -1,1 +1,1 @@
-virsh shutdown worker32 
+virsh destroy worker32 

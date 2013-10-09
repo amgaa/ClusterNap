@@ -1,1 +1,1 @@
-virsh shutdown fs5 
+virsh destroy fs5 

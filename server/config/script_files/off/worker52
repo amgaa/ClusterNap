@@ -1,1 +1,1 @@
-virsh shutdown worker52 
+virsh destroy worker52 

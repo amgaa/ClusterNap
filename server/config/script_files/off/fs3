@@ -1,1 +1,1 @@
-virsh shutdown fs3 
+virsh destroy fs3 
