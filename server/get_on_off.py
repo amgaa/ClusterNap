@@ -134,6 +134,10 @@ class get_on_off:
 #        tmp_dep_run_on     = self.DEP_RUN_ON[:]
 #        tmp_dep_run        = self.DEP_RUN[:]
 
+        print "::::::::::::RUN ON DEP ::::::::::::"
+        print self.DEP_RUN_ON
+        print ":::::::::::::::::::::::::::::::::::"
+
         tmp_dep_run_on     = get_dependency.get_dependency().get_phys_run_on_dep().items() + \
             get_dependency.get_dependency().get_serv_run_on_dep().items()
 
