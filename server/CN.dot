@@ -7,12 +7,12 @@ digraph CN {
 "worker12" [style="filled"	 color=red, penwidth=3, fillcolor= yellow] ;
 "worker32" [style="filled"	 color=black, fillcolor= blue] ;
 "RAID4" [style="filled"	 color=orange, penwidth=3, fillcolor= yellow] ;
-"fs2" [style="filled"	 color=orange, penwidth=3, fillcolor= yellow] ;
+"fs2" [style="filled"	 color=black, fillcolor= blue] ;
 "fs3" [style="filled"	 color=black, fillcolor= blue] ;
 "RAID1" [style="filled"	 color=orange, penwidth=3, fillcolor= yellow] ;
-"worker22" [style="filled"	 color=red, penwidth=3, fillcolor= yellow] ;
+"worker22" [style="filled"	 color=black, fillcolor= blue] ;
 "RAID3" [style="filled"	 color=black, fillcolor= blue] ;
-"RAID2" [style="filled"	 color=orange, penwidth=3, fillcolor= yellow] ;
+"RAID2" [style="filled"	 color=black, fillcolor= blue] ;
 "SW1" [style="filled"	 color=orange, penwidth=3, fillcolor= yellow] ;
 "fs4" [style="filled"	 color=orange, penwidth=3, fillcolor= yellow] ;
 "localhost" [style="filled"	 color=orange, penwidth=3, fillcolor= yellow] ;
