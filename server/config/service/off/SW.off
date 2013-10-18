@@ -1,8 +1,8 @@
 # Switches
 
 Name: SW0
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/SW0
+Host/user/path: localhost, amgaa, virsh destroy SW0
 Name: SW1
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/SW1
+Host/user/path: localhost, amgaa, virsh destroy SW1
 Name: SW2
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/SW2
+Host/user/path: localhost, amgaa, virsh destroy SW2

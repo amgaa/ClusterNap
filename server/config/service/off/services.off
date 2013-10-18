@@ -1,47 +1,47 @@
 Name: Manage
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/Manage
+Host/user/path: localhost, amgaa, virsh destroy Manage
 
 Name: fs1
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/fs1
+Host/user/path: localhost, amgaa, virsh destroy fs1
 
 Name: fs2
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/fs2
+Host/user/path: localhost, amgaa, virsh destroy fs2
 
 Name: fs3
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/fs3
+Host/user/path: localhost, amgaa, virsh destroy fs3
 
 Name: fs4
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/fs4
+Host/user/path: localhost, amgaa, virsh destroy fs4
 
 Name: fs5
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/fs5
+Host/user/path: localhost, amgaa, virsh destroy fs5
 
 Name: worker11
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/worker11
+Host/user/path: localhost, amgaa, virsh destroy worker11
 
 Name: worker12
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/worker12
+Host/user/path: localhost, amgaa, virsh destroy worker12
 
 Name: worker21
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/worker21
+Host/user/path: localhost, amgaa, virsh destroy worker21
 
 Name: worker22
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/worker22
+Host/user/path: localhost, amgaa, virsh destroy worker22
 
 Name: worker31
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/worker31
+Host/user/path: localhost, amgaa, virsh destroy worker31
 
 Name: worker32
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/worker32
+Host/user/path: localhost, amgaa, virsh destroy worker32
 
 Name: worker41
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/worker41
+Host/user/path: localhost, amgaa, virsh destroy worker41
 
 Name: worker42
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/worker42
+Host/user/path: localhost, amgaa, virsh destroy worker42
 
 Name: worker51
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/worker51
+Host/user/path: localhost, amgaa, virsh destroy worker51
 
 Name: worker52
-Host/user/path: localhost, amgaa, /home/amgaa/ClusterNap/server/config/script_files/off/worker52
+Host/user/path: localhost, amgaa, virsh destroy worker52

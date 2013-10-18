@@ -41,19 +41,19 @@ class get_config:
 
         self.PHYS_SCRIPTS_ON    = os.listdir( self.PHYS_SCRIPT_ON    )
         self.PHYS_SCRIPTS_OFF   = os.listdir( self.PHYS_SCRIPT_OFF   )
-        self.PHYS_SCRIPTS_STATE = os.listdir( self.PHYS_SCRIPT_STATE )
+#        self.PHYS_SCRIPTS_STATE = os.listdir( self.PHYS_SCRIPT_STATE )
 
         self.SERV_SCRIPTS_ON    = os.listdir( self.SERV_SCRIPT_ON    )
         self.SERV_SCRIPTS_OFF   = os.listdir( self.SERV_SCRIPT_OFF   )
-        self.SERV_SCRIPTS_STATE = os.listdir( self.SERV_SCRIPT_STATE )
+#        self.SERV_SCRIPTS_STATE = os.listdir( self.SERV_SCRIPT_STATE )
 
         self.PHYS_SCRIPTS_ON    = [item for item in self.PHYS_SCRIPTS_ON    if item[-3:] == '.on'] 
         self.PHYS_SCRIPTS_OFF   = [item for item in self.PHYS_SCRIPTS_OFF   if item[-4:] == '.off']
-        self.PHYS_SCRIPTS_STATE = [item for item in self.PHYS_SCRIPTS_STATE if item[-6:] == '.state']
+#        self.PHYS_SCRIPTS_STATE = [item for item in self.PHYS_SCRIPTS_STATE if item[-6:] == '.state']
 
         self.SERV_SCRIPTS_ON    = [item for item in self.SERV_SCRIPTS_ON    if item[-3:] == '.on']
         self.SERV_SCRIPTS_OFF   = [item for item in self.SERV_SCRIPTS_OFF   if item[-4:] == '.off']
-        self.SERV_SCRIPTS_STATE = [item for item in self.SERV_SCRIPTS_STATE if item[-6:] == '.state']
+#        self.SERV_SCRIPTS_STATE = [item for item in self.SERV_SCRIPTS_STATE if item[-6:] == '.state']
 
 
     # Returns { node_name: {'host': "client-host", 'user':"user", 'path':"path"} }

@@ -676,3 +676,252 @@ sh: 0: Can't open /home/amgaa/ClusterNap/server/cofffig/script_files/off/local_c
 
 error: Domain is already active
 
+-su: /home/amgaa/ClusterNap/server/config/script_files/on/Manage: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/on/Manage: Permission denied
+Welcome to virsh, the virtualization interactive terminal.
+
+Type:  'help' for help with commands
+       'quit' to quit
+
+virsh # -su: /home/amgaa/ClusterNap/server/config/script_files/on/Manage: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/on/Manage: Permission denied
+Welcome to virsh, the virtualization interactive terminal.
+
+Type:  'help' for help with commands
+       'quit' to quit
+
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+Session terminated, terminating shell...^C ...terminated.
+-su: /home/amgaa/ClusterNap/server/config/script_files/on/Manage: Permission denied
+Welcome to virsh, the virtualization interactive terminal.
+
+Type:  'help' for help with commands
+       'quit' to quit
+
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+virsh # 
+Session terminated, terminating shell...^C ...terminated.
+-su: /home/amgaa/ClusterNap/server/config/script_files/on/Manage: Permission denied
+Domain worker11 destroyed
+
+error: Failed to destroy domain worker11
+error: Requested operation is not valid: domain is not running
+
+
+virsh # 
+Session terminated, terminating shell...^C ...terminated.
+Domain Manage started
+
+error: Domain is already active
+
+
+
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/fs1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/fs3: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/fs1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/fs3: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/fs1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/fs3: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/fs1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/fs3: Permission denied
+Domain fs1 destroyed
+
+error: Failed to destroy domain fs1
+error: Requested operation is not valid: domain is not running
+
+Domain fs3 destroyed
+
+error: Failed to destroy domain fs3
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain fs1
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain fs3
+error: Requested operation is not valid: domain is not running
+
+
+
+
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+-su: /home/amgaa/ClusterNap/server/config/script_files/off/RAID1: Permission denied
+Domain RAID1 destroyed
+
+error: Failed to destroy domain RAID1
+error: Requested operation is not valid: domain is not running
+
+Domain Manage destroyed
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+
+
+Domain Manage destroyed
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+Domain worker42 started
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+
+Domain Manage started
+
+error: Domain is already active
+
+Domain worker42 destroyed
+
+error: Failed to destroy domain worker42
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain worker42
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain worker42
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain worker42
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain worker42
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain worker42
+error: Requested operation is not valid: domain is not running
+
+Domain Manage destroyed
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+Domain worker42 started
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+
+Domain Manage started
+
+error: Domain is already active
+
+Domain worker41 destroyed
+
+error: Failed to destroy domain worker41
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain worker41
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain worker41
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain worker41
+error: Requested operation is not valid: domain is not running
+
+Domain Manage destroyed
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
