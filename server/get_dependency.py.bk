@@ -255,6 +255,12 @@ class get_dependency:
             self.off_deps[node] = tmp_body
         return self.off_deps
 
+    def get_run_on_dep(self):
+        deps = {}
+        deps = self.get_run_dep()
+        deps.update( self.get_on_dep() )
+        return deps
+
 
     def main(self, argv):
         self.args = argv

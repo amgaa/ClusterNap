@@ -26,15 +26,31 @@ class get_on_off:
         self.PHYS_REQUEST_DIR        = self.REQUEST_DIR + "physical/"
         self.SERV_REQUEST_DIR        = self.REQUEST_DIR + "service/"
 
+#        self.NODES_PHYS_REQUESTED    = os.listdir(self.PHYS_REQUEST_DIR)
+#        self.NODES_SERV_REQUESTED    = os.listdir(self.SERV_REQUEST_DIR)
+
         self.NODES_REQUESTED         = os.listdir(self.SERV_REQUEST_DIR)
 
 
         self.STATES                  = {}
         self.STATES                  = get_state.get_state().main()
         print self.STATES
+#        self.NODES_PHYS_REQUESTED_ON = list()
+#        self.NODES_SERV_REQUESTED_ON = list()
+#        self.NODES_PHYS_REQUESTED_OFF= list()
+#        self.NODES_SERV_REQUESTED_OFF= list()
 
         self.NODES_REQUESTED_ON = list()
         self.NODES_REQUESTED_OFF= list()
+
+
+#        self.PHYS_RUN_ON_DEP = list()
+#        self.PHYS_RUN_DEP    = list()
+#        self.PHYS_OFF_DEP    = list()
+
+#        self.SERV_RUN_ON_DEP = list()
+#        self.SERV_RUN_DEP    = list()
+#        self.SERV_OFF_DEP    = list()
 
         self.DEP_RUN_ON      = list()
         self.DEP_RUN         = list()
@@ -42,11 +58,21 @@ class get_on_off:
         
         self.ON_NODES        = list()
 
+#       self.NECC            = list()
+        
         # Get the names of ON nodes
         for node in self.STATES.keys():
             if self.STATES[node] == 1:
                 self.ON_NODES.append(node)
 
+        # Get the states of requested nodes
+#        for node in self.NODES_PHYS_REQUESTED:
+#            if self.STATES.has_key(node):
+#                if self.STATES[node] == 1:
+#                    self.NODES_PHYS_REQUESTED_ON.append(node)
+#                else:
+#                    # Here we take OFF or UNKNOWN state as only OFF. later need to reconsider this. 
+#                    self.NODES_PHYS_REQUESTED_OFF.append(node)
 
         # Get the states of requested nodes
         for node in self.NODES_REQUESTED:
@@ -58,10 +84,56 @@ class get_on_off:
                     self.NODES_REQUESTED_OFF.append(node)
 
         
+#        for node in self.NODES_SERV_REQUESTED:
+#            if self.STATES.has_key(node):
+#                if self.STATES[node] == 1:
+#                    self.NODES_SERV_REQUESTED_ON.append(node)
+#                else:
+                    # Here we take OFF or UNKNOWN state as only OFF. later need to reconsider this. 
+#                    self.NODES_SERV_REQUESTED_OFF.append(node)
+
+#        print "self.STATES"
+#        print self.STATES
+
+#        print "PHYS REQ: "
+#        print self.NODES_PHYS_REQUESTED
+#        print "SERV REQ:"
+#        print self.NODES_SERV_REQUESTED
+
+#        print "PHYS REQ ON: "
+#        print self.NODES_PHYS_REQUESTED_ON
+#        print "SERV REQ ON:"
+#        print self.NODES_SERV_REQUESTED_ON
+#        print "PHYS REQ OFF: "
+#        print self.NODES_PHYS_REQUESTED_OFF
+#        print "SERV REQ OFF: "
+#        print self.NODES_SERV_REQUESTED_OFF
+
+#        self.PHYS_RUN_ON_DEP = get_dependency.get_dependency().get_phys_run_on_dep().items()
+#        self.PHYS_RUN_DEP    = get_dependency.get_dependency().get_phys_run_dep().items()
+#        self.PHYS_OFF_DEP    = get_dependency.get_dependency().get_phys_off_dep().items()
+
+#        self.SERV_RUN_ON_DEP = get_dependency.get_dependency().get_serv_run_on_dep().items()
+#        self.SERV_RUN_DEP    = get_dependency.get_dependency().get_serv_run_dep().items()
+#        self.SERV_OFF_DEP    = get_dependency.get_dependency().get_serv_off_dep().items()
+
+#        self.SERV_RUN_ON_DEP = sorted(self.SERV_RUN_ON_DEP, key=lambda item: len(item[1]))
+#        self.SERV_RUN_DEP    = sorted(self.SERV_RUN_DEP,    key=lambda item: len(item[1]))
+#        self.SERV_OFF_DEP    = sorted(self.SERV_OFF_DEP,    key=lambda item: len(item[1]))
+
+
         self.DEP_RUN_ON = get_dependency.get_dependency().get_run_on_dep().items()
         self.DEP_RUN    = get_dependency.get_dependency().get_run_dep().items()
         self.DEP_OFF    = get_dependency.get_dependency().get_off_dep().items()
 
+#        self.DEP_RUN_ON      = self.PHYS_RUN_ON_DEP + self.SERV_RUN_ON_DEP
+#        self.DEP_RUN         = self.PHYS_RUN_DEP    + self.SERV_RUN_DEP
+#        self.DEP_OFF         = self.PHYS_OFF_DEP    + self.SERV_OFF_DEP
+
+
+#        print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+#        print self.DEP_RUN_ON 
+#        print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
     # Returns a pair of lists:
     # list 1: nodes that should be ON (currently ON or OFF) 
@@ -87,6 +159,15 @@ class get_on_off:
         print "::::::::::::RUN ON DEP ::::::::::::"
         print self.DEP_RUN_ON
         print ":::::::::::::::::::::::::::::::::::"
+
+#        tmp_dep_run_on     = get_dependency.get_dependency().get_phys_run_on_dep().items() + \
+#            get_dependency.get_dependency().get_serv_run_on_dep().items()
+
+#        tmp_dep_run        = get_dependency.get_dependency().get_phys_run_dep().items() + \
+#            get_dependency.get_dependency().get_serv_run_dep().items()
+
+#        tmp_dep_off        = get_dependency.get_dependency().get_phys_off_dep().items() + \
+#            get_dependency.get_dependency().get_serv_off_dep().items()
 
         tmp_dep_run_on     = get_dependency.get_dependency().get_run_on_dep().items()
 

@@ -36,26 +36,23 @@ class action_on_off:
         
         self.STATES = dict(get_state.get_state().main())
 
-        self.DEP_RUN = get_dependency.get_dependency().get_run_dep()
-#        self.DEP_RUN = get_dependency.get_dependency().get_phys_run_dep()
-#        self.DEP_RUN.update(get_dependency.get_dependency().get_serv_run_dep())
+        self.DEP_RUN = get_dependency.get_dependency().get_phys_run_dep()
+        self.DEP_RUN.update(get_dependency.get_dependency().get_serv_run_dep())
 
-        self.DEP_RUN_ON = get_dependency.get_dependency().get_run_on_dep()
-#        self.DEP_RUN_ON = get_dependency.get_dependency().get_phys_run_on_dep()
-#        self.DEP_RUN_ON.update(get_dependency.get_dependency().get_serv_run_on_dep())
+        self.DEP_RUN_ON = get_dependency.get_dependency().get_phys_run_on_dep()
+        self.DEP_RUN_ON.update(get_dependency.get_dependency().get_serv_run_on_dep())
 
-        self.DEP_OFF    = get_dependency.get_dependency().get_off_dep()
-#        self.DEP_OFF    = get_dependency.get_dependency().get_phys_off_dep()
-#        self.DEP_OFF.update(get_dependency.get_dependency().get_serv_off_dep())  
+        self.DEP_OFF    = get_dependency.get_dependency().get_phys_off_dep()
+        self.DEP_OFF.update(get_dependency.get_dependency().get_serv_off_dep())  
         
         # ON and OFF scripts: 
-        # On what "host", which "command" should be executed, "who" should run that script 
-        self.ON_SCRIPTS = get_conf.get_conf().get_on_command()
+        # On what "host", which "script" should be executed, "who" should run that script 
 #        self.ON_SCRIPTS = get_config.get_config().get_phys_on()
+        self.ON_SCRIPTS = get_conf.get_conf().get_on_command()
 #        self.ON_SCRIPTS.update( get_config.get_config().get_serv_on() )
 
-        self.OFF_SCRIPTS = get_conf.get_conf().get_off_command()
 #        self.OFF_SCRIPTS = get_config.get_config().get_phys_off()
+        self.OFF_SCRIPTS = get_conf.get_conf().get_off_command()
 #        self.OFF_SCRIPTS.update( get_config.get_config().get_serv_off() )
 
         self.COMMAND_OUT_LOG = os.path.dirname(os.path.abspath(__file__)) + "/logs/command_out.log"
@@ -191,7 +188,7 @@ class action_on_off:
             print "Turn " + onoff + " command sent: " + command
 #            change_state.change_state().change_state(node, onoff) # <- This should be removed
         else:
-            print "Turn-off/On command error! Cannot run command: " + command
+            print "Turn-off command error! Cannot run command: " + command
         
         
 

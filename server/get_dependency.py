@@ -58,7 +58,9 @@ class get_dependency:
         self.serv_nodes      = {}  # list() # Service nodes and their children
         self.right_nodes     = list() # Nodes which we consider when controlling cluster power state
         self.TYPE            = {}
-
+        self.run_deps        = {}
+        self.on_deps         = {}
+        self.off_deps        = {}
 
     # Checks whether a node is "physical" or "service"
     # Returns dictionary of all nodes written in config dir and their types
@@ -210,7 +212,55 @@ class get_dependency:
                     exit(1)
         f.close()
         return self.serv_nodes
-    
+
+    def get_run_dep(self):
+        for node in self.CONFIG.keys():
+            tmp_body = list()
+            body = self.CONFIG[node]["run_dependencies"].split("|")
+            for items in body:
+                items = items.split(",")
+                items = [item.strip() for item in items]
+                tmp_body.append(items)
+                if tmp_body == [['']]: # When a node does not have any dependencies
+                    tmp_body = []
+
+            self.run_deps[node] = tmp_body
+        return self.run_deps
+
+    def get_on_dep(self):
+        for node in self.CONFIG.keys():
+            tmp_body = list()
+            body = self.CONFIG[node]["on_dependencies"].split("|")
+            for items in body:
+                items = items.split(",")
+                items = [item.strip() for item in items]
+                tmp_body.append(items)
+                if tmp_body == [['']]: # When a node does not have any dependencies
+                    tmp_body = []
+
+            self.on_deps[node] = tmp_body
+        return self.on_deps
+
+    def get_off_dep(self):
+        for node in self.CONFIG.keys():
+            tmp_body = list()
+            body = self.CONFIG[node]["off_dependencies"].split("|")
+            for items in body:
+                items = items.split(",")
+                items = [item.strip() for item in items]
+                tmp_body.append(items)
+                if tmp_body == [['']]: # When a node does not have any dependencies
+                    tmp_body = []
+
+            self.off_deps[node] = tmp_body
+        return self.off_deps
+
+    def get_run_on_dep(self):
+        deps = {}
+        deps = self.get_run_dep()
+        deps.update( self.get_on_dep() )
+        return deps
+
 
     def main(self, argv):
         self.args = argv
@@ -226,6 +276,9 @@ class get_dependency:
         print "services RUN_DEP:  " 
         for item in get_dependency().get_serv_run_dep().items():
             print item
+        print "NEW RUN DEPENDENCIES:"
+        for item in get_dependency().get_run_dep().items():
+            print item
 
         print "physical OFF_DEP:  " 
         for item in get_dependency().get_phys_off_dep().items():
@@ -234,6 +287,18 @@ class get_dependency:
         print "services OFF_DEP:  " 
         for item in get_dependency().get_serv_off_dep().items():
             print item
+        print "NEW ON DEPENDENCIES:"
+        for item in get_dependency().get_on_dep().items():
+            print item
+        print "NEW OFF DEPENDENCIES:"
+        for item in get_dependency().get_off_dep().items():
+            print item
+
+        print "NEW RUN ON DEPENDENCIES:"
+        for item in get_dependency().get_run_on_dep().items():
+            print item
+            
+    
         return
 
     
