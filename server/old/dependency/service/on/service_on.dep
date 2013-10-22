@@ -1,0 +1,56 @@
+#service: data1
+#depends: guppyfs1, guppyfs2
+
+#VMs
+service:	fs1
+depends:	localhost, Manage
+service:	fs2
+depends:	localhost, Manage
+service:	fs3
+depends:	localhost, Manage
+service:	fs4
+depends:	localhost, Manage
+#service:	fs5
+#depends:	localhost, Manage
+
+service:	worker11
+depends:	fs1 
+service:	worker12
+depends:	fs1
+service:	worker21
+depends:	fs2
+service:	worker22
+depends:	fs2
+service:	worker31
+depends:	fs3
+service:	worker32
+depends:	fs3
+service:	worker41
+depends:	fs4
+service:	worker42
+depends:	fs4
+#service:	worker51
+#depends:	fs5
+#service:	worker52
+#depends:	fs5
+
+service:	Manage
+depends:	localhost
+
+service:	RAID1
+depends:	Manage
+service:	RAID2
+depends:	Manage
+service:	RAID3
+depends:	Manage
+service:	RAID4
+depends:	Manage
+#service:	RAID5
+#depends:	Manage
+
+service:	SW0
+depends:	Manage
+service:	SW1
+depends:	Manage
+service:	SW2
+depends:	Manage

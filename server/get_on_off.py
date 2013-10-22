@@ -89,9 +89,7 @@ class get_on_off:
         print ":::::::::::::::::::::::::::::::::::"
 
         tmp_dep_run_on     = get_dependency.get_dependency().get_run_on_dep().items()
-
         tmp_dep_run        = get_dependency.get_dependency().get_run_dep().items()
-
         tmp_dep_off        = get_dependency.get_dependency().get_off_dep().items()
 
 

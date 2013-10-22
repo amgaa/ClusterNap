@@ -1,0 +1,40 @@
+# Switch dependencies
+
+node:		SW11
+depends:	SW01
+node:		SW21
+depends:	SW01
+node:		SW31
+depends:	SW01
+node:		SW41
+depends:	SW01
+node:		SW51
+depends:	SW01
+node:		SW61
+depends:	SW01
+node:		SW71
+depends:	SW01
+node:		SW81
+depends:	SW01
+node:		SW91
+depends:	SW01
+
+node:		SW12
+depends:	SW02
+node:		SW22
+depends:	SW02
+node:		SW32
+depends:	SW02
+node:		SW42
+depends:	SW02
+node:		SW52
+depends:	SW02
+node:		SW62
+depends:	SW02
+node:		SW72
+depends:	SW02
+node:		SW82
+depends:	SW02
+node:		SW92
+depends:	SW02
+

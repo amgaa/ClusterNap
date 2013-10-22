@@ -1039,3 +1039,207 @@ error: Requested operation is not valid: domain is not running
 error: Failed to destroy domain Manage
 error: Requested operation is not valid: domain is not running
 
+Domain worker11 started
+
+error: Domain is already active
+
+Domain Manage started
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: failed to get domain 'worker'
+error: Domain not found: no domain with matching name 'worker'
+
+error: Domain is already active
+
+Domain fs2 started
+
+error: Domain is already active
+
+Domain RAID2 started
+
+error: Domain is already active
+
+Domain worker22 started
+
+error: Domain is already active
+
+Domain Manage destroyed
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+Domain Manage started
+
+error: Domain is already active
+
+Domain worker22 destroyed
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+Domain RAID2 destroyed
+
+error: Failed to destroy domain RAID2
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain RAID2
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain RAID2
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain RAID2
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+Domain fs2 destroyed
+
+error: Failed to destroy domain fs2
+error: Requested operation is not valid: domain is not running
+
+Domain Manage destroyed
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+Domain Manage started
+
+error: Domain is already active
+
+Domain fs2 started
+
+error: Domain is already active
+
+Domain RAID2 started
+
+error: Domain is already active
+
+Domain worker22 started
+
+error: Domain is already active
+
+Domain Manage destroyed
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+Domain Manage started
+
+error: Domain is already active
+
+Domain worker22 destroyed
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+error: Domain is already active
+
+error: Failed to destroy domain worker22
+error: Requested operation is not valid: domain is not running
+
+Domain fs2 destroyed
+
+error: Failed to destroy domain fs2
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain fs2
+error: Requested operation is not valid: domain is not running
+
+Domain RAID2 destroyed
+
+error: Failed to destroy domain RAID2
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain RAID2
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain RAID2
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain RAID2
+error: Requested operation is not valid: domain is not running
+
+Domain Manage destroyed
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
