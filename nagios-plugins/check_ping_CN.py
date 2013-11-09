@@ -22,7 +22,7 @@ for i in range(0, len(args)):
         hostaddress = args[i+1]
 
 host = ""
-host = socket.gethostbyaddr(hostaddress)[0]
+host = socket.gethostbyaddr(hostaddress)[1][0]
 
 # ret = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 ret = subprocess.Popen(cmd, shell=True)
