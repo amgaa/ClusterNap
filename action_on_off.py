@@ -34,30 +34,15 @@ class action_on_off:
         print "NODES TO OFF:"
         print self.NODES_TO_OFF 
         
-        self.STATES = dict(get_state.get_state().main())
-
-        self.DEP_RUN = get_dependency.get_dependency().get_run_dep()
-#        self.DEP_RUN = get_dependency.get_dependency().get_phys_run_dep()
-#        self.DEP_RUN.update(get_dependency.get_dependency().get_serv_run_dep())
-
+        self.STATES     = dict(get_state.get_state().main())
+        self.DEP_RUN    = get_dependency.get_dependency().get_run_dep()
         self.DEP_RUN_ON = get_dependency.get_dependency().get_run_on_dep()
-#        self.DEP_RUN_ON = get_dependency.get_dependency().get_phys_run_on_dep()
-#        self.DEP_RUN_ON.update(get_dependency.get_dependency().get_serv_run_on_dep())
-
         self.DEP_OFF    = get_dependency.get_dependency().get_off_dep()
-#        self.DEP_OFF    = get_dependency.get_dependency().get_phys_off_dep()
-#        self.DEP_OFF.update(get_dependency.get_dependency().get_serv_off_dep())  
         
         # ON and OFF scripts: 
         # On what "host", which "command" should be executed, "who" should run that script 
-        self.ON_SCRIPTS = get_conf.get_conf().get_on_command()
-#        self.ON_SCRIPTS = get_config.get_config().get_phys_on()
-#        self.ON_SCRIPTS.update( get_config.get_config().get_serv_on() )
-
-        self.OFF_SCRIPTS = get_conf.get_conf().get_off_command()
-#        self.OFF_SCRIPTS = get_config.get_config().get_phys_off()
-#        self.OFF_SCRIPTS.update( get_config.get_config().get_serv_off() )
-
+        self.ON_COMMANDS     = get_conf.get_conf().get_on_command()
+        self.OFF_COMMANDS    = get_conf.get_conf().get_off_command()
         self.COMMAND_OUT_LOG = os.path.dirname(os.path.abspath(__file__)) + "/logs/command_out.log"
 
         # Leave only OFF nodes in  self.NODES_TO_ON. 
@@ -125,13 +110,13 @@ class action_on_off:
                 continue
 
             # In case no script is defined
-            if not self.ON_SCRIPTS.has_key(node):
+            if not self.ON_COMMANDS.has_key(node):
                 print "node " + node + " has no script to make it ON in config/scripts/{physical, service}/on/ folder. Please define it there"
                 continue
 
             if self.on_able(node):
                 flag = 0
-                for host in self.ON_SCRIPTS[node]: # When there are multiple hosts from which we can execute on/off script , we need to select one. In out case, just choose first host that is ON
+                for host in self.ON_COMMANDS[node]: # When there are multiple hosts from which we can execute on/off script , we need to select one. In out case, just choose first host that is ON
                     if self.STATES.has_key(host['host']) and self.STATES[host['host']] == 1:
                         self.exec_on_host(host['host'], \
                                               host['command'],\
@@ -155,13 +140,13 @@ class action_on_off:
                 continue
 
             # In case no script is defined
-            if not self.OFF_SCRIPTS.has_key(node):
+            if not self.OFF_COMMANDS.has_key(node):
                 print "node " + node + " has no script to make it OFF in config/scripts/{physical, service}/on/ folder. Please define it there"
                 continue
 
             if self.off_able(node):
                 flag = 0
-                for host in self.OFF_SCRIPTS[node]: # When there are multiple hosts from which we can execute on/off script , we need to select one. In out case, just choose first host that is ON
+                for host in self.OFF_COMMANDS[node]: # When there are multiple hosts from which we can execute on/off script , we need to select one. In out case, just choose first host that is ON
                     if self.STATES.has_key(host['host']) and self.STATES[host['host']] == 1:
                         self.exec_on_host(host['host'],\
                                               host['command'],\
