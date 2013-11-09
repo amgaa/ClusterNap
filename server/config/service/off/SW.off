@@ -1,8 +1,0 @@
-# Switches
-
-Name: SW0
-Host/user/path: localhost, amgaa, virsh destroy SW0
-Name: SW1
-Host/user/path: localhost, amgaa, virsh destroy SW1
-Name: SW2
-Host/user/path: localhost, amgaa, virsh destroy SW2
