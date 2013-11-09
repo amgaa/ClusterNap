@@ -1243,3 +1243,62 @@ error: Requested operation is not valid: domain is not running
 error: Failed to destroy domain Manage
 error: Requested operation is not valid: domain is not running
 
+Domain fs1 started
+
+error: Domain is already active
+
+error: failed to get domain 'worker11'
+error: Domain not found: no domain with matching name 'worker11'
+
+error: failed to get domain 'worker'
+error: Domain not found: no domain with matching name 'worker'
+
+error: failed to get domain 'worker42'
+error: Domain not found: no domain with matching name 'worker42'
+
+error: failed to get domain 'worker11'
+error: Domain not found: no domain with matching name 'worker11'
+
+error: failed to get domain 'worker'
+error: Domain not found: no domain with matching name 'worker'
+
+error: failed to get domain 'worker42'
+error: Domain not found: no domain with matching name 'worker42'
+
+error: failed to get domain 'fs4'
+error: Domain not found: no domain with matching name 'fs4'
+
+Domain Manage destroyed
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+Domain fs1 destroyed
+
+error: Failed to destroy domain fs1
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+error: Failed to destroy domain Manage
+error: Requested operation is not valid: domain is not running
+
+Domain fs1 started
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+
+error: Domain is already active
+

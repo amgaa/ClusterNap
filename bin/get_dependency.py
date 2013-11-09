@@ -17,7 +17,7 @@ class get_dependency:
 
     def __init__(self):
         self.CONFIG = {}
-        self.CONFIG = get_conf.get_conf().get_conf()
+        self.CONFIG = get_conf.get_conf().CONFIG
 
         self.phys_nodes      = {}  # list() # Physical nodes and their children
         self.serv_nodes      = {}  # list() # Service nodes and their children

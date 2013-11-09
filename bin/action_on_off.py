@@ -43,7 +43,7 @@ class action_on_off:
         # On what "host", which "command" should be executed, "who" should run that script 
         self.ON_COMMANDS     = get_conf.get_conf().get_on_command()
         self.OFF_COMMANDS    = get_conf.get_conf().get_off_command()
-        self.COMMAND_OUT_LOG = os.path.dirname(os.path.abspath(__file__)) + "/logs/command_out.log"
+        self.COMMAND_OUT_LOG = os.path.dirname(os.path.abspath(__file__)) + "/../logs/command_out.log"
 
         # Leave only OFF nodes in  self.NODES_TO_ON. 
         # Here we also leave Unknown state nodes untouched.

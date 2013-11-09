@@ -12,27 +12,21 @@ import time
 class get_conf:
 
     def __init__(self):
-        self.CONF_DIR        = os.path.dirname(os.path.abspath(__file__)) + "/../config/"
-	self.NODE_CONF_DIR   = self.CONF_DIR + "nodes/" 
-	self.NODE_CONF_FILES = [f for f in os.listdir(self.NODE_CONF_DIR) if f.endswith('.conf')]
-        self.COMM_CONF_DIR   = self.CONF_DIR + "/commands/"   
-        self.COMM_CONF_FILES = os.listdir(self.COMM_CONF_DIR) 
-
-        # Gets command informations from respective COMM_CONF_FILES
-        self.COMMANDS = {} # Dictionary of commands defined in COMM_CONF_FOLDER
-        for comm in self.COMM_CONF_FILES:
-            f = open(self.COMM_CONF_DIR + comm)
-            self.COMMANDS[comm] = f.readline().split('\n')[0]
-
+        self.CONF_DIR           = os.path.dirname(os.path.abspath(__file__)) + "/../config/nodes/"
+        self.NODE_CONF_FILE         = self.CONF_DIR + "nodes.conf"
+	self.NODE_CONF_FILES = [f for f in os.listdir(self.CONF_DIR) if f.endswith('.conf')]
+	print "FILES: "
+	print self.NODE_CONF_FILES
         self.CONFIG = {}
 	for conf_file in self.NODE_CONF_FILES:
-		conf_file = self.NODE_CONF_DIR + conf_file
+		conf_file = self.CONF_DIR + conf_file
 		self.CONFIG.update(self.get_conf(conf_file))
-
+#        self.CONFIG = self.get_conf()
         self.ON_COMMANDS = {}
         self.ON_COMMANDS = self.get_on_command()
         self.OFF_COMMANDS = {}
         self.OFF_COMMANDS = self.get_off_command()
+
 
 
     # Returns  hash table of:
@@ -40,12 +34,10 @@ class get_conf:
     def get_on_command(self):
         on_commands = {} 
         tmp_command = {}
-        tmp_COMM = ""
-        tmp_ARGS = ""
-
+        
         for node in self.CONFIG.keys():
             tmp_command = {}
-
+            
             # Check if on_command is defined 
             if not self.CONFIG[node].has_key("on_command") or\
                     self.CONFIG[node]["on_command"].strip() == "":
@@ -64,9 +56,8 @@ class get_conf:
 
                 tmp_command["host"]    = cmd[0].strip()
                 tmp_command["user"]    = cmd[1].strip()
-                tmp_COMM               = cmd[2].split("!")[0].strip()
-                tmp_ARGS               = cmd[2].strip().split("!")[1:]
-                tmp_command["command"] = self.generate_command(tmp_COMM, tmp_ARGS)
+                tmp_command["command"] = cmd[2].strip()	#Command name and arguments splitted by "!"
+#                tmp_command["command"] = cmd[2].strip()	#Command name and arguments splitted by "!"
             
             if on_commands.has_key(node):
                 on_commands[node].append(tmp_command)
@@ -103,9 +94,7 @@ class get_conf:
 
                 tmp_command["host"]    = cmd[0].strip()
                 tmp_command["user"]    = cmd[1].strip()
-                tmp_COMM               = cmd[2].split("!")[0].strip()
-                tmp_ARGS               = cmd[2].strip().split("!")[1:]
-                tmp_command["command"] = self.generate_command(tmp_COMM, tmp_ARGS)
+                tmp_command["command"] = cmd[2].strip()
             
             if off_commands.has_key(node):
                 off_commands[node].append(tmp_command)
@@ -114,41 +103,6 @@ class get_conf:
                 off_commands[node].append(tmp_command)
             
         return off_commands
-
-
-    # Gets real commands from given COMM and ARGS
-    # Example: 
-    #           COMM = ssh $ARG1@$ARG2 $ARG3
-    #           ARGS = ['root', 'localhost', 'shutdown -h now'] 
-    # then this function returns a string which looks like
-    #           ssh root@localhost shutdown -t now
-    #    
-    def generate_command(self, comm_name, arglist):
-        # If command is not defined
-        if not self.COMMANDS.has_key(comm_name):
-            print "Error: Command " + comm_name + " is not defined in " + self.COMM_CONF_DIR + ". Please define it there"
-            exit(1)
-        # If number of arguments does not match
-#        if self.COMMANDS[comm_name].count("$") != len(arglist):
-#            print "Error: Number of arguments for command \"" + comm_name + "\" does not match."
-#            print "Argument list is: "
-#            print arglisti
-#            print "Number of arguments for command " + comm_name + " is:"
-#            print self.COMMANDS[comm_name].count("$ARG")
-#            exit(1)
-
-        command = self.COMMANDS[comm_name]
-
-        for i in range(0, len(arglist)):
-            command = command.replace( "$ARG" + str(i+1) , arglist[i].strip() )
-
-        # Check some errors
-        if "$ARG" in command:
-            print "Command definition error: Arguments defined in " +  self.NODE_CONF_DIR + " does not match for command " + comm_name
-
-            exit(1)
-
-        return command
             
 
     # Parses config file and returns hash table of config
@@ -193,6 +147,7 @@ class get_conf:
         
     def main(self):
         
+#        print self.get_conf()
 	print self.CONFIG
         print "ON COMMANDS"
         print self.get_on_command()

@@ -17,7 +17,7 @@ class update_xdot:
     def __init__(self):
 	self.XDOT_FILE  = os.path.dirname(os.path.abspath(__file__)) + "/../graphs/CN.xdot"       
         self.CONFIG = {}
-        self.CONFIG = get_conf.get_conf()
+        self.CONFIG = get_conf.CONFIG
         self.REQUEST_DIR             = os.path.dirname(os.path.abspath(__file__))
         self.REQUEST_DIR            += "/../requested/"
         self.REQUEST_DIR             = self.REQUEST_DIR + "service/"
