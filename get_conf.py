@@ -13,7 +13,7 @@ class get_conf:
 
     def __init__(self):
         self.CONFDIR           = os.path.dirname(os.path.abspath(__file__))
-        self.CONF_FILE         = self.CONFDIR + "/config/proto.conf"
+        self.CONF_FILE         = self.CONFDIR + "/config/nodes/nodes.conf"
         self.CONFIG = {}
         self.CONFIG = self.get_conf()
         self.ON_COMMANDS = {}
