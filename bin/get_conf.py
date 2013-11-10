@@ -17,6 +17,7 @@ class get_conf:
 	self.NODE_CONF_FILES = [f for f in os.listdir(self.NODE_CONF_DIR) if f.endswith('.conf')]
         self.COMM_CONF_DIR   = self.CONF_DIR + "/commands/"   
         self.COMM_CONF_FILES = os.listdir(self.COMM_CONF_DIR) 
+        self.STATE_DIR       = os.path.dirname(os.path.abspath(__file__)) + "/../state/nodes/"
 
         # Gets command informations from respective COMM_CONF_FILES
         self.COMMANDS = {} # Dictionary of commands defined in COMM_CONF_FOLDER
@@ -190,9 +191,27 @@ class get_conf:
 
         return nodes
 
+    # Create power state files in ClusterNap/states/  folder.
+    # Remove file which are not defined in config. 
+    def create_state_files(self):
+
+        # Remove state files whose node is not define in config 
+        old_state_files = os.listdir(self.STATE_DIR)
+        for state_file in old_state_files:
+            if state_file not in self.CONFIG.keys():
+                print "Removing state file, because its node is not defined: " + state_file 
+                os.unlink(self.STATE_DIR + state_file)
+
+        # Create state files whose node is defined in config, but state file is not created yet. 
+        for node in self.CONFIG.keys():
+            if not os.path.isfile(self.STATE_DIR + node):
+                print "Creating following state file: " + node 
+                f = open(self.STATE_DIR + node, 'w')
+                f.write("-1\n")
         
     def main(self):
-        
+
+        self.create_state_files()
 	print self.CONFIG
         print "ON COMMANDS"
         print self.get_on_command()
@@ -202,3 +221,4 @@ class get_conf:
 
 if __name__ == "__main__":
     sys.exit(get_conf().main())
+

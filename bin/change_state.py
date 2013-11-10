@@ -45,7 +45,7 @@ class change_state:
     def change_physical(self, name, to_state):
         f = open( self.STATE_DIR_PHYS + name, "w")
         if to_state == "ON":
-            f.write("1\n")
+            f.write("0\n")
         elif to_state == "OFF":
             f.write("0\n")
         else:
