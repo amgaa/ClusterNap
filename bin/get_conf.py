@@ -208,6 +208,8 @@ class get_conf:
                 print "Creating following state file: " + node 
                 f = open(self.STATE_DIR + node, 'w')
                 f.write("-1\n")
+                f.close()
+                os.chmod(self.STATE_DIR + node, 666)
         
     def main(self):
 
