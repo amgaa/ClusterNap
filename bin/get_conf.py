@@ -209,7 +209,7 @@ class get_conf:
                 f = open(self.STATE_DIR + node, 'w')
                 f.write("-1\n")
                 f.close()
-                os.chmod(self.STATE_DIR + node, 666)
+                os.chmod(self.STATE_DIR + node, 0666)
         
     def main(self):
 
