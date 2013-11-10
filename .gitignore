@@ -3,9 +3,9 @@
 *.dot
 *.xdot
 *.eps
-state/nodes/*
-config/nodes/*
-graphs/*
+state/nodes/
+config/nodes/
+graphs/
 bin/gen_img.sh
-logs/*
-requested/nodes/*
+logs/
+requested/nodes/
