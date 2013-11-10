@@ -7,6 +7,6 @@ OUT_IMG=${PWD}/../graphs/CN.eps
 OUT_WEB_IMG=/var/www/digraph/CN.png
 
 #./gen_dot.py > /dev/null;
-./update_xdot.py
+${PWD}/update_xdot.py
 dot -Teps $XDOT_FILE -o $OUT_IMG;
 sudo dot -Tpng $XDOT_FILE -o $OUT_WEB_IMG;
