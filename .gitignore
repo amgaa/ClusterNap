@@ -1,4 +1,7 @@
 *.conf
 *.pyc
 state/nodes/*
+graphs/*
 bin/gen_img.sh
+logs/*
+requested/nodes/*
