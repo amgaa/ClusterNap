@@ -1,0 +1,122 @@
+#!/bin/bash
+
+#Simple Nagios plugin to check VCRVAX RAIDs through snmp.
+# Returns UP(0) status only when both operational and admin status are UP.
+# Returns CRITICAL(2) status only when bith operational and admin status are DOWN.
+# Otherwhise, returns UNKNOWN(3) status. 
+# 2013-11-08 by Amgaa
+
+# Get options
+while getopts ":H:C:" OPTION
+do
+	case $OPTION in
+		"C") 
+		COMMUNITY=$OPTARG 
+		;;
+		"H") 
+		IP=$OPTARG
+		;;
+	esac
+done
+
+# Make sure all necessary arguments were given; EXIT with an UNKNOWN status if not
+if [ -z "$COMMUNITY" ] || [ -z "$IP" ];then
+	echo "UNKNOWN: IP and/or Community string have not been set!\n"
+	echo "Usage: $0 -H IPaddress -C community_string"
+	exit 3
+else
+	# Determine health of most major components
+	MODEL=$(snmpwalk -v 1 -c $COMMUNITY $IP >/dev/null | tr -d "\"")
+
+	if [ $? -ne 0 ]; then
+		#Check  for server response - is SNMP even setup okay?
+		echo "WARNING: No SNMP response from $IP! Make sure host is up and SNMP is configured properly.\n"
+		exit 3
+	else
+
+		# Check OperStatus
+		# OPER_STATUSE:
+		# 1 : up(1)
+		# 2 : down(2)
+		# 3 : testing(3)
+		# 4 : unknown(4)
+		# 5 : dormant(5)
+		# 6 : notPresent(6)
+		# 7 : lowerLayerDown(7) 
+		#
+		OPER_STATUS=$(snmpget -c $COMMUNITY -v 2c $IP 1.3.6.1.2.1.2.2.1.8.1) # > /dev/null)
+		if [ $? -ne 0 ]; then
+			#Check  for server response - is SNMP even setup okay?
+			EXIT_STRING="WARNING: No SNMP response while checking OperationalStatus! Make sure SNMP is configured properly.\n"
+			EXIT_CODE=3
+		fi
+		echo "OPERSTATUS: $OPER_STATUS"
+
+		# Check AdminStatus
+		# ADMIN_STATUSES:
+		# 1 : up(1)
+		# 2 : down(2)
+		# 3 : testing(3)
+		ADMIN_STATUS=$(snmpget -c $COMMUNITY -v 2c $IP 1.3.6.1.2.1.2.2.1.7.1) # > /dev/null)
+		echo "ADMIN_STATUS: $ADMIN_STATUS"
+		if [ $? -ne 0 ]; then
+			#Check  for server response - is SNMP even setup okay?
+			EXIT_STRING="WARNING: No SNMP response while checking AdminStatus! Make sure SNMP is configured properly.\n"
+			EXIT_CODE=3
+		fi
+		# Only when both operStatus and adminStatus are Up, then return it as 
+		case "$OPER_STATUS" in
+			*"up(1)"*)
+				case "$ADMIN_STATUS" in
+					*"up(1)"*)		
+						echo "OK!  OperStatus is $OPER_STATUS.  AdminStatus is $ADMIN_STATUS."
+						exit 0
+						;;
+					*"down(2)"*)
+						echo "UNKNOWN!  OperStatus is $OPER_STATUS.  AdminStatus is $ADMIN_STATUS."
+						exit 3		
+						;;
+					*)		
+						echo "UNKNOWN!  OperStatus is $OPER_STATUS.  AdminStatus is $ADMIN_STATUS."
+						exit 3		
+						;;
+				esac		
+
+				;;
+			*"down(2)"*)
+				case "$ADMIN_STATUS" in
+					*"up(1)"*)		
+						echo "UNKNOWN!  OperStatus is $OPER_STATUS.  AdminStatus is $ADMIN_STATUS."
+						exit 3		
+						;;
+					*"down(2)"*)		
+						echo "DOWN!  OperStatus is $OPER_STATUS.  AdminStatus is $ADMIN_STATUS."
+						exit 2		
+						;;
+					*)		
+						echo "UNKNOWN!  OperStatus is $OPER_STATUS.  AdminStatus is $ADMIN_STATUS."
+						exit 3		
+						;;
+				esac		
+				;;
+			# Else. Set it as unknown
+			*)
+				case "$ADMIN_STATUS" in
+					*"up(1)"*)		
+						echo "UNKNOWN!  OperStatus is $OPER_STATUS.  AdminStatus is $ADMIN_STATUS."
+						exit 3		
+						;;
+					*"down(2)"*)		
+						echo "UNKNOWN!  OperStatus is $OPER_STATUS.  AdminStatus is $ADMIN_STATUS."
+						exit 3
+						;;
+					*)	
+						echo "UNKNOWN!  OperStatus is $OPER_STATUS.  AdminStatus is $ADMIN_STATUS."
+						exit 3	
+						;;
+				esac		
+				;;
+		esac
+	fi
+fi
+
