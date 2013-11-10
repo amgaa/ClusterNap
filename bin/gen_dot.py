@@ -10,8 +10,7 @@ import get_on_off
 class gen_dot:
     def __init__ (self):
         self.REQUEST_DIR             = os.path.dirname(os.path.abspath(__file__))
-        self.REQUEST_DIR            += "/../requested/"
-        self.REQUEST_DIR             = self.REQUEST_DIR + "service/"
+        self.REQUEST_DIR            += "/../requested/nodes/"
         self.NODES_REQUESTED         = os.listdir(self.REQUEST_DIR)
 	self.OUT_DIR		     = os.path.dirname(os.path.abspath(__file__)) + "/../graphs/"
 	self.OUT_FILE		     = "CN.dot"
@@ -46,7 +45,6 @@ class gen_dot:
 
         print "REQUESTED:" 
         print self.NODES_REQUESTED
-#        print self.NODES_SERV_REQUESTED
         print "\n"
 
         print "STATES:"
@@ -82,10 +80,6 @@ class gen_dot:
         for node in self.NODES:
             f.write( "\"" + node + "\" [" )
             
-            # If physical node, make it rectange
-#            if node in self.PHYS_NODES:
-#                f.write("shape=box,\t")
-
             f.write("style=\"filled\"\t color=" )
             
             if node in self.NODES_REQUESTED:

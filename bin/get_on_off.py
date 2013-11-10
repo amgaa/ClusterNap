@@ -18,16 +18,16 @@ import os, sys, re
 import itertools
 import get_dependency
 import get_state
+import get_conf
+
 
 class get_on_off:
     def __init__ (self):
         self.REQUEST_DIR             = os.path.dirname(os.path.abspath(__file__))
-        self.REQUEST_DIR            += "/../requested/"
-        self.PHYS_REQUEST_DIR        = self.REQUEST_DIR + "physical/"
-        self.SERV_REQUEST_DIR        = self.REQUEST_DIR + "service/"
+        self.REQUEST_DIR            += "/../requested/nodes/"
 
-        self.NODES_REQUESTED         = os.listdir(self.SERV_REQUEST_DIR)
-
+        self.NODES_REQUESTED         = os.listdir(self.REQUEST_DIR)
+	self.CONFIG		     = get_conf.get_conf().CONFIG
 
         self.STATES                  = {}
         self.STATES                  = get_state.get_state().main()
@@ -41,6 +41,11 @@ class get_on_off:
         self.DEP_OFF         = list()
         
         self.ON_NODES        = list()
+
+	# Check if non-defined node is requested
+	for node in self.NODES_REQUESTED:
+            if node not in self.CONFIG.keys():
+                print "Error: Non-defined node requested: " + node
 
         # Get the names of ON nodes
         for node in self.STATES.keys():
@@ -152,7 +157,6 @@ class get_on_off:
 	finals_to_off.sort()	
 
         print ":::::::::::::::Requeste nodes:::::::::::::::::"
-#        for node in self.NODES_PHYS_REQUESTED + self.NODES_SERV_REQUESTED:
         for node in self.NODES_REQUESTED:
             print node
         print ":::::::::::::End of requested nodes::::::::::::\n"

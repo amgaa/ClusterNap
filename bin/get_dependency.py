@@ -18,35 +18,10 @@ class get_dependency:
     def __init__(self):
         self.CONFIG = {}
         self.CONFIG = get_conf.get_conf().CONFIG
-
-        self.phys_nodes      = {}  # list() # Physical nodes and their children
-        self.serv_nodes      = {}  # list() # Service nodes and their children
-        self.right_nodes     = list() # Nodes which we consider when controlling cluster power state
-        self.TYPE            = {}
         self.run_deps        = {}
         self.on_deps         = {}
         self.off_deps        = {}
 
-    # Checks whether a node is "physical" or "service"
-    # Returns dictionary of all nodes written in config dir and their types
-    def get_type(self):
-        types     = {}
-        phys_nodes = list()
-        serv_nodes = list()
-        phys_nodes = self.get_phys_run_on_dep().keys()
-        phys_nodes += self.get_phys_off_dep().keys()
-
-        serv_nodes = self.get_serv_run_on_dep().keys()
-        serv_nodes += self.get_serv_off_dep().keys()
-
-        for phys_node in phys_nodes:
-            types[phys_node] = 'physical'
-        for serv_node in serv_nodes:
-            types[serv_node] = 'service'
-
-        return types
-    
-	        
     def get_run_dep(self):
         for node in self.CONFIG.keys():
             tmp_body = list()

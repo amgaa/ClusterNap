@@ -102,7 +102,7 @@ class action_on_off:
     def try_on(self, nodes_to_on):
         for node in nodes_to_on:
             if not self.STATES.has_key(node): # Already ON
-                print "Node " + node + "'s state is not define in folder states/{physical. service}/"
+                print "Node " + node + "'s state is not define in folder states/nodes/"
                 print "Please define it. (Create a file named \"" + node + "\" in there.)"
                 continue
 
@@ -111,7 +111,7 @@ class action_on_off:
 
             # In case no script is defined
             if not self.ON_COMMANDS.has_key(node):
-                print "node " + node + " has no script to make it ON in config/scripts/{physical, service}/on/ folder. Please define it there"
+                print "node " + node + " has no COMMAND defined to make it ON in config/nodes/ folder. Please define it there"
                 continue
 
             if self.on_able(node):
@@ -141,7 +141,7 @@ class action_on_off:
 
             # In case no script is defined
             if not self.OFF_COMMANDS.has_key(node):
-                print "node " + node + " has no script to make it OFF in config/scripts/{physical, service}/on/ folder. Please define it there"
+                print "node " + node + " has no COMMAND defined to make it OFF in config/nodes/ folder. Please define it there"
                 continue
 
             if self.off_able(node):
