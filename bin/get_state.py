@@ -13,14 +13,13 @@ import os, sys, re
 class get_state:
     def __init__ (self):
         self.STATE_DIR             = os.path.dirname(os.path.abspath(__file__))
-        self.STATE_DIR            += "/../state/"
-        self.SERV_STATE_DIR        = self.STATE_DIR + "nodes/"
-        self.NODES_SERV_STATE_DIR  = os.listdir(self.SERV_STATE_DIR)
+        self.STATE_DIR            += "/../state/nodes/"
+        self.NODES_IN_STATE_DIR  = os.listdir(self.STATE_DIR)
         self.STATES                = {}
 
     #Returns a dictionary of  node:state pairs
     def all_node_states(self):
-        for node in self.NODES_SERV_STATE_DIR:
+        for node in self.NODES_IN_STATE_DIR:
             self.STATES[node] = self.node_state(node)
 
     # Returns: 
@@ -29,11 +28,11 @@ class get_state:
     # -1 if unknown, 
     def node_state(self, name):
 
-        if name not in self.NODES_SERV_STATE_DIR:
-            print "Node name \"" + name + "\" is not in the folder \"" + self.SERV_STATE_DIR + "\""
+        if name not in self.NODES_IN_STATE_DIR:
+            print "Node name \"" + name + "\" is not in the folder \"" + self.STATE_DIR + "\""
             return -1
 
-        f = open( self.SERV_STATE_DIR + name, "r" )
+        f = open( self.STATE_DIR + name, "r" )
         state = f.readline()
         state = state.strip()
 
