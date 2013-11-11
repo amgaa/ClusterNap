@@ -4,6 +4,7 @@
 *.xdot
 *.eps
 state/nodes/
+!state/nodes/.gitignore
 config/nodes/*
 !config/nodes/example_*
 config/commands/*
@@ -12,3 +13,4 @@ graphs/
 bin/gen_img.sh
 logs/
 requested/nodes/
+!requested/nodes/.gitignore
