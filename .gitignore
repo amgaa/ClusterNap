@@ -5,7 +5,7 @@
 *.eps
 state/nodes/
 config/nodes/
-config/commands/
+config/commands/*
 graphs/
 bin/gen_img.sh
 logs/
