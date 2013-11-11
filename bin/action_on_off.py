@@ -182,7 +182,6 @@ class action_on_off:
 
     # Checks if an OFF node is ON-able (necessary childs are ON)
     def on_able(self, node):
-
         if not self.DEP_RUN_ON.has_key(node):
 #            print "No RUN-ON-dependency found for node " + node
 #            return 0

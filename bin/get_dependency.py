@@ -68,13 +68,22 @@ class get_dependency:
         on_deps = self.get_on_dep()
         deps = {}
         deps = self.get_run_dep()
-        
-        for node in deps.keys():
 
+
+        for node in deps.keys():
+      	  
+
+		    
             if on_deps.has_key(node):
 
+                if deps[node] == []:  #Otherwise, it returns wrong value. Does not do cartesian product when it is empty. 
+		    deps[node] = on_deps[node]
+		
+
+
                 # Get the cartesian product of two dependencies
-                product = [ x+y for x in deps[node] for y in on_deps[node]]
+#                product = [ x+y for x in deps[node] for y in on_deps[node]]
+                product = [ x+y for x in on_deps[node] for y in deps[node]]
 
                 # Remove some items which occur more than once in the same clause
                 tmp_product = []
