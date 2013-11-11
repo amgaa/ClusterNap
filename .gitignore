@@ -6,6 +6,7 @@
 state/nodes/
 config/nodes/
 config/commands/*
+!config/commands/example_*
 graphs/
 bin/gen_img.sh
 logs/
