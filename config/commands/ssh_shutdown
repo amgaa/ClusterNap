@@ -1,1 +1,0 @@
-ssh $ARG1 shutdown -h now

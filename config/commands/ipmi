@@ -1,1 +1,0 @@
-ipmitool -I lanplus -H $ARG1 -P ipmi_pass2 -U root chassis power on
