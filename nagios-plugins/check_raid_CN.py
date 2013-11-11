@@ -34,9 +34,11 @@ if ret.returncode == 0 or ret.returncode == 1: # OK or WARNING
 elif ret.returncode == 2:                      # CRITICAL                                       
     val = "0"
 elif ret.returncode == 3:                      # UNKNOWN
-    val = "-1"
+#    val = "-1"
+    val = "0"     #UNKNOWN state just messes things up too much. 
 else:
-    val = "-1"
+#    val = "-1"
+    val = "0"	  #UNKNOWN state just messes things up too much.
 
 # Check if host is defined in argument and exists in ClusterNap configuration.
 # If so, put the corresponding value to the state config file in ClusterNap.
