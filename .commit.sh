@@ -1,7 +1,7 @@
 #! /bin/sh
 
 git pull
-#git add .
+git add .
 #git commit -m "from commiter. Edited files"
 #git push
 
