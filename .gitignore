@@ -4,7 +4,8 @@
 *.xdot
 *.eps
 state/nodes/
-config/nodes/
+config/nodes/*
+!config/nodes/example_*
 config/commands/*
 !config/commands/example_*
 graphs/
