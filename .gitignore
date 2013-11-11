@@ -14,3 +14,4 @@ bin/gen_img.sh
 logs/
 requested/nodes/
 !requested/nodes/.gitignore
+!requested/nodes/.README
