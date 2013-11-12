@@ -23,25 +23,25 @@ import get_conf
 
 class get_on_off:
     def __init__ (self):
-        self.REQUEST_DIR         = os.path.dirname(os.path.abspath(__file__))
-        self.REQUEST_DIR        += "/../requested/nodes/"
+        self.REQUEST_DIR             = os.path.dirname(os.path.abspath(__file__))
+        self.REQUEST_DIR            += "/../requested/nodes/"
 
-        self.NODES_REQUESTED     = os.listdir(self.REQUEST_DIR)
-	self.CONFIG	         = get_conf.get_conf().CONFIG
+        self.NODES_REQUESTED         = os.listdir(self.REQUEST_DIR)
+	self.CONFIG		     = get_conf.get_conf().CONFIG
 
-        self.STATES              = {}
-        self.STATES              = get_state.get_state().main()
+        self.STATES                  = {}
+        self.STATES                  = get_state.get_state().main()
         print self.STATES
 
         self.NODES_REQUESTED_ON  = list()
         self.NODES_REQUESTED_OFF = list()
-        self.ON_NODES            = list()
-        self.OFF_UNKNOWN_NODES   = list()
 
-        self.DEP_RUN_ON          = {}
-        self.DEP_RUN             = {}
-        self.DEP_OFF             = {}
+        self.DEP_RUN_ON          = list()
+        self.DEP_RUN             = list()
+        self.DEP_OFF             = list()
         
+        self.ON_NODES            = list()
+        self.OFF_UNKNOWN_NODES           = list()
         
 	# Check if non-defined node is requested
 	for node in self.NODES_REQUESTED:
@@ -64,14 +64,13 @@ class get_on_off:
                 if self.STATES[node] == 1:
                     self.NODES_REQUESTED_ON.append(node)
                 else:
-                    # Here we take OFF or UNKNOWN state as only OFF.
-                    # Later on, need to reconsider this. 
+                    # Here we take OFF or UNKNOWN state as only OFF. later need to reconsider this. 
                     self.NODES_REQUESTED_OFF.append(node)
 
         
-        self.DEP_RUN_ON = get_dependency.get_dependency().get_run_on_dep()
-        self.DEP_RUN    = get_dependency.get_dependency().get_run_dep()
-        self.DEP_OFF    = get_dependency.get_dependency().get_off_dep()
+        self.DEP_RUN_ON = get_dependency.get_dependency().get_run_on_dep().items()
+        self.DEP_RUN    = get_dependency.get_dependency().get_run_dep().items()
+        self.DEP_OFF    = get_dependency.get_dependency().get_off_dep().items()
 
 
     # Returns a pair of lists:
@@ -88,39 +87,57 @@ class get_on_off:
         tmp_list           = list()
         finals_to_on       = list()
 	finals_to_off	   = list()	
-        nodes_tmp_on       = list()
+        tmp_dep_run_on     = list()
+        tmp_dep_run        = list()
+        tmp_dep_off        = list()
         
+#        tmp_dep_run_on     = self.DEP_RUN_ON[:]
+#        tmp_dep_run        = self.DEP_RUN[:]
+
+        print "::::::::::::RUN ON DEP ::::::::::::"
+        print self.DEP_RUN_ON
+        print ":::::::::::::::::::::::::::::::::::"
+
+        tmp_dep_run_on     = get_dependency.get_dependency().get_run_on_dep().items()
+        tmp_dep_run        = get_dependency.get_dependency().get_run_dep().items()
+        tmp_dep_run2       = get_dependency.get_dependency().get_run_dep().items()
+        tmp_dep_off        = get_dependency.get_dependency().get_off_dep().items()
+
 
         # Get neccessary nodes to make requested ON nodes 
         necc_run_on  = self.necc_run_on(    necc_run_on, \
                                     self.DEP_RUN_ON, \
                                     self.DEP_RUN, \
                                     self.NODES_REQUESTED_OFF)
-        necc_run_on.sort()
 
 
         # Get neccessary nodes to keep requested ON nodes 
         necc_run     = self.necc(   necc_run, \
                                     self.DEP_RUN, \
                                     self.NODES_REQUESTED_ON)
-        necc_run.sort()
 
+
+        necc_run_on.sort()
+        necc_run.sort()
 
         # Get nodes that are unnecessarily being ON
         # We should turn-off these nodes
         for node in self.ON_NODES:
-            if node not in (necc_run_on + necc_run):
+            if node not in (necc_run_on + necc_run): #Here also should add nodes which should be ON for a while until its ON child(s) turns-off
                 nodes_to_off.append(node)
 
         # Get nodes that should be ON to turn off above unnecessary nodes
         nodes_to_on_to_off = self.necc(necc_off, self.DEP_OFF, nodes_to_off)
+
+        print "OFF DEPENDENCY copied 1"
+        print tmp_dep_off
+
         t_list = list()
 	for node in nodes_to_on_to_off:
-            childs = list()
-            if self.DEP_OFF.has_key(node):
-                childs = self.DEP_OFF[node]
-#            if childs != None:
-            if childs:
+            childs = self.get_childs(tmp_dep_off, node)
+ #           print "parent: " + node
+ #           print childs
+            if childs != None:
                 for child in childs:
                     for chi in child:
                         if chi in nodes_to_on_to_off and chi not in t_list:
@@ -131,7 +148,7 @@ class get_on_off:
         print nodes_to_on_to_off
         print ":::::::::::::::::::::::::::::::::::::::::::::\n"
         
-        # Nodes that should be ON
+        # Nodes that should be ON (finally)
         print "NECC_RUN_ON:"
         print necc_run_on
 
@@ -146,18 +163,16 @@ class get_on_off:
         t_list = list()
         childs = list()
         for node in self.ON_NODES:
-
-            if self.DEP_RUN.has_key(node):
-                childs = self.DEP_RUN[node]
+            childs = self.get_childs(tmp_dep_run2, node)
 
             if childs == []:
                 childs = [[]]
             childs = self.remove_nodes(childs, self.OFF_UNKNOWN_NODES)
             best_childs = self.best_childs(childs)
-
             for child in best_childs:
                 nodes_tmp_on.append(child)
 
+                
 
                 
 #        for node in (necc_run_on + necc_run + nodes_to_on_to_off ):
@@ -186,7 +201,8 @@ class get_on_off:
             print node
         print "::::::::::::::End of nodes to OFF::::::::::::::\n"
 
-
+        
+#        return finals_to_on, nodes_to_off #, self.STATES #, self.DEP_RUN_ON, self.DEP_OFF
         return finals_to_on, finals_to_off #, self.STATES #, self.DEP_RUN_ON, self.DEP_OFF
 
 
@@ -199,8 +215,7 @@ class get_on_off:
         necc    += requested
         
         for node in requested:
-            if dependency.has_key(node):
-                childs = dependency[node]
+            childs = self.get_childs(dependency, node)
             if childs: 
                 childs     = self.remove_nodes(childs, necc)
                 tmp_necc   = self.best_childs(childs)
@@ -217,8 +232,7 @@ class get_on_off:
         necc    += requested
         
         for node in requested:
-            if dependency.has_key(node):
-                childs = dependency[node]
+            childs = self.get_childs(dependency, node)
             if childs: 
                 childs     = self.remove_nodes(childs, necc)
                 tmp_necc   = self.best_childs(childs)
@@ -253,6 +267,15 @@ class get_on_off:
                 if node in clause:
                     clause.remove(node)
         return CNF
+
+        
+    # Gets childs from dependency lists
+    # This should be optimized by using hash table. 
+    def get_childs(self, dep_list, parent):
+        for dep in dep_list:
+            if parent == dep[0]:
+                return dep[1] # childs in CNForm
+
 
 if __name__ == "__main__":
     sys.exit(get_on_off().main())
