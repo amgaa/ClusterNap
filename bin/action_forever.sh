@@ -3,7 +3,7 @@
 # Runs action_on_off.py every $WHILE seconds
 
 ACTION=${PWD}/action_on_off.py
-WHILE=30
+WHILE=10
 
 while true
 do
