@@ -1,10 +1,7 @@
-#! /bin/sh
+#! /bin/bash
 
 git pull
 git add .
-#git commit -m "from commiter. Edited files"
-#git push
-
-git add -u .
-git commit -m "from commiter. Deleted files"
+git add -u
+git commit -m "From commiter"
 git push
