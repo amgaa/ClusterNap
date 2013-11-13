@@ -15,21 +15,21 @@ import get_on_off
 
 class update_xdot:
     def __init__(self):
-	self.XDOT_FILE  = os.path.dirname(os.path.abspath(__file__)) + "/../graphs/CN.xdot"       
-        self.CONFIG = {}
-        self.CONFIG = get_conf.get_conf().CONFIG
-        self.REQUEST_DIR             = os.path.dirname(os.path.abspath(__file__))
-        self.REQUEST_DIR            += "/../requested/nodes/"
-        self.NODES_REQUESTED    = os.listdir(self.REQUEST_DIR)
+	self.XDOT_FILE       = os.path.dirname(os.path.abspath(__file__)) + "/../graphs/CN.xdot"       
+        self.CONFIG          = {}
+        self.CONFIG          = get_conf.get_conf().CONFIG
+        self.REQUEST_DIR     = os.path.dirname(os.path.abspath(__file__))
+        self.REQUEST_DIR    += "/../requested/nodes/"
+        self.NODES_REQUESTED = os.listdir(self.REQUEST_DIR)
 
-        self.STATES                  = {}
-        self.STATES                  = get_state.get_state().main()
+        self.STATES          = {}
+        self.STATES          = get_state.get_state().main()
 
-        self.ON_DEP     = get_dependency.get_dependency().get_on_dep()
-        self.RUN_DEP    = get_dependency.get_dependency().get_run_dep()
-        self.OFF_DEP    = get_dependency.get_dependency().get_off_dep()
+        self.ON_DEP          = get_dependency.get_dependency().get_on_dep()
+        self.RUN_DEP         = get_dependency.get_dependency().get_run_dep()
+        self.OFF_DEP         = get_dependency.get_dependency().get_off_dep()
 
-        self.NODES      = list()
+        self.NODES           = list()
 
         for node in self.RUN_DEP.keys():
             if node not in self.NODES:
@@ -54,18 +54,19 @@ class update_xdot:
             
         for i in range(0,len(data)):
             line = data[i]
+            print "before: " + line 
+
             if line.split()[0].strip() in self.NODES\
                     and not "->" in line:
                 line = self.edit_line(line)
-
                 data[i] = line
-
+	    print "after: " + line 
         # Write to new xdot file
         with open( self.XDOT_FILE[:-5] + "_updated.xdot", 'w') as file:
             file.writelines( data )
+        file.close()
 
-
-    # Edits colors and fillcolors according to node's state
+    # Edits colors and fillcolors according to nodes' states
     def edit_line(self, line):
         node = line.split()[0].strip()
 
@@ -103,6 +104,7 @@ class update_xdot:
             r'(?<={}).*?(?={})'.format(re.escape(start_marker), re.escape(end_marker)),
             lambda m: m.group().strip().replace(' ', '_'),
             raw_string)
+
 
     def main(self):
         
