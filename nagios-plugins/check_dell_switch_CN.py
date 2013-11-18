@@ -5,7 +5,6 @@ import os
 import subprocess 
 import socket
 
-# clusternap_dir = "/home/amgaa/ClusterNap/server/state/physical/"   # <--- Actually it should be real directory. 
 clusternap_dir = "/home/amgalan/ClusterNap/state/nodes/"     # <--- For now just use it. 
 nodes          = os.listdir(clusternap_dir)
 plugin_dir     = "/usr/lib/nagios/plugins/"
