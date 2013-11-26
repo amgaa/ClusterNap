@@ -244,7 +244,7 @@ class get_conf:
                      and items[0].isdigit() \
                      and items[1].isdigit():    # can only be integer
                 for i in range(int(items[0]), int(items[1]) + 1 ):
-                    itemlist.append(str(i))
+                    itemlist.append(str(i).zfill(len(items[1])))
             else:
                 print "Error in config. Unknown config: " + exprs
                 print "Expression inside [] might be wrong: " + exprs
