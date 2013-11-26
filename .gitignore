@@ -3,6 +3,8 @@
 *.dot
 *.xdot
 *.eps
+#*#
+*~
 state/nodes/*
 !state/nodes/.README
 config/nodes/*
