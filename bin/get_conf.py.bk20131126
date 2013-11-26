@@ -179,26 +179,13 @@ class get_conf:
                 if not tmp_nodes.has_key("name"):
                     print "Node definition error. Please check your config file."
                     exit(1)
-                # Get multiple lines if defined by expessions like [A-B, C ..]
-                for i in range(0, len(tmp_nodes["name"])):
-                    tmp_node = {}
-                    for key in tmp_nodes:
-                        if len(tmp_nodes[key]) == 1: # Has expression or not!
-                            tmp_node[key] = tmp_nodes[key][0]
-                        elif len(tmp_nodes[key]) == len(tmp_nodes["name"]):
-                            tmp_node[key] = tmp_nodes[key][i]
-                        else:
-                            print "Configuration error!. Number of items inside [] does not match in " + key
-                            exit(1)
-                    nodes[tmp_node["name"]] = tmp_node
-#                nodes[tmp_nodes["name"]] = tmp_nodes
+                nodes[tmp_nodes["name"]] = tmp_nodes
                 tmp_nodes = {}
 #                print "END"
             else:                                # Body of definition
                 head, body = line.split(":")
                 head = head.strip()
                 body = body.strip()
-                body = self.get_lines(body)
                 tmp_nodes[head] = body
 #                print tmp_node
 
@@ -223,62 +210,6 @@ class get_conf:
                 f.write("-1\n")
                 f.close()
                 os.chmod(self.STATE_DIR + node, 0666)
-
-    # Gets items in config and returns their list
-    # Input ex: "120-123, 145, 147"
-    # return  : ["120", "121", "122", "123", "145", "147"]
-    def get_items(self, exprs):
-        if not exprs:
-            return
-        
-        itemlist = list()
-        itemstr = map( str.strip, exprs.split(","))
-
-        for items in itemstr:
-            items = map(str.strip, items.split("-"))
-
-            if len(items) == 1:
-                itemlist.append(items[0]) # Can be digit and string
-
-            elif         len(items) == 2    \
-                     and items[0].isdigit() \
-                     and items[1].isdigit():    # can only be integer
-                for i in range(int(items[0]), int(items[1]) + 1 ):
-                    itemlist.append(str(i))
-            else:
-                print "Error in config. Unknown config: " + exprs
-                print "Expression inside [] might be wrong: " + exprs
-                exit(1)
-                
-        return itemlist
-
-    # Gets item expressions from string.
-    # Item expressions are written inside brackets [expr1, expr2, ...]
-    # Each line of exprstr should only contain one pair of brackets "[ ... ]"
-    def get_expr(self, exprstr):
-        expr = re.search(r"\[(.+?)\]", exprstr)
-        if expr:
-            return expr.group(1)
-        return 
-
-    # Gets a line with expressions.
-    # Ex: "foo[100-101, 105]"
-    # Ret: ["foo100", "foo101", "foo105"]
-    def get_lines(self, line):
-        lines = list()
-        exprs = self.get_expr(line)
-
-        if not exprs:            #If no expression
-            lines.append(line)
-            return lines
-
-        items = self.get_items(exprs)
-        
-        for item in items:
-            tmpline = re.sub(r"\[(.+?)\]", item, line) # Replace
-            lines.append(tmpline)                      # and append
-
-        return lines
         
     def main(self):
 
@@ -288,11 +219,6 @@ class get_conf:
         print self.get_on_command()
         print "OFF COMMANDS"
         print self.get_off_command()
-#        print self.get_items("120-125, charlie, 240")
-#        print self.get_expr("10.0.0.[120-140, 650]")
-#        print self.get_expr("10.0.0.[120-140, 65] 192.[168].0.1")
-#        print self.get_lines("100.0.0.[120-122, 125]")
-#        print self.get_lines("100.0.0.[fdjhg-23]")
         return
 
 if __name__ == "__main__":
