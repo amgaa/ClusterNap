@@ -156,26 +156,56 @@ class get_conf:
     # config[node] = {'name': 'NodeA', 'address':'192.168...', 'run_dependency': ... }
 
     def get_conf(self, filename):
-        head_types = ["name", "type", "address", "run_dependencies", "on_dependencies", "off_dependencies", "on_command", "off_command"]
+        head_types = [    "name", \
+                          "type", \
+                          "address", \
+                          "run_dependencies", \
+                          "on_dependencies", \
+                          "off_dependencies", \
+                          "on_command", \
+                          "off_command"]  # <-- Not using yet
+        started = 0
+        ended   = 1
+
         nodes    = {}
         tmp_nodes = {}
 
         f = open(filename, "r")
-
-#        for line in f:
-#        line=f.readline()
         line = self.get_line(f)
-#        print line
         while line:
         
             if "{" in line and "define" in line: # Start of definition
+                started = 1
+                if ended == 0:
+                    print "Configuration error: A definition of node(s) started while another definition is not completely written yet. Config file: " + filename
+                    exit(1)
+                ended = 0
+
                 line = self.get_line(f)
                 continue
 #                print "START"
+
             elif "}" in line:                    # End of definition
-                if not tmp_nodes.has_key("name"):
-                    print "Node definition error. Please check your config file."
+                ended = 1
+                if started == 0:
+                    print "Configuration error: Probably node(s)\' definition syntax error in config file: " + filename
                     exit(1)
+                started = 0
+
+                if not tmp_nodes.has_key("name"):
+                    print "Configuration error. Please check your node definition in config file: " + filename
+                    exit(1)
+
+                
+                line = line.strip()[:-1]
+                if line != "":                   # Last line is not empty
+                    head, body = line.split(":")
+                    head = head.strip()
+                    body = body.strip()
+                    body = self.create_lines(body)
+                    tmp_nodes[head] = body
+                    
+
                 # Get multiple lines if defined by expessions like [A-B, C ..]
                 for i in range(0, len(tmp_nodes["name"])):
                     tmp_node = {}
@@ -185,22 +215,27 @@ class get_conf:
                         elif len(tmp_nodes[key]) == len(tmp_nodes["name"]):
                             tmp_node[key] = tmp_nodes[key][i]
                         else:
-                            print "Configuration error!. Number of items inside [] does not match in " + key
+                            print "Configuration error!. Number of items inside [] does not match in config file: " + filename 
                             exit(1)
                     nodes[tmp_node["name"]] = tmp_node
                 tmp_nodes = {}
 #                print "END"
-            else:                                # Body of definition
+            elif started == 1 and ended == 0:        # Body of definition
                 head, body = line.split(":")
                 head = head.strip()
                 body = body.strip()
                 body = self.create_lines(body)
                 tmp_nodes[head] = body
+            else:
+                print "Configuration error. Config file: " + filename
+                exit(1)
 
-
-#            line=f.readline()
             line=self.get_line(f)
 
+        if not (started == 0 and ended == 1):
+            print "Configuration error. Config file: " + filename
+            exit(1)
+            
         return nodes
 
     # Gets line from config file

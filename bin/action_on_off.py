@@ -95,8 +95,6 @@ class action_on_off:
                         self.HAS_OFF_DEP_ON_CHILD[nodeA] = 1
 
 
-#        return
-
 
     # Turns on ON-able OFF nodes
     def try_on(self, nodes_to_on):
@@ -163,6 +161,7 @@ class action_on_off:
                 print "Cannot turn off " + node + " for now"
 
     # Executes a script on given host as given user
+    # Under the condition that we can have ssh root access to that node
     def exec_on_host (self, host, path_script, user, node, onoff):
         command  = "ssh -t -q root@" + host
         command += " \'su - " + user

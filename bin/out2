@@ -1,0 +1,40 @@
+ON COMMANDS
+node02 : fsnodeB, root, example_ipmi!ipmi_ip_node002 |fsnodeA, root, example_ipmi!ipmi_ip_node022
+node03 : fsnodeB, root, example_ipmi!ipmi_ip_node003 |fsnodeA, root, example_ipmi!ipmi_ip_node023
+node00 : fsnodeB, root, example_ipmi!ipmi_ip_node000 |fsnodeA, root, example_ipmi!ipmi_ip_node020
+node01 : fsnodeB, root, example_ipmi!ipmi_ip_node001 |fsnodeA, root, example_ipmi!ipmi_ip_node021
+node06 : fsnodeB, root, example_ipmi!ipmi_ip_node006 |fsnodeA, root, example_ipmi!ipmi_ip_node026
+node07 : fsnodeB, root, example_ipmi!ipmi_ip_node007 |fsnodeA, root, example_ipmi!ipmi_ip_node027
+node04 : fsnodeB, root, example_ipmi!ipmi_ip_node004 |fsnodeA, root, example_ipmi!ipmi_ip_node024
+node05 : fsnodeB, root, example_ipmi!ipmi_ip_node005 |fsnodeA, root, example_ipmi!ipmi_ip_node025
+node08 : fsnodeB, root, example_ipmi!ipmi_ip_node008 |fsnodeA, root, example_ipmi!ipmi_ip_node028
+node09 : fsnodeB, root, example_ipmi!ipmi_ip_node009 |fsnodeA, root, example_ipmi!ipmi_ip_node029
+raid_XX : fsnode_AA, root, example_snmp_on!snmp_ip!snmp_port_no
+raid_YY : fsnode_AA, root, example_snmp_on!snmp_ip!snmp_port_no
+node12 : fsnodeB, root, example_ipmi!ipmi_ip_node012 |fsnodeA, root, example_ipmi!ipmi_ip_node032
+fsnodeA : fsnode_AA, root, example_ipmi!ipmi_ip_fsnodeA
+fsnodeB : fsnode_AA, root, example_ipmi!ipmi_ip_fsnodeB
+node11 : fsnodeB, root, example_ipmi!ipmi_ip_node011 |fsnodeA, root, example_ipmi!ipmi_ip_node031
+fsnode_AA : fsnode_AA, root, None
+SW_ZZ : fsnode_AA, root, example_snmp_on!snmp_ip!snmp_port_no
+node10 : fsnodeB, root, example_ipmi!ipmi_ip_node010 |fsnodeA, root, example_ipmi!ipmi_ip_node030
+OFF COMMANDS
+node02 : fsnodeA, root, example_ssh_shutdown!ip_node002 02|fsnodeB, root, example_ssh_shutdown!ip_node042
+node03 : fsnodeA, root, example_ssh_shutdown!ip_node003 03|fsnodeB, root, example_ssh_shutdown!ip_node043
+node00 : fsnodeA, root, example_ssh_shutdown!ip_node000 00|fsnodeB, root, example_ssh_shutdown!ip_node040
+node01 : fsnodeA, root, example_ssh_shutdown!ip_node001 01|fsnodeB, root, example_ssh_shutdown!ip_node041
+node06 : fsnodeA, root, example_ssh_shutdown!ip_node006 06|fsnodeB, root, example_ssh_shutdown!ip_node046
+node07 : fsnodeA, root, example_ssh_shutdown!ip_node007 07|fsnodeB, root, example_ssh_shutdown!ip_node047
+node04 : fsnodeA, root, example_ssh_shutdown!ip_node004 04|fsnodeB, root, example_ssh_shutdown!ip_node044
+node05 : fsnodeA, root, example_ssh_shutdown!ip_node005 05|fsnodeB, root, example_ssh_shutdown!ip_node045
+node08 : fsnodeA, root, example_ssh_shutdown!ip_node008 08|fsnodeB, root, example_ssh_shutdown!ip_node048
+node09 : fsnodeA, root, example_ssh_shutdown!ip_node009 09|fsnodeB, root, example_ssh_shutdown!ip_node049
+raid_XX : fsnode_AA, root, example_snmp_off!snmp_ip!snmp_port_no
+raid_YY : fsnode_AA, root, example_snmp_off!snmp_ip!snmp_port_no
+node12 : fsnodeA, root, example_ssh_shutdown!ip_node012 BB|fsnodeB, root, example_ssh_shutdown!ip_node052
+fsnodeA : fsnode_AA, root, example_ssh_shutdown!ip_fs_nodeA
+fsnodeB : fsnode_AA, root, example_ssh_shutdown!ip_fs_nodeB
+node11 : fsnodeA, root, example_ssh_shutdown!ip_node011 11|fsnodeB, root, example_ssh_shutdown!ip_node051
+fsnode_AA : fsnode_AA, root, None
+SW_ZZ : fsnode_AA, root, example_snmp_off!snmp_ip!snmp_port_no
+node10 : fsnodeA, root, example_ssh_shutdown!ip_node010 10|fsnodeB, root, example_ssh_shutdown!ip_node050
