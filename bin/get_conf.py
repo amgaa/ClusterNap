@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 ''' 
@@ -161,18 +161,15 @@ class get_conf:
         tmp_nodes = {}
 
         f = open(filename, "r")
-        for line in f:
-            line = line.strip()
 
-            # Ignore comment-outed or empty line
-            if line[:1] == "" or line[:1] == "#": 
-                continue
-
-            # Remove comments
-            line = line.split("#")
-            line = line[0]
+#        for line in f:
+#        line=f.readline()
+        line = self.get_line(f)
+#        print line
+        while line:
         
             if "{" in line and "define" in line: # Start of definition
+                line = self.get_line(f)
                 continue
 #                print "START"
             elif "}" in line:                    # End of definition
@@ -191,18 +188,50 @@ class get_conf:
                             print "Configuration error!. Number of items inside [] does not match in " + key
                             exit(1)
                     nodes[tmp_node["name"]] = tmp_node
-#                nodes[tmp_nodes["name"]] = tmp_nodes
                 tmp_nodes = {}
 #                print "END"
             else:                                # Body of definition
                 head, body = line.split(":")
                 head = head.strip()
                 body = body.strip()
-                body = self.get_lines(body)
+                body = self.create_lines(body)
                 tmp_nodes[head] = body
-#                print tmp_node
+
+
+#            line=f.readline()
+            line=self.get_line(f)
 
         return nodes
+
+    # Gets line from config file
+    # Ignores comments
+    # Concatenates lines if ends with "\"
+    # returns string
+    def get_line(self, f):
+        line = f.readline()
+        if not line:
+            return 
+        line = line.strip()
+
+        # Ignore comment-outed or empty line
+        if line[:1] == "" or line[:1] == "#": 
+        #    continue
+            line = self.get_line(f)
+        if not line:
+            return
+
+        # Remove comments
+        line = line.split("#")
+        line = line[0].strip()
+        
+        # When line ends with "\", get next line and concatenate it
+        if line.endswith("\\"):
+            line = line[:-1]
+            line += self.get_line(f)
+#        print line
+        return line
+        
+
 
     # Create power state files in ClusterNap/states/  folder.
     # Remove file which are not defined in config. 
@@ -254,45 +283,76 @@ class get_conf:
 
     # Gets item expressions from string.
     # Item expressions are written inside brackets [expr1, expr2, ...]
-    # Each line of exprstr should only contain one pair of brackets "[ ... ]"
-    def get_expr(self, exprstr):
-        expr = re.search(r"\[(.+?)\]", exprstr)
-        if expr:
-            return expr.group(1)
-        return 
+    # Each line of exprstr should only contain one pair of brackets "[ ... ]"  <--- Now multiple is ok, hopefully
+    def get_exprs(self, exprstr):
+        exprs = list()
+        exprs = re.findall(r"\[(.+?)\]", exprstr)
+        if exprs == []: # empty
+            return
+
+        return exprs
+#        return expr.group(1)
+
 
     # Gets a line with expressions.
-    # Ex: "foo[100-101, 105]"
-    # Ret: ["foo100", "foo101", "foo105"]
-    def get_lines(self, line):
-        lines = list()
-        exprs = self.get_expr(line)
+    # Ex: "foo[100-101, 105] [A, C, D]"
+    # Ret: ["foo100 A", "foo101 C", "foo105 D"]
+    def create_lines(self, line):
+        lines   = list()
+        items2D = list()
+        exprs   = self.get_exprs(line)
 
-        if not exprs:            #If no expression
+        #If no expression        
+        if not exprs:           
             lines.append(line)
             return lines
-
-        items = self.get_items(exprs)
         
-        for item in items:
-            tmpline = re.sub(r"\[(.+?)\]", item, line) # Replace
-            lines.append(tmpline)                      # and append
+        # Create table of each items
+        for expr in exprs:
+            items = self.get_items(expr)
+            items2D.append(items)
+            # Number of items in each bracket should match!
+            if len(items) != len(items2D[0]):
+                print "Configuration error: Number of items in different brackets does not match!"
+                print "Following may help:"
+                print items
+                print items2D[0]
+                exit(1)
 
+        # Create list of N lines. N is number of items in single bracket [] 
+        for i in range(0, len(items2D[0])):
+            lines.append(line)
+
+        # Replace 
+        for items in items2D:
+            for i in range(0, len(items)):
+                # replace items[i] in lines[i]
+                lines[i] = re.sub(r"\[(.+?)\]", items[i], lines[i], 1)
+        
         return lines
+
         
     def main(self):
 
         self.create_state_files()
-	print self.CONFIG
+        
+#        for node in self.CONFIG:
+#            print node
+#	print self.CONFIG
         print "ON COMMANDS"
-        print self.get_on_command()
+        for node in self.CONFIG:
+            print node + " : " + self.CONFIG[node]["on_command"]
         print "OFF COMMANDS"
-        print self.get_off_command()
+        for node in self.CONFIG:
+            print node + " : " + self.CONFIG[node]["off_command"]
+ 
+#        for command in self.get_off_command():
+#            print command
 #        print self.get_items("120-125, charlie, 240")
 #        print self.get_expr("10.0.0.[120-140, 650]")
 #        print self.get_expr("10.0.0.[120-140, 65] 192.[168].0.1")
-#        print self.get_lines("100.0.0.[120-122, 125]")
-#        print self.get_lines("100.0.0.[fdjhg-23]")
+#        print self.create_lines("100.0.0.[120-122, 125]")
+#        print self.create_lines("100.0.0.[fdjhg-23]")
         return
 
 if __name__ == "__main__":
