@@ -1,21 +1,22 @@
 #! /usr/bin/python
 
-''' 
- Tries to change states of nodes according to the information (what nodes should be ON and which ones should be off)
- from get_on_off.py by checking their dependencies and their childs' states. 
-
- Tries to make all necessary nodes ON 
- Tries to make all unnecessary nodes OFF
-'''
+#'''
+# Tries to change states of nodes according to the information (what nodes should be ON and which ones should b#e off)
+# from get_on_off.py by checking their dependencies and their childs' states. 
+#
+# Tries to make all necessary nodes ON 
+# Tries to make all unnecessary nodes OFF
+# '''
 
 import sys, os, re
 import get_on_off
 import get_dependency
 import get_state
 import change_state
-#import get_config
 import get_conf
-
+import subprocess
+import time
+import shlex
 
 class action_on_off:
     def __init__(self):
@@ -44,6 +45,9 @@ class action_on_off:
         self.ON_COMMANDS     = get_conf.get_conf().get_on_command()
         self.OFF_COMMANDS    = get_conf.get_conf().get_off_command()
         self.COMMAND_OUT_LOG = os.path.dirname(os.path.abspath(__file__)) + "/../logs/command_out.log"
+
+        self.PROCS     = set() # Pool of executing child processes
+        self.MAX_PROCS = 10    # Max number of proccesses in the processes pool
 
         # Leave only OFF nodes in  self.NODES_TO_ON. 
         # Here we also leave Unknown state nodes untouched.
@@ -95,12 +99,11 @@ class action_on_off:
                         self.HAS_OFF_DEP_ON_CHILD[nodeA] = 1
 
 
-
     # Turns on ON-able OFF nodes
     def try_on(self, nodes_to_on):
         for node in nodes_to_on:
             if not self.STATES.has_key(node): # Already ON
-                print "Node " + node + "'s state is not define in folder states/nodes/"
+                print "Node " + node + "'s state is not defined in folder states/nodes/"
                 print "Please define it. (Create a file named \"" + node + "\" in there.)"
                 continue
 
@@ -116,11 +119,7 @@ class action_on_off:
                 flag = 0
                 for host in self.ON_COMMANDS[node]: # When there are multiple hosts from which we can execute on/off script , we need to select one. In out case, just choose first host that is ON
                     if self.STATES.has_key(host['host']) and self.STATES[host['host']] == 1:
-                        self.exec_on_host(host['host'], \
-                                              host['command'],\
-                                              host['user'],\
-                                              node,\
-                                              'ON')
+                        self.to_procs_pool(host)
                         flag = 1
                         print "Turn ON command sent to " + node
                         break
@@ -146,44 +145,40 @@ class action_on_off:
                 flag = 0
                 for host in self.OFF_COMMANDS[node]: # When there are multiple hosts from which we can execute on/off script , we need to select one. In out case, just choose first host that is ON
                     if self.STATES.has_key(host['host']) and self.STATES[host['host']] == 1:
-                        self.exec_on_host(host['host'],\
-                                              host['command'],\
-                                              host['user'],\
-                                              node,\
-                                              'OFF')
+                        self.to_procs_pool(host)
                         print "Turn OFF command sent to " + node
                         flag = 1
+
                         break
                 if flag == 0: # No host was available
                     print "Error: No OFF script has been run for node " + node + "!"
 
             else:
                 print "Cannot turn off " + node + " for now"
-
-    # Executes a script on given host as given user
-    # Under the condition that we can have ssh root access to that node
-    def exec_on_host (self, host, path_script, user, node, onoff):
-        command  = "ssh -t -q root@" + host
-        command += " \'su - " + user
-#        command += " -c \"" + "sh " + path_script + " &\" \'"
-        command += " -c " + " \"" + path_script + "\"  \'"
-        command += " >> " + self.COMMAND_OUT_LOG
-#        command += " &"      # <- This "&" makes some nodes do not start. Reason unclear! 
-
-        if os.system(command) == 0:  # Successfully executed
-            os.system(command)
-            print "Turn " + onoff + " command sent: " + command
-#            change_state.change_state().change_state(node, onoff) # <- This should be removed
-        else:
-            print "Turn-off/On command error! Cannot run command: " + command
+                
+    # Adds command to execute into the subprocesses' pool.
+    # So the commands are executed in parallel
+    def to_procs_pool(self, host):
+        cmd = self.create_cmd(host['host'], host['command'], host['user'])
+#        self.PROCS.add(subprocess.Popen(cmd))
+        self.PROCS.add(subprocess.call(cmd))
+        if len(self.PROCS) >= self.MAX_PROCS:
+            os.wait()
+            procs.difference_update(p for p in procs if p.poll is not None)
         
-        
+
+    # Creates ON/OFF command
+    def create_cmd(self, host, path_script, user):
+        cmd  = "ssh -t -q root@" + host
+        cmd += " \'su - " + user
+        cmd += " -c " + " \"" + path_script + "\"  \'"
+        cmd += " >> " + self.COMMAND_OUT_LOG
+        cmd =shlex.split(cmd)
+        return cmd
 
     # Checks if an OFF node is ON-able (necessary childs are ON)
     def on_able(self, node):
         if not self.DEP_RUN_ON.has_key(node):
-#            print "No RUN-ON-dependency found for node " + node
-#            return 0
             return 1
 
         # When the first occurence of all nodes in any of clause os ON, return 1
@@ -221,7 +216,6 @@ class action_on_off:
         # We also need to check if given "node" is parent of any other ON node by "RUN_DEP". 
         # In this case, we cannot turn off the given node. 
         childs = self.DEP_OFF[node]
-
         for clause in childs:
             flag = 0
             for node in clause:
@@ -242,7 +236,6 @@ class action_on_off:
 
     
     def main(self):
-#        print self.DEP_RUN_ON
         print "NODES TO ON and their states: "
         for node in self.tmp_nodestoon:
             if self.STATES.has_key(node):

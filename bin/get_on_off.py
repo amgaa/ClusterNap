@@ -113,19 +113,29 @@ class get_on_off:
                 nodes_to_off.append(node)
 
         # Get nodes that should be ON to turn off above unnecessary nodes
-        nodes_to_on_to_off = self.necc(necc_off, self.DEP_OFF, nodes_to_off)
+        nodes_to_on_to_off  = self.necc(necc_off, self.DEP_OFF, nodes_to_off)
         t_list = list()
 	for node in nodes_to_on_to_off:
             childs = list()
             if self.DEP_OFF.has_key(node):
                 childs = self.DEP_OFF[node]
-#            if childs != None:
             if childs:
                 for child in childs:
                     for chi in child:
                         if chi in nodes_to_on_to_off and chi not in t_list:
                             t_list.append(chi)
+            # Below part should be reconsidered! Or not?! :) <-- This is for some unintended situation.
+            # For example, when a node is ON but its ON/RUN depending node(s) is/are not actually ON. 
+            if self.DEP_RUN_ON.has_key(node):
+                childs = self.DEP_RUN_ON[node]
+            if childs:
+                for child in childs:
+                    for chi in child:
+                        if chi in nodes_to_on_to_off and chi not in t_list:
+                            t_list.append(chi)
+
         nodes_to_on_to_off = t_list[:]
+        
  
         print ":::::::::::::Nodes to on to off::::::::::::::"
         print nodes_to_on_to_off
