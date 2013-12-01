@@ -5,8 +5,8 @@
 DOT_FILE=${PWD}/../graphs/CN.dot
 XDOT_FILE=${PWD}/../graphs/CN_updated.xdot
 OUT_IMG=${PWD}/../graphs/CN.eps
-#OUT_WEB_IMG=/var/www/digraph/CN.png
-OUT_WEB_IMG=/home/amgalan/public_html/digraph/CN.png
+OUT_WEB_IMG=/var/www/digraph/CN.png
+#OUT_WEB_IMG=/home/amgalan/public_html/digraph/CN.png
 
 #./gen_dot.py > /dev/null;
 ./gen_dot.py > /dev/null;

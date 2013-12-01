@@ -17,7 +17,9 @@ hostname = sys.argv[1]
 virsh    = "/usr/bin/virsh"
 command  = virsh + " domstate " + hostname
 
-clusternap_dir = "/home/amgaa/ClusterNap/server/state/service/" 
+
+clusternap_dir = os.path.dirname(os.path.abspath(__file__)) + "/../state/nodes/"
+#clusternap_dir = "/home/amgaa/ClusterNap/state/nodes/"     # <--- For now just use it. 
 nodes          = os.listdir(clusternap_dir)
 
 #Get stdout of command
