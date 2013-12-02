@@ -8,6 +8,7 @@ import sys, os, re
 import get_on_off
 import get_state
 
+
 class action_on_off:
     def __init__(self):
         self.NODES_TO_ON  = list()
@@ -16,7 +17,9 @@ class action_on_off:
         self.NODES_TO_ON, self.NODES_TO_OFF = get_on_off.get_on_off().main()
         self.tmp_nodestoon = self.NODES_TO_ON[:]
         self.tmp_nodestooff = self.NODES_TO_OFF[:]
-        self.STATES = dict(get_state.get_state().main())
+#        self.STATES = dict(get_state.get_state().main())
+        self.STATES = get_state.get_state().STATES.copy()
+#        self.STATES = get_on_off.get_on_off().STATES.copy()
         self.OFF_NODES_TO_CHECK = list()
         self.ON_NODES_TO_CHECK = list()
 

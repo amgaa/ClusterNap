@@ -4,8 +4,8 @@
 import os, sys, re
 import itertools
 import get_dependency
-import get_state
 import get_on_off
+import get_state
 
 class gen_dot:
     def __init__ (self):
@@ -16,7 +16,8 @@ class gen_dot:
 	self.OUT_FILE		     = "CN.dot"
 	
         self.STATES                  = {}
-        self.STATES                  = get_state.get_state().main()
+        self.STATES                  = get_state.get_state().STATES.copy()
+#        self.STATES                  = get_on_off.get_on_off().STATES.copy()
 
         self.ON_DEP     = get_dependency.get_dependency().get_on_dep()
         self.RUN_DEP    = get_dependency.get_dependency().get_run_dep()

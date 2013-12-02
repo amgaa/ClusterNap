@@ -11,9 +11,8 @@
 import sys, os, re
 import get_on_off
 import get_dependency
-import get_state
-import change_state
 import get_conf
+import get_state
 import subprocess
 import time
 import shlex
@@ -39,7 +38,10 @@ class action_on_off:
         print "NODES TO OFF:"
         print self.NODES_TO_OFF 
         
-        self.STATES     = dict(get_state.get_state().main())
+        self.STATES     = get_state.get_state().STATES.copy()
+#        self.STATES     = get_on_off.get_on_off().STATES.copy()
+        get_state.get_state().check() # check states for logging
+
         self.DEP_RUN    = get_dependency.get_dependency().get_run_dep()
         self.DEP_RUN_ON = get_dependency.get_dependency().get_run_on_dep()
         self.DEP_OFF    = get_dependency.get_dependency().get_off_dep()
@@ -48,7 +50,6 @@ class action_on_off:
         # On what "host", which "command" should be executed, "who" should run that script 
         self.ON_COMMANDS     = get_conf.get_conf().get_on_command()
         self.OFF_COMMANDS    = get_conf.get_conf().get_off_command()
-        self.COMMAND_OUT_LOG = os.path.dirname(os.path.abspath(__file__)) + "/../logs/command_out.log"
 
         self.PROCS     = set() # Pool of executing child processes
         self.MAX_PROCS = 10    # Max number of proccesses in the processes pool
@@ -101,6 +102,8 @@ class action_on_off:
                     if nodeA in self.NODES_TO_OFF:
                         print "OFF DEP NODE OF "+  nodeA + " is " + node 
                         self.HAS_OFF_DEP_ON_CHILD[nodeA] = 1
+
+
 
 
     # Turns on ON-able OFF nodes

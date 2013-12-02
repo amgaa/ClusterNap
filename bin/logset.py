@@ -11,6 +11,10 @@ def get(loggername, logfile):
     formatter    = logging.Formatter('%(asctime)s  [%(levelname)s] %(module)s.py: %(message)s', datefmt='%I:%M:%S %p')
     handler_file = logging.FileHandler( logdir + date + '_'+ logfile)
     handler_file.setFormatter(formatter)
+
+    if log.handlers:# <---!?
+	log.handlers = []
+
     log.addHandler(handler_file)
     log.setLevel(logging.INFO)
     return log

@@ -33,9 +33,8 @@ class get_on_off:
 	self.CONFIG	         = get_conf.get_conf().CONFIG
 
         self.STATES              = {}
-        self.STATES              = get_state.get_state().main()
-        print self.STATES
-
+#        self.STATES              = get_state.get_state().main()
+        self.STATES              = get_state.get_state().STATES.copy()
         self.NODES_REQUESTED_ON  = list()
         self.NODES_REQUESTED_OFF = list()
         self.ON_NODES            = list()

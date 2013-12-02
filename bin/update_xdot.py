@@ -9,7 +9,6 @@ import sys, os, re
 import itertools
 import time
 import get_conf
-import get_state
 import get_dependency
 import get_on_off
 
@@ -23,7 +22,7 @@ class update_xdot:
         self.NODES_REQUESTED = os.listdir(self.REQUEST_DIR)
 
         self.STATES          = {}
-        self.STATES          = get_state.get_state().main()
+        self.STATES          = get_on_off.get_on_off().STATES.copy()
 
         self.ON_DEP          = get_dependency.get_dependency().get_on_dep()
         self.RUN_DEP         = get_dependency.get_dependency().get_run_dep()
