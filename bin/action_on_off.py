@@ -117,8 +117,9 @@ class action_on_off:
 
             # In case no script is defined
             if not self.ON_COMMANDS.has_key(node):
-                print "node " + node + " has no COMMAND defined to make it ON in config/nodes/ folder. Please define it there"
-                self.errorlog.error("node " + node + " has no COMMAND defined to make it ON in config/nodes/ folder. Please define it there")
+                msg = "node " + node + " has no COMMAND defined to make it ON in config/nodes/ folder. Please define it there"
+                print msg
+                self.errorlog.error(msg)
                 continue
 
             if self.on_able(node):
@@ -127,16 +128,19 @@ class action_on_off:
                     if self.STATES.has_key(host['host']) and self.STATES[host['host']] == 1:
                         self.to_procs_pool(host)
                         flag = 1
-                        print "Turn ON command sent to " + node
-                        self.log.info('Turn-ON command sent to ' + node)
+                        msg  = "Turn ON command sent to " + node
+                        print msg
+                        self.log.info(msg)
                         break
                 if flag == 0: # No host was available
-                    print "Error: No ON script has been run for node " + node + "!"
-                    self.errorlog.error('Node ON script has been run for node ' + node + '!')
+                    msg = "Error: No ON script has been run for node " + node + "!"
+                    print msg
+                    self.errorlog.error(msg)
                     
             else:
-                print "Cannot turn on " + node + " for now"
-                self.log.info('Cannot turn-ON node' + node + ' for now')
+                msg = "Cannot turn on " + node + " for now"
+                print msg
+                self.log.info(msg)
 
 
 
@@ -148,8 +152,9 @@ class action_on_off:
 
             # In case no script is defined
             if not self.OFF_COMMANDS.has_key(node):
-                print "node " + node + " has no COMMAND defined to make it OFF in config/nodes/ folder. Please define it there"
-                self.errorlog.error("node " + node + " has no COMMAND defined to make it OFF in config/nodes/ folder. Please define it there")
+                msg = "node " + node + " has no COMMAND defined to make it OFF in config/nodes/ folder. Please define it there"
+                print msg
+                self.errorlog.error(msg)
                 continue
 
             if self.off_able(node):
@@ -157,18 +162,21 @@ class action_on_off:
                 for host in self.OFF_COMMANDS[node]: # When there are multiple hosts from which we can execute on/off script , we need to select one. In out case, just choose first host that is ON
                     if self.STATES.has_key(host['host']) and self.STATES[host['host']] == 1:
                         self.to_procs_pool(host)
-                        print "Turn OFF command sent to " + node
-                        self.log.info('Turn-OFF command sent to ' + node)
+                        msg = "Turn OFF command sent to " + node
+                        print msg
+                        self.log.info(msg)
                         flag = 1
 
                         break
                 if flag == 0: # No host was available
-                    print "Error: No OFF script has been run for node " + node + "!"
-                    self.errorlog.error('Node OFF script has been run for node ' + node + '!')
+                    msg = "Error: No OFF script has been run for node " + node + "!"
+                    print msg
+                    self.errorlog.error(msg)
 
             else:
-                print "Cannot turn off " + node + " for now"
-                self.log.info('Cannot turn-OFF node' + node + ' for now')
+                msg = "Cannot turn off " + node + " for now"
+                print msg
+                self.log.info(msg)
 
                 
     # Adds command to execute into the subprocesses' pool.
@@ -187,7 +195,6 @@ class action_on_off:
         cmd  = "ssh -t -q root@" + host
         cmd += " \'su - " + user
         cmd += " -c " + " \"" + path_script + "\"  \'"
-#        cmd += " >> " + self.COMMAND_OUT_LOG
         cmd =shlex.split(cmd)
         return cmd
 
@@ -215,20 +222,23 @@ class action_on_off:
     # Checks if an ON node is OFF-able (necessary childs are ON)
     def off_able(self, node):
         if not self.DEP_OFF.has_key(node):
-            print "No OFF-dependency found for node " + node
-            self.log.debug("No OFF-dependency found for node " + node)
+            msg = "No OFF-dependency found for node " + node
+            print msg
+            self.log.debug(msg)
             return 0
 
         # Need to know if there is RUN_dependencies among nodes_to_off.
         # If so, we should start from the childs
         if self.HAS_RUN_DEP_ON_CHILD[node]:
-            print node + " has some child nodes working. Cannot turn off"
-            self.log.debug(node + " has some child nodes working. Cannot turn off")
+            msg = node + " has some child nodes working. Cannot turn off"
+            print msg
+            self.log.debug(msg)
             return 0
 
         if self.HAS_OFF_DEP_ON_CHILD[node]:
-            print node + " has some child nodes working. Cannot turn off"
-            self.log.debug(node + " has some child nodes working. Cannot turn off")
+            msg = node + " has some child nodes working. Cannot turn off"
+            print msg
+            self.log.debug(msg)
             return 0
 
         # When the first occurence of all nodes in any of clause os ON, return 1
