@@ -9,9 +9,13 @@ This programs gets nodes' state information from "state/" folder and returns the
 '''
 
 import os, sys, re
+import logset
 
 class get_state:
     def __init__ (self):
+        # Get logger
+        self.log      = logset.get("action_event", "event.log")
+        self.errorlog = logset.get("action_error", "error.log")
         self.STATE_DIR             = os.path.dirname(os.path.abspath(__file__))
         self.STATE_DIR            += "/../state/nodes/"
         self.NODES_IN_STATE_DIR  = os.listdir(self.STATE_DIR)
@@ -29,7 +33,8 @@ class get_state:
     def node_state(self, name):
 
         if name not in self.NODES_IN_STATE_DIR:
-            print "Node name \"" + name + "\" is not in the folder \"" + self.STATE_DIR + "\""
+            print "Node state file \"" + name + "\" is not in the folder \"" + self.STATE_DIR + "\""
+            self.errorlog.error("Node state file \"" + name + "\" is not in the folder \"" + self.STATE_DIR + "\"")
             return -1
 
         f = open( self.STATE_DIR + name, "r" )
@@ -42,6 +47,7 @@ class get_state:
             return 0
         else:
             print "Node \"" + name + "\" has unknown state: \"" + state + "\""
+            self.log.warn("Node \"" + name + "\" has unknown state: \"" + state + "\"")
             return -1
 
 

@@ -12,10 +12,13 @@ import sys, os, re
 import itertools
 import time
 import get_conf
+import logset
 
 class get_dependency:
 
     def __init__(self):
+        self.log      = logset.get("get_dep_event", "event.log")
+        self.errorlog = logset.get("get_dep_error", "error.log")
         self.CONFIG = {}
         self.CONFIG = get_conf.get_conf().CONFIG
         self.run_deps        = {}

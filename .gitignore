@@ -3,6 +3,7 @@
 *.dot
 *.xdot
 *.eps
+*.log
 #*#
 *~
 state/nodes/*

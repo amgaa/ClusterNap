@@ -8,10 +8,15 @@ This program gets the configurations of nodes from corresponding files.
 import sys, os, re
 import itertools
 import time
+import logset
 
 class get_conf:
 
     def __init__(self):
+        # Get logger
+        self.log = logset.get("get_conf_event", "event.log")
+        self.errorlog = logset.get("get_conf_error", "error.log")
+
         self.CONF_DIR        = os.path.dirname(os.path.abspath(__file__)) + "/../config/"
 	self.NODE_CONF_DIR   = self.CONF_DIR + "nodes/" 
 	self.NODE_CONF_FILES = [f for f in os.listdir(self.NODE_CONF_DIR) if f.endswith('.conf')]
@@ -60,7 +65,8 @@ class get_conf:
 
                 # Check if on_command is defined correctly
                 if len(cmd) != 3:
-                    print "node " + node + "\'s on_command definition is incorrect"
+                    print "Node " + node + "\'s on_command definition is incorrect"
+                    self.errorlog.error("Node " + node + "\'s on_command definition is incorrect")
                     continue 
 
                 tmp_command["host"]    = cmd[0].strip()
@@ -99,7 +105,8 @@ class get_conf:
 
                 # Check if on_command is defined correctly
                 if len(cmd) != 3:
-                    print "node " + node + "\'s off_command definition is incorrect"
+                    print "Node " + node + "\'s off_command definition is incorrect"
+                    self.errorlog.error("Node " + node + "\'s off_command definition is incorrect")
                     continue 
 
                 tmp_command["host"]    = cmd[0].strip()
@@ -128,7 +135,9 @@ class get_conf:
         # If command is not defined
         if not self.COMMANDS.has_key(comm_name):
             print "Error: Command " + comm_name + " is not defined in " + self.COMM_CONF_DIR + ". Please define it there"
+            self.errorlog.error("Command " + comm_name + " is not defined in " + self.COMM_CONF_DIR + ". Please define it there")
             exit(1)
+
         # If number of arguments does not match
 #        if self.COMMANDS[comm_name].count("$") != len(arglist):
 #            print "Error: Number of arguments for command \"" + comm_name + "\" does not match."
@@ -146,7 +155,7 @@ class get_conf:
         # Check some errors
         if "$ARG" in command:
             print "Command definition error: Arguments defined in " +  self.NODE_CONF_DIR + " does not match for command " + comm_name
-
+            self.errorlog.error("Command definition error: Arguments defined in " +  self.NODE_CONF_DIR + " does not match for command " + comm_name)
             exit(1)
 
         return command
@@ -178,6 +187,7 @@ class get_conf:
                 started = 1
                 if ended == 0:
                     print "Configuration error: A definition of node(s) started while another definition is not completely written yet. Config file: " + filename
+                    self.errorlog.error("Configuration error: A definition of node(s) started while another definition is not completely written yet. Config file: " + filename)
                     exit(1)
                 ended = 0
 
@@ -189,11 +199,13 @@ class get_conf:
                 ended = 1
                 if started == 0:
                     print "Configuration error: Probably node(s)\' definition syntax error in config file: " + filename
+                    self.errorlog.error("Configuration error: Probably node(s)\' definition syntax error in config file: " + filename)
                     exit(1)
                 started = 0
 
                 if not tmp_nodes.has_key("name"):
                     print "Configuration error. Please check your node definition in config file: " + filename
+                    self.errorlog.error("Configuration error. Please check your node definition in config file: " + filename)
                     exit(1)
 
                 
@@ -216,6 +228,7 @@ class get_conf:
                             tmp_node[key] = tmp_nodes[key][i]
                         else:
                             print "Configuration error!. Number of items inside [] does not match in config file: " + filename 
+                            self.errorlog.error("Configuration error!. Number of items inside [] does not match in config file: " + filename )
                             exit(1)
                     nodes[tmp_node["name"]] = tmp_node
                 tmp_nodes = {}
@@ -228,12 +241,14 @@ class get_conf:
                 tmp_nodes[head] = body
             else:
                 print "Configuration error. Config file: " + filename
+                self.errorlog.error("Configuration error. Config file: " + filename)
                 exit(1)
 
             line=self.get_line(f)
 
         if not (started == 0 and ended == 1):
             print "Configuration error. Config file: " + filename
+            self.errorlog.error("Configuration error. Config file: " + filename)
             exit(1)
             
         return nodes
@@ -263,7 +278,6 @@ class get_conf:
         if line.endswith("\\"):
             line = line[:-1]
             line += self.get_line(f)
-#        print line
         return line
         
 
@@ -277,12 +291,14 @@ class get_conf:
         for state_file in old_state_files:
             if state_file not in self.CONFIG.keys():
                 print "Removing state file, because its node is not defined: " + state_file 
+                self.log.info("Removing state file, because its node is not defined: " + state_file)
                 os.unlink(self.STATE_DIR + state_file)
 
         # Create state files whose node is defined in config, but state file is not created yet. 
         for node in self.CONFIG.keys():
             if not os.path.isfile(self.STATE_DIR + node):
                 print "Creating following state file: " + node 
+                self.log.info("Creating following state file: " + node)
                 f = open(self.STATE_DIR + node, 'w')
                 f.write("-1\n")
                 f.close()
@@ -311,7 +327,9 @@ class get_conf:
                     itemlist.append(str(i).zfill(len(items[1])))
             else:
                 print "Error in config. Unknown config: " + exprs
+                self.errorlog.error("Error in config. Unknown config: " + exprs)
                 print "Expression inside [] might be wrong: " + exprs
+                self.errorlog.error("Expression inside [] might be wrong: " + exprs)
                 exit(1)
                 
         return itemlist
@@ -324,7 +342,6 @@ class get_conf:
         exprs = re.findall(r"\[(.+?)\]", exprstr)
         if exprs == []: # empty
             return
-
         return exprs
 #        return expr.group(1)
 
@@ -349,6 +366,7 @@ class get_conf:
             # Number of items in each bracket should match!
             if len(items) != len(items2D[0]):
                 print "Configuration error: Number of items in different brackets does not match!"
+                self.errorlog.error("Configuration error: Number of items in different brackets does not match!")
                 print "Following may help:"
                 print items
                 print items2D[0]

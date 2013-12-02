@@ -19,10 +19,13 @@ import itertools
 import get_dependency
 import get_state
 import get_conf
-
+import logset
 
 class get_on_off:
     def __init__ (self):
+        # Get logger
+        self.log      = logset.get("action_event", "event.log")
+        self.errorlog = logset.get("action_error", "error.log")
         self.REQUEST_DIR         = os.path.dirname(os.path.abspath(__file__))
         self.REQUEST_DIR        += "/../requested/nodes/"
 
@@ -47,7 +50,7 @@ class get_on_off:
 	for node in self.NODES_REQUESTED:
             if node not in self.CONFIG.keys():
                 print "Error: Non-defined node requested: " + node
-
+                self.errorlog.error("Error: Non-defined node requested: " + node)
         # Get ON nodes
         for node in self.STATES.keys():
             if self.STATES[node] == 1:
@@ -233,14 +236,14 @@ class get_on_off:
                 childs     = self.remove_nodes(childs, necc)
                 tmp_necc   = self.best_childs(childs)
                 # Trial:
-                print "NODE: " + node
-                print "BEST CHILD (before): "
-                print tmp_necc
+#                print "NODE: " + node
+#                print "BEST CHILD (before): "
+#                print tmp_necc
                 tmp_on  = [x for x in tmp_necc if self.STATES.has_key(x) and self.STATES[x] == 1]
                 tmp_off = [x for x in tmp_necc if self.STATES.has_key(x) and self.STATES[x] != 1]
 
-                print "BEST CHILD (after): "
-                print tmp_necc
+#                print "BEST CHILD (after): "
+#                print tmp_necc
                 necc = self.necc_run_on(necc, dependency, run_dependency, tmp_off) 
                 necc = self.necc(necc, run_dependency, tmp_on) 
 
