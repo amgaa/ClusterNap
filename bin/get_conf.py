@@ -394,10 +394,19 @@ class get_conf:
 #	print self.CONFIG
         print "ON COMMANDS"
         for node in self.CONFIG:
-            print node + " : " + self.CONFIG[node]["on_command"]
+            if self.CONFIG[node].has_key("on_command"):
+                print node + " : " + self.CONFIG[node]["on_command"]
+            else:
+                print node + " : Not defined!"
+                self.log.warn("Node " + node + " has no on_command defined!")
+                
         print "OFF COMMANDS"
         for node in self.CONFIG:
-            print node + " : " + self.CONFIG[node]["off_command"]
+            if self.CONFIG[node].has_key("off_command"):
+                print node + " : " + self.CONFIG[node]["off_command"]
+            else:
+                print node + " : Not defined!"
+                self.log.warn("Node " + node + " has no off_command defined!")
  
 #        for command in self.get_off_command():
 #            print command
