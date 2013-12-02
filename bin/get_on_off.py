@@ -24,8 +24,8 @@ import logset
 class get_on_off:
     def __init__ (self):
         # Get logger
-        self.log      = logset.get("action_event", "event.log")
-        self.errorlog = logset.get("action_error", "error.log")
+        self.log      = logset.get("get_on_off_event", "event.log")
+        self.errorlog = logset.get("get_on_off_error", "error.log")
         self.REQUEST_DIR         = os.path.dirname(os.path.abspath(__file__))
         self.REQUEST_DIR        += "/../requested/nodes/"
 

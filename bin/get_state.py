@@ -14,8 +14,8 @@ import logset
 class get_state:
     def __init__ (self):
         # Get logger
-        self.log      = logset.get("action_event", "event.log")
-        self.errorlog = logset.get("action_error", "error.log")
+        self.log      = logset.get("get_state_event", "event.log")
+        self.errorlog = logset.get("get_state_error", "error.log")
         self.STATE_DIR             = os.path.dirname(os.path.abspath(__file__))
         self.STATE_DIR            += "/../state/nodes/"
         self.NODES_IN_STATE_DIR  = os.listdir(self.STATE_DIR)
