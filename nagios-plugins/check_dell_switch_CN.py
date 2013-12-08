@@ -6,7 +6,6 @@ import subprocess
 import socket
 
 clusternap_dir = os.path.dirname(os.path.abspath(__file__)) + "/../state/nodes/"
-#clusternap_dir = "/home/amgaa/ClusterNap/state/nodes/"     # <--- For now just use it. 
 nodes          = os.listdir(clusternap_dir)
 plugin_dir     = "/usr/lib/nagios/plugins/"
 orig_plugin    = plugin_dir + "check_dell_switch"
