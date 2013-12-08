@@ -1,0 +1,57 @@
+#Here all nodes are defined. 
+
+
+define node{
+	name:			clokofs-00
+	type:			host
+	address: 		
+	run_dependencies: 	clokofs-00
+	on_dependencies:	clokofs-00
+	off_dependencies: 	clokofs-00
+	on_command:		clokofs-00, root, None
+	off_command:		clokofs-00, root, None
+}
+
+
+define node{
+	name:			clokofs-12
+	type:			host
+	address: 		
+#	run_dependencies: 	clokoraid-12, clokoraid-13, cloko-x650-24x-6
+	run_dependencies: 	clokoraid-12, cloko-x650-24x-6
+	on_dependencies:	clokofs-00, cloko-pc5448-3
+	off_dependencies: 	clokofs-00
+	on_command:		clokofs-00, root, ipmi!10.0.0.16
+	off_command:		clokofs-00, root, ssh_shutdown!clokofs-12
+}
+
+#define node{
+#	name:			cloko120
+#	type:			host
+#	address: 		
+#	run_dependencies: 	clokofs-12
+#	on_dependencies:	clokofs-12, cloko-pc5448-3
+#	off_dependencies: 	clokofs-12
+#	on_command:		clokofs-00, root, ipmi!10.0.0.140
+#	off_command:		clokofs-00, root, ssh_shutdown!cloko120
+#}
+define node{
+	name:			cloko121
+	type:			host
+	address: 		
+	run_dependencies: 	clokofs-12
+	on_dependencies:	clokofs-12, cloko-pc5448-3
+	off_dependencies: 	clokofs-12
+	on_command:		clokofs-00, root, ipmi!10.0.0.141
+	off_command:		clokofs-00, root, ssh_shutdown!cloko121
+}
+define node{
+	name:			cloko122
+	type:			host
+	address: 		
+	run_dependencies: 	clokofs-12
+	on_dependencies:	clokofs-12, cloko-pc5448-3
+	off_dependencies: 	clokofs-12
+	on_command:		clokofs-00, root, ipmi!10.0.0.142
+	off_command:		clokofs-00, root, ssh_shutdown!cloko122
+}

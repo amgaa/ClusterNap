@@ -407,7 +407,8 @@ class get_conf:
             else:
                 print node + " : Not defined!"
                 self.log.warn("Node " + node + " has no on_command defined!")
-                
+        print self.get_on_command()
+        
         print "OFF COMMANDS"
         for node in self.NODES:
             if self.NODES[node].has_key("off_command"):
@@ -415,6 +416,8 @@ class get_conf:
             else:
                 print node + " : Not defined!"
                 self.log.warn("Node " + node + " has no off_command defined!")
+        print self.get_off_command()
+
         
 #        print "NODES:"
 #        print self.NODES

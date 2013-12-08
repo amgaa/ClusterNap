@@ -50,7 +50,7 @@ class action_on_off:
         # On what "host", which "command" should be executed, "who" should run that script 
         self.ON_COMMANDS     = get_conf.get_conf().get_on_command()
         self.OFF_COMMANDS    = get_conf.get_conf().get_off_command()
-
+        
         self.PROCS     = set() # Pool of executing child processes
         self.MAX_PROCS = 10    # Max number of proccesses in the processes pool
 
