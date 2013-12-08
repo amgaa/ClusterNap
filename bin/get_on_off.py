@@ -30,7 +30,7 @@ class get_on_off:
         self.REQUEST_DIR        += "/../requested/nodes/"
 
         self.NODES_REQUESTED     = os.listdir(self.REQUEST_DIR)
-	self.CONFIG	         = get_conf.get_conf().CONFIG
+	self.NODES	         = get_conf.get_conf().NODES
 
         self.STATES              = {}
 #        self.STATES              = get_state.get_state().main()
@@ -47,7 +47,7 @@ class get_on_off:
         
 	# Check if non-defined node is requested
 	for node in self.NODES_REQUESTED:
-            if node not in self.CONFIG.keys():
+            if node not in self.NODES.keys():
                 print "Error: Non-defined node requested: " + node
                 self.errorlog.error("Error: Non-defined node requested: " + node)
         # Get ON nodes

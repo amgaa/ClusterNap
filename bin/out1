@@ -1,0 +1,47 @@
+ON COMMANDS
+cloko015 : clokofs, root, ipmi!10.0.0.35
+hongo-charlie : hongo-charlie, root, None
+cloko017 : clokofs, root, ipmi!10.0.0.37
+LABPC : LABPC, root, None
+cloko011 : clokofs, root, ipmi!10.0.0.31
+cloko010 : clokofs, root, ipmi!10.0.0.30
+cloko013 : clokofs, root, ipmi!10.0.0.33
+cloko012 : clokofs, root, ipmi!10.0.0.32
+cloko019 : clokofs, root, ipmi!10.0.0.39
+cloko018 : clokofs, root, ipmi!10.0.0.38
+clokofs : clokofs, root, None
+raid_YY : fsnode_AA, root, example_snmp_on!snmp_ip!snmp_port_no
+cloko016 : clokofs, root, ipmi!10.0.0.36
+cloko014 : clokofs, root, ipmi!10.0.0.34
+raid_XX : fsnode_AA, root, example_snmp_on!snmp_ip!snmp_port_no
+hongo205 : hongo-charlie, root, ipmi!10.0.0.29
+hongo204 : hongo-charlie, root, ipmi!10.0.0.28
+hongo207 : hongo-charlie, root, ipmi!10.0.0.31
+hongo206 : hongo-charlie, root, ipmi!10.0.0.30
+hongo203 : hongo-charlie, root, ipmi!10.0.0.27
+hongo208 : hongo-charlie, root, ipmi!10.0.0.32
+SW_ZZ : fsnode_AA, root, example_snmp_on!snmp_ip!snmp_port_no
+OFF COMMANDS
+cloko015 : clokofs, root, ssh_shutdown!cloko015
+hongo-charlie : hongo-charlie, root, None
+cloko017 : clokofs, root, ssh_shutdown!cloko017
+LABPC : LABPC, root, None
+cloko011 : clokofs, root, ssh_shutdown!cloko011
+cloko010 : clokofs, root, ssh_shutdown!cloko010
+cloko013 : clokofs, root, ssh_shutdown!cloko013
+cloko012 : clokofs, root, ssh_shutdown!cloko012
+cloko019 : clokofs, root, ssh_shutdown!cloko019
+cloko018 : clokofs, root, ssh_shutdown!cloko018
+clokofs : clokofs, root, None
+raid_YY : fsnode_AA, root, example_snmp_off!snmp_ip!snmp_port_no
+cloko016 : clokofs, root, ssh_shutdown!cloko016
+cloko014 : clokofs, root, ssh_shutdown!cloko014
+raid_XX : fsnode_AA, root, example_snmp_off!snmp_ip!snmp_port_no
+hongo205 : hongo-charlie, root, ssh_shutdown!hongo205
+hongo204 : hongo-charlie, root, ssh_shutdown!hongo204
+hongo207 : hongo-charlie, root, ssh_shutdown!hongo207
+hongo206 : hongo-charlie, root, ssh_shutdown!hongo206
+hongo203 : hongo-charlie, root, ssh_shutdown!hongo203
+hongo208 : hongo-charlie, root, ssh_shutdown!hongo208
+SW_ZZ : fsnode_AA, root, example_snmp_off!snmp_ip!snmp_port_no
+0

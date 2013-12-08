@@ -19,16 +19,16 @@ class get_dependency:
     def __init__(self):
         self.log      = logset.get("get_dep_event", "event.log")
         self.errorlog = logset.get("get_dep_error", "error.log")
-        self.CONFIG = {}
-        self.CONFIG = get_conf.get_conf().CONFIG
+        self.NODES = {}
+        self.NODES = get_conf.get_conf().NODES
         self.run_deps        = {}
         self.on_deps         = {}
         self.off_deps        = {}
 
     def get_run_dep(self):
-        for node in self.CONFIG.keys():
+        for node in self.NODES.keys():
             tmp_body = list()
-            body = self.CONFIG[node]["run_dependencies"].split("|")
+            body = self.NODES[node]["run_dependencies"].split("|")
             for items in body:
                 items = items.split(",")
                 items = [item.strip() for item in items]
@@ -40,9 +40,9 @@ class get_dependency:
         return self.run_deps
 
     def get_on_dep(self):
-        for node in self.CONFIG.keys():
+        for node in self.NODES.keys():
             tmp_body = list()
-            body = self.CONFIG[node]["on_dependencies"].split("|")
+            body = self.NODES[node]["on_dependencies"].split("|")
             for items in body:
                 items = items.split(",")
                 items = [item.strip() for item in items]
@@ -54,9 +54,9 @@ class get_dependency:
         return self.on_deps
 
     def get_off_dep(self):
-        for node in self.CONFIG.keys():
+        for node in self.NODES.keys():
             tmp_body = list()
-            body = self.CONFIG[node]["off_dependencies"].split("|")
+            body = self.NODES[node]["off_dependencies"].split("|")
             for items in body:
                 items = items.split(",")
                 items = [item.strip() for item in items]

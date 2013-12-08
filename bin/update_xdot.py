@@ -15,8 +15,8 @@ import get_on_off
 class update_xdot:
     def __init__(self):
 	self.XDOT_FILE       = os.path.dirname(os.path.abspath(__file__)) + "/../graphs/CN.xdot"       
-        self.CONFIG          = {}
-        self.CONFIG          = get_conf.get_conf().CONFIG
+        self.NODES          = {}
+        self.NODES          = get_conf.get_conf().NODES
         self.REQUEST_DIR     = os.path.dirname(os.path.abspath(__file__))
         self.REQUEST_DIR    += "/../requested/nodes/"
         self.NODES_REQUESTED = os.listdir(self.REQUEST_DIR)
