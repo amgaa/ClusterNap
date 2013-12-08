@@ -23,6 +23,8 @@ class action_on_off:
         # Get logger
         self.log      = logset.get("action_event", "event.log")
         self.errorlog = logset.get("action_error", "error.log")
+        self.log_event_file = open(logset.event_file, "a")
+        self.log_error_file = open(logset.error_file, "a")
         self.NODES_TO_ON  = list()
         self.NODES_TO_OFF = list()
         self.STATES       = {}
@@ -186,11 +188,14 @@ class action_on_off:
     # So the commands are executed in parallel
     def to_procs_pool(self, host):
         cmd = self.create_cmd(host['host'], host['command'], host['user'])
-        self.PROCS.add(subprocess.call(cmd))
-#        self.PROCS.add(subprocess.Popen(cmd))
+#        self.PROCS.add(subprocess.call(cmd))
+        self.PROCS.add(subprocess.Popen(cmd, stdout=self.log_event_file, stderr=self.log_error_file))
         if len(self.PROCS) >= self.MAX_PROCS:
             os.wait()
-            procs.difference_update(p for p in procs if p.poll is not None)
+            self.PROCS.difference_update(p for p in self.PROCS if p.poll is not None)
+        
+        # Following should be reconsidered. 
+        # Does not guarantee that it takes logs of all processes (actions)
         
 
     # Creates ON/OFF command
@@ -288,7 +293,6 @@ class action_on_off:
         self.try_on(self.NODES_TO_ON)
         self.try_off(self.NODES_TO_OFF)
 
-#        print __name__
         return
 
 if __name__ == "__main__":

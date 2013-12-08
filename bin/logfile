@@ -1,0 +1,63 @@
+
+Address lookup for x10.0.0.30 failed
+Unable to set Chassis Power Control to Up/On
+Error: Non-defined node requested: .README
+:::::::::::::Nodes to on to off::::::::::::::
+['LABPC']
+:::::::::::::::::::::::::::::::::::::::::::::
+
+NECC_RUN_ON:
+['cloko010', 'clokofs']
+NECC_RUN:
+['clokofs', 'hongo-charlie', 'hongo203', 'hongo204', 'hongo205', 'hongo206', 'hongo207']
+:::::::::::::::Requeste nodes:::::::::::::::::
+clokofs
+.README
+hongo206
+hongo203
+hongo207
+hongo204
+hongo205
+cloko010
+:::::::::::::End of requested nodes::::::::::::
+
+:::::::::::::::Final nodes to ON:::::::::::::::
+LABPC
+cloko010
+clokofs
+hongo-charlie
+hongo203
+hongo204
+hongo205
+hongo206
+hongo207
+::::::::::::End of Final nodes to ON:::::::::::
+
+::::::::::::::::::Nodes to OFF:::::::::::::::::
+::::::::::::::End of nodes to OFF::::::::::::::
+
+NODES TO ON:
+['LABPC', 'cloko010', 'clokofs', 'hongo-charlie', 'hongo203', 'hongo204', 'hongo205', 'hongo206', 'hongo207']
+NODES TO OFF:
+[]
+Node "raid_YY"'s state is UNKNOWN.
+Node "raid_XX"'s state is UNKNOWN.
+Node "SW_ZZ"'s state is UNKNOWN.
+NODES TO ON and their states: 
+LABPC: 1
+cloko010: 0
+clokofs: 1
+hongo-charlie: 1
+hongo203: 1
+hongo204: 1
+hongo205: 1
+hongo206: 1
+hongo207: 1
+
+
+
+NODES TO OFF and their states: 
+
+
+
+Turn ON command sent to cloko010
