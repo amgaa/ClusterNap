@@ -1,0 +1,24 @@
+define command {
+       name:		ipmi
+       command_line:	ipmitool -I lanplus -H $ARG1 -P ipmi_pass -U root chassis power on
+}
+
+define command { 
+       name:  	       	 example_snmp_off       	
+       command_line:	 snmpset -c comm_str -v 2c $ARG1 .1.3.6.1.4.1.13742.4.1.2.2.1.3.$ARG2 i 0
+}
+
+define_command {
+       name:		example_snmp_on
+       command_line:	snmpset -c comm_str -v 2c $ARG1 .1.3.6.1.4.1.13742.4.1.2.2.1.3.$ARG2 i 1
+}
+
+define_command {
+       name:		example_ssh_shutdown
+       command_line:	ssh $ARG1 shutdown -h now
+}
+
+define command {
+	name:		None
+	command_line: 	echo "DO NOTHNING"
+}
