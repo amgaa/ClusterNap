@@ -8,10 +8,8 @@
 *~
 state/nodes/*
 !state/nodes/.README
-config/nodes/*
-!config/nodes/example_*
-config/commands/*
-!config/commands/example_*
+config/*
+!config/example_*
 requested/nodes/*
 !requested/nodes/.README
 graphs/*
