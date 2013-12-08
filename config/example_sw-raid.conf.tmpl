@@ -8,8 +8,8 @@ define node{
 	run_dependencies: 	SW_ZZ
 	on_dependencies:	fsnode_AA, SW_ZZ
 	off_dependencies: 	fsnode_AA, SW_ZZ
-	on_command:		fsnode_AA, root, example_snmp_on!snmp_ip!snmp_port_no
-	off_command:		fsnode_AA, root, example_snmp_off!snmp_ip!snmp_port_no
+	on_command:		fsnode_AA, root, snmp_on!snmp_ip!snmp_port_no
+	off_command:		fsnode_AA, root, snmp_off!snmp_ip!snmp_port_no
 }
 
 define node{
@@ -19,8 +19,8 @@ define node{
 	run_dependencies: 	SW_ZZ
 	on_dependencies:	fsnode_AA, SW_ZZ
 	off_dependencies: 	fsnode_AA, SW_ZZ
-	on_command:		fsnode_AA, root, example_snmp_on!snmp_ip!snmp_port_no
-	off_command:		fsnode_AA, root, example_snmp_off!snmp_ip!snmp_port_no
+	on_command:		fsnode_AA, root, snmp_on!snmp_ip!snmp_port_no
+	off_command:		fsnode_AA, root, snmp_off!snmp_ip!snmp_port_no
 }
 
 
@@ -31,7 +31,7 @@ define node{
 	run_dependencies: 	
 	on_dependencies:	fsnode_AA
 	off_dependencies: 	fsnode_AA
-	on_command:		fsnode_AA, root, example_snmp_on!snmp_ip!snmp_port_no
-	off_command:		fsnode_AA, root, example_snmp_off!snmp_ip!snmp_port_no
+	on_command:		fsnode_AA, root, snmp_on!snmp_ip!snmp_port_no
+	off_command:		fsnode_AA, root, snmp_off!snmp_ip!snmp_port_no
 }
 
