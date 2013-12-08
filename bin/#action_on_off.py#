@@ -186,8 +186,8 @@ class action_on_off:
     # So the commands are executed in parallel
     def to_procs_pool(self, host):
         cmd = self.create_cmd(host['host'], host['command'], host['user'])
-        self.PROCS.add(subprocess.call(cmd))
-#        self.PROCS.add(subprocess.Popen(cmd))
+#        self.PROCS.add(subprocess.call(cmd))
+        self.PROCS.add(subprocess.Popen(cmd))
         if len(self.PROCS) >= self.MAX_PROCS:
             os.wait()
             procs.difference_update(p for p in procs if p.poll is not None)

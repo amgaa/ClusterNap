@@ -20,8 +20,8 @@ define node{
 	run_dependencies: 	raid_XX, raid_YY, SW_ZZ
 	on_dependencies:	fsnode_AA
 	off_dependencies: 	fsnode_AA
-	on_command:		fsnode_AA, root, example_ipmi!ipmi_ip_fsnodeB
-	off_command:		fsnode_AA, root, example_ssh_shutdown!ip_fs_nodeB
+	on_command:		fsnode_AA, root, ipmi!ipmi_ip_fsnodeB
+	off_command:		fsnode_AA, root, ssh_shutdown!ip_fs_nodeB
 }
 
 define node{
@@ -31,6 +31,6 @@ define node{
 	run_dependencies: 	
 	on_dependencies:	fsnodeB
 	off_dependencies: 	fsnodeB
-	on_command:		fsnodeB, root, example_ipmi!ipmi_ip_nodeA
-	off_command:		fsnodeB, root, example_ssh_shutdown!ip_nodeA
+	on_command:		fsnodeB, root, ipmi!ipmi_ip_nodeA
+	off_command:		fsnodeB, root, ssh_shutdown!ip_nodeA
 }
