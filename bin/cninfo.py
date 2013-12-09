@@ -2,16 +2,7 @@
 #
 
 ''' 
- Returns: 
-            List of OFF-nodes that should be ON: 
-            List of ON-nodes that can be OFF: 
 
-
- Given the dependencies of all nodes (D), requested nodes (R) and current states of all nodes (S)
- This program gets minimum number of nodes which are required for requested nodes to be ON. 
- It also returns the list of nodes which we can turn-off. 
- However this program does not tell how to turn-on all of requested nodes, (i.e. by what order ...).
- action_on_off.py does this. 
 '''
 
 import os, sys, re, pwd, datetime
@@ -75,12 +66,12 @@ class cninfo:
         return state, requested, owner, modified
 
     def print_list(self, lis):
-        print " ---------------------------------------------------------------------------------------------- "
-        print "|   Node name    |    Power state   |   Request state   |   Request user   |   Request date    |"
-        print " ---------------------------------------------------------------------------------------------- "
+        print " --------------------------------------------------------------------------------- "
+        print "|   Node name    | Power state | Request state | Request user |   Request date    |"
+        print " --------------------------------------------------------------------------------- "
         for line in lis:
-            print "|{:16s}|{:18s}|{:19s}|{:18s}|{:19s}|".format(line[0], line[1][0], line[1][1], line[1][2], line[1][3] )
-        print " ----------------------------------------------------------------------------------------------\n"
+            print "|{:16s}|{:13s}|{:15s}|{:14s}|{:19s}|".format(line[0], line[1][0], line[1][1], line[1][2], line[1][3] )
+        print " ---------------------------------------------------------------------------------\n"
 
 
 
