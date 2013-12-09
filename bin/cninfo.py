@@ -47,9 +47,6 @@ class cninfo:
                                                                          element[1][2], \
                                                                          element[1][3], \
                                                                          element[0]   ) )
-
-
-
     # Returns node's state, requested_or_not, owner_name, and last_requested_date
     def get_node_info(self, node):
 
@@ -77,58 +74,123 @@ class cninfo:
 
         return state, requested, owner, modified
 
-    # Prints out specific user's request info
-    def user_info(self, username):
-        
-        print " Showing user {0}'s request info".format(username)
+    def print_list(self, lis):
         print " ---------------------------------------------------------------------------------------------- "
         print "|   Node name    |    Power state   |   Request state   |   Request user   |   Request date    |"
         print " ---------------------------------------------------------------------------------------------- "
-        for line in self.INFO_LIST:
-            if username == line[1][2]:
-                print "|{:16s}|{:18s}|{:19s}|{:18s}|{:19s}|".format(line[0], line[1][0], line[1][1], line[1][2], line[1][3] )
-        print " ----------------------------------------------------------------------------------------------\n"
-        
-
-    # All info of the system
-    def all_info(self):
-        print "ClusterNap: System's node request info:"
-        print " ---------------------------------------------------------------------------------------------- "
-        print "|   Node name    |    Power state   |   Request state   |   Request user   |   Request date    |"
-        print " ---------------------------------------------------------------------------------------------- "
-        for line in self.INFO_LIST:
+        for line in lis:
             print "|{:16s}|{:18s}|{:19s}|{:18s}|{:19s}|".format(line[0], line[1][0], line[1][1], line[1][2], line[1][3] )
         print " ----------------------------------------------------------------------------------------------\n"
 
 
-    def show_help(self):
-        print "Usage information: "
-        print "To see your own request info"
-        print "      Usage: {}\n".format(sys.argv[0])
-        print "To see all system's request info"
-        print "      Usage: {} -a\n".format(sys.argv[0])
-        print "To see specific user's request info"
-        print "      Usage: {} -u <Username>\n".format(sys.argv[0])
-        print "For help"
-        print "      Usage: {} -h\n".format(sys.argv[0])
 
+    def show_help(self):
+        print " Usage: {} [-u <username>] [-r <free/requested/f/r> ] [-s <on/off/unknown/un>]  [-n <nodename*>]\n".format(sys.argv[0])
+
+    def get_user(self, arglist):
+        name = ""
+        for i in range(1, len(arglist)):
+            if arglist[i] == "-u" and i < len(arglist)-1:
+                if arglist[i+1].startswith("-"):
+                    print "Wrong username: "
+                    self.show_help()
+                    exit(1)
+                name = arglist[i+1]
+                arglist.pop(i)
+                arglist.pop(i)
+                break
+        return arglist, name
+                    
+    def get_pstate(self, arglist):
+        pstate = ""
+        ons    = ["on", "On", "ON"]
+        offs   = ["off", "Off", "OFF"]
+        uns    = ["unknown", "Unknown", "UNKNOWN", "U", "u"]
+        states = ons + offs + uns
+        for i in range(1, len(arglist)):
+            if arglist[i] == "-s" and i < len(arglist)-1:
+                if not arglist[i+1].startswith("-"):
+                    if not arglist[i+1] in states:
+                        print "Wrong Power state: " + arglist[i+1]
+                        self.show_help()
+                        exit(1)
+                    if arglist[i+1] in ons:
+                        pstate = "On"
+                    elif arglist[i+1] in offs:
+                        pstate = "Off"
+                    else:
+                        pstate = "Unknown"
+                    arglist.pop(i)
+                    arglist.pop(i)
+                    break
+        return arglist, pstate
+
+    def get_rstate(self, arglist):
+        rstate = ""
+        frees = ["Free","FREE", "free", "f", "F"]
+        reqds = ["Requested", "REQUESTED","requested", "r", "R"]
+        states = frees + reqds
+
+        for i in range(1, len(arglist)):
+            if arglist[i] == "-r" and i < len(arglist)-1:
+                if not arglist[i+1].startswith("-"):
+                    if not arglist[i+1] in states:
+                        print "Wrong request state: " + arglist[i+1]
+                        self.show_help()
+                        exit(1)
+                    if arglist[i+1] in frees:
+                        rstate = "Free"
+                    else:
+                        rstate = "Requested"
+                    arglist.pop(i)
+                    arglist.pop(i)
+                    break
+        return arglist, rstate
+
+    def get_node(self, arglist):
+        nname = ""
+        for i in range(1, len(arglist)):
+            if arglist[i] == "-n" and i < len(arglist)-1:
+                if arglist[i+1].startswith("-"):
+                    print "Wrong node name: " + arglist[i+1]
+                    self.show_help()
+                    exit(1)
+                nname = arglist[i+1]
+                arglist.pop(i)
+                arglist.pop(i)
+                break
+        return arglist, nname
+
+    def get_list(self, info_list, user, pstate, rstate, node):
+        tmp_list = list()
+        for line in info_list:
+            if node in line[0] and \
+                    ( pstate == line[1][0] or pstate == "" ) and \
+                    ( rstate == line[1][1] or rstate == "" ) and \
+                    ( user ==  line[1][2] or user == ""):
+                tmp_list.append(line)
+
+        return tmp_list
 
     def main(self, argv):
 
-        self.args = argv
+        info_list = self.INFO_LIST[:]
+        user   = "" # user name
+        pstate = "" # power state
+        rstate = "" # request state
+        node   = "" # node name
 
-        if len(self.args) == 3 and self.args[1] == '-u':
-            return self.user_info(self.args[2])
-        if len(self.args) == 2 and self.args[1] == '-a':
-            return self.all_info()
-        if len(self.args) == 2 and self.args[1] == '-h':
-            return self.show_help()
-        if len(self.args) == 1:
-            return self.user_info(self.USER)
+        argv, user   = self.get_user(argv)
+        argv, pstate = self.get_pstate(argv)
+        argv, rstate = self.get_rstate(argv)
+        argv, node   = self.get_node(argv)
 
-        return self.show_help()
+        if len(argv) != 1:
+            self.show_help()
+            exit(1)
 
-
+        info_list = self.get_list(info_list, user, pstate, rstate, node)
+        self.print_list(info_list)
 
         return
 
