@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 
-import sys, time
+import sys, time, action_on_off
 from daemon import Daemon
 
-class MyDaemon(Daemon):
+class clusternapd(Daemon):
 	def run(self):
 		while True:
-			time.sleep(1)
+			action_on_off.action_on_off().main()
+			time.sleep(5)
 
 if __name__ == "__main__":
-	daemon = MyDaemon('/tmp/daemon-example.pid')
+	daemon = clusternapd('/tmp/clusternapd.pid')
 	if len(sys.argv) == 2:
 		if 'start' == sys.argv[1]:
 			daemon.start()

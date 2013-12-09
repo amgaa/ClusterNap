@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import sys, os, time, atexit
-import action_on_off
 from signal import SIGTERM 
 
 class Daemon:
@@ -10,16 +9,12 @@ class Daemon:
 	
 	Usage: subclass the Daemon class and override the run() method
 	"""
-#	def __init__(self, pidfile, stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
-	def __init__(self, pidfile, stdin='/dev/null', stdout='/home/amgaa/ClusterNap/logs/2013-12-09_event.log', stderr= '/home/amgaa/ClusterNap/logs/2013-12-09_error.log'):
+	def __init__(self, pidfile, stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
 		self.stdin = stdin
 		self.stdout = stdout
 		self.stderr = stderr
 		self.pidfile = pidfile
-		self.action_on_off = os.path.dirname(os.path.abspath(__file__)) + "/../bin/action_on_off.py"
-		self.action_on_off =  "/home/amgaa/ClusterNap/bin/action_on_off.py"
-		print self.action_on_off
-
+	
 	def daemonize(self):
 		"""
 		do the UNIX double-fork magic, see Stevens' "Advanced 
@@ -72,9 +67,6 @@ class Daemon:
 		"""
 		Start the daemon
 		"""
-		print "Starting daemon:"
-		print "File is: " + self.action_on_off
-
 		# Check for a pidfile to see if the daemon already runs
 		try:
 			pf = file(self.pidfile,'r')
@@ -90,7 +82,6 @@ class Daemon:
 		
 		# Start the daemon
 		self.daemonize()
-		print "Here it comes"
 		self.run()
 
 	def stop(self):
@@ -136,7 +127,3 @@ class Daemon:
 		You should override this method when you subclass Daemon. It will be called after the process has been
 		daemonized by start() or restart().
 		"""
-		action_on_off.action_on_off().main()
-		print "Here it comes to run!"
-		os.system("echo 000  >>  " + self.stdout)
-		os.system(self.action_on_off)

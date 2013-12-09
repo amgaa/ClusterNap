@@ -38,6 +38,19 @@ class get_conf:
             self.TYPES.update(tmp_types)
 
 
+        # Create state files for newly define nodes
+        # Remove state files of removed nodes
+        self.create_state_files()
+
+
+
+
+
+
+
+
+
+
     # Returns  hash table of:
     # commands[name] = [{'host': "", 'user':"", 'command':""}, {'host': "", 'user':"", 'command':""} ... ]        
     def get_on_command(self):
@@ -399,7 +412,7 @@ class get_conf:
 
         
     def main(self):
-        self.create_state_files()
+#        self.create_state_files()
         print "ON COMMANDS"
         for node in self.NODES:
             if self.NODES[node].has_key("on_command"):

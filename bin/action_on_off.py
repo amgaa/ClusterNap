@@ -105,9 +105,6 @@ class action_on_off:
                         print "OFF DEP NODE OF "+  nodeA + " is " + node 
                         self.HAS_OFF_DEP_ON_CHILD[nodeA] = 1
 
-
-
-
     # Turns on ON-able OFF nodes
     def try_on(self, nodes_to_on):
         for node in nodes_to_on:
@@ -146,8 +143,6 @@ class action_on_off:
                 msg = "Cannot turn on " + node + " for now"
                 print msg
                 self.log.info(msg)
-
-
 
     # Turns off OFF-able ON nodes
     def try_off(self, nodes_to_off):
@@ -203,6 +198,7 @@ class action_on_off:
         cmd  = "ssh -t -q root@" + host
         cmd += " \'su - " + user
         cmd += " -c " + " \"" + path_script + "\"  \'"
+#        self.log.info(cmd)
         cmd =shlex.split(cmd)
         return cmd
 
