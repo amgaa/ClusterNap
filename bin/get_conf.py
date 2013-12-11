@@ -43,14 +43,6 @@ class get_conf:
         self.create_state_files()
 
 
-
-
-
-
-
-
-
-
     # Returns  hash table of:
     # commands[name] = [{'host': "", 'user':"", 'command':""}, {'host': "", 'user':"", 'command':""} ... ]        
     def get_on_command(self):

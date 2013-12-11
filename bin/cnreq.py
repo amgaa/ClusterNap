@@ -70,10 +70,77 @@ class cnreq:
             self.lof.info(self.USER + ": " + msg)
             return
 
-    def get_nodes(self, nlist):
-        
+
+    def get_nodes(self, arglist):
+        nlist = list() # node list
+        for arg in arglist:
+            self.check_arg(arg) # Checks if arg is written correctly
+            nlist += self.get_multiple(arg) 
         return nlist
-    
+
+    # Should be further fixed. Checks more
+    def check_arg(self, arg):
+        if arg.startswith("-"):
+            msg = "Error in argument. Wrong argument: '{0}'".format(arg)
+            print msg
+            self.errorlog.error(self.USER + ": " + msg)
+            exit(1)
+
+    # Input example: foo[00-02, AA]
+    # Return: ['foo00', 'foo01', 'foo02', 'fooAA']
+    def get_multiple(self, arg):
+        nlist = list()
+        expr = self.get_expr(arg)
+        if not expr:
+            nlist.append(arg)
+            return nlist
+
+        items = self.get_items(expr)
+        for item in items:
+            nlist.append(re.sub("\[(.+?)\]", item, arg ) )
+        return nlist
+
+    # Input ex: "120-123, 145, 147"
+    # return  : ["120", "121", "122", "123", "145", "147"]    
+    def get_items(self, exprs):
+        if not exprs:
+            return
+        
+        itemlist = list()
+        itemstr = map( str.strip, exprs.split(","))
+
+        for items in itemstr:
+            items = map(str.strip, items.split("-"))
+
+            if len(items) == 1:
+                itemlist.append(items[0]) # Can be digit and string
+
+            elif         len(items) == 2    \
+                     and items[0].isdigit() \
+                     and items[1].isdigit():    # can only be integer
+                for i in range(int(items[0]), int(items[1]) + 1 ):
+                    itemlist.append(str(i).zfill(len(items[1])))
+            else:
+                msg = "Error in argument. Unknown expression: '{0}'".format(exprs)
+                print msg
+                self.errorlog.error(self.USER + ": " + msg)
+                exit(1)
+                
+        return itemlist
+
+
+    def get_expr(self, arg):
+        expr = re.findall(r"\[(.+?)\]", arg)
+        if expr == []: #empt
+            return 0
+        if len(expr) != 1:
+            msg = "Wrong argument in '{0}'.".format(arg)
+            print msg
+            self.errorlog.error(self.USER + ": " + msg)
+            exit(1)
+        
+        return expr[0]
+
     def main(self, argv):
 #        print self.INFO
         args = argv[1:]
