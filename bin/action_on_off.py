@@ -198,7 +198,7 @@ class action_on_off:
         cmd  = "ssh -t -q root@" + host
         cmd += " \'su - " + user
         cmd += " -c " + " \"" + path_script + "\"  \'"
-#        self.log.info(cmd)
+        self.log.info(cmd)
         cmd =shlex.split(cmd)
         return cmd
 
