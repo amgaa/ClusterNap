@@ -21,7 +21,7 @@ class cnreq:
     def request_node(self, node):
         # If node is not defined in ClusterNap, say so. return
         if not self.INFO.has_key(node):
-            msg = "'{0}': not defined in ClusterNap. Request for this node cannot be done!".format(node)
+            msg = "'{0}': not defined in ClusterNap. Request cannot be done!".format(node)
             print msg
             self.log.warn(self.USER + ": " + msg)
             return
@@ -59,13 +59,13 @@ class cnreq:
         if self.INFO[node][1] == "Requested":
             # Requested by the user itself
             if self.USER == self.INFO[node][2]:
-                msg = "'{0}': You already requested this node".format(node)
+                msg = "'{0}': You already requested".format(node)
                 print msg
                 self.log.info(self.USER + ": " + msg)
                 return
 
             # Someone else requested
-            msg = "'{0}': Someone else already requested this node".format(node)
+            msg = "'{0}': Someone else already requested".format(node)
             print msg
             self.log.info(self.USER + ": " + msg)
             return
