@@ -67,7 +67,7 @@ class cnreq:
             # Someone else requested
             msg = "'{0}': Someone else already requested this node".format(node)
             print msg
-            self.lof.info(self.USER + ": " + msg)
+            self.log.info(self.USER + ": " + msg)
             return
 
 
@@ -141,15 +141,28 @@ class cnreq:
         
         return expr[0]
 
+    def show_help(self):
+        msg1 = "Usage: {0} <request nodes>\n".format(sys.argv[0])
+        msg2 = "Example: \n\tcommand \"{0} foo[00-02] bar\"\n".format(sys.argv[0])
+        msg3 = "will request nodes 'foo00', 'foo01', 'foo02', and 'bar'"
+        print msg1
+        print msg2
+        print msg3
+        return 
+
     def main(self, argv):
-#        print self.INFO
         args = argv[1:]
+        print args
+        if  len(args)==0           or \
+                args == ['-h']     or \
+                args == ['-help'] or \
+                args == ['--help']:
+            return self.show_help()
+    
         nodes = self.get_nodes(args)
         for node in nodes:
             self.request_node(node)
         return
-
-
 
 if __name__ == "__main__":
     sys.exit(cnreq().main(sys.argv))
