@@ -152,9 +152,9 @@ class cnreq:
 
     def main(self, argv):
         args = argv[1:]
-        print args
-        if  len(args)==0           or \
-                args == ['-h']     or \
+
+        if  len(args)==0          or \
+                args == ['-h']    or \
                 args == ['-help'] or \
                 args == ['--help']:
             return self.show_help()
