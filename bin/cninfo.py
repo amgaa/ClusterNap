@@ -1,10 +1,10 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 #
-
 ''' 
+Shows  ClusterNap nodes' current information. 
+Which nodes are ON/OFF/Requested( by whom, when)
 
 '''
-
 import os, sys, re, pwd, datetime
 import itertools
 import get_state
@@ -14,19 +14,15 @@ import logset
 class cninfo:
     def __init__ (self):
         # Get logger
-        self.log      = logset.get("cninfo", "event.log")
-        self.errorlog = logset.get("cninfo", "error.log")
+        self.log      = logset.get("cninfo_event", "event.log")
+        self.errorlog = logset.get("cninfo_error", "error.log")
         self.REQUEST_DIR         = os.path.dirname(os.path.abspath(__file__))
         self.REQUEST_DIR        += "/../requested/nodes/"
-
         self.NODES_REQUESTED     = os.listdir(self.REQUEST_DIR)
 	self.NODES	         = get_conf.get_conf().NODES
-
         self.STATES              = {}
         self.STATES              = get_state.get_state().STATES.copy()
-
         self.USER                = pwd.getpwuid(os.getuid())[0]       
-        
         self.INFO   = {}
         
         for node in self.NODES.keys():
@@ -38,6 +34,7 @@ class cninfo:
                                                                          element[1][2], \
                                                                          element[1][3], \
                                                                          element[0]   ) )
+    
     # Returns node's state, requested_or_not, owner_name, and last_requested_date
     def get_node_info(self, node):
 
@@ -76,8 +73,9 @@ class cninfo:
 
 
     def show_help(self):
-        print " Usage: {} [-u <username>] [-r <free/requested/f/r> ] [-s <on/off/unknown/un>]  [-n <nodename*>]\n".format(sys.argv[0])
+        print " Usage: {} [-u <username>] [-r <free|requested|f|r> ] [-s <on|off|unknown|un>]  [-n <nodename*>]\n".format(sys.argv[0])
 
+    # If any user is define in the argument, take that
     def get_user(self, arglist):
         name = ""
         for i in range(1, len(arglist)):
@@ -91,7 +89,8 @@ class cninfo:
                 arglist.pop(i)
                 break
         return arglist, name
-                    
+                   
+    # Power state
     def get_pstate(self, arglist):
         pstate = ""
         ons    = ["on", "On", "ON"]
@@ -116,6 +115,7 @@ class cninfo:
                     break
         return arglist, pstate
 
+    # Request state
     def get_rstate(self, arglist):
         rstate = ""
         frees = ["Free","FREE", "free", "f", "F"]
