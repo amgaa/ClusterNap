@@ -7,11 +7,12 @@
 #*#
 *~
 state/nodes/*
-!state/nodes/.README
+!state/nodes/head
 config/*
 !config/example_*
-requested/nodes/*
-!requested/nodes/.README
+!config/head.conf
+requested/*
+!requested/head.conf
 graphs/*
 !graphs/.README
 logs/*
