@@ -24,6 +24,15 @@ class cnssh:
         self.USER         = pwd.getpwuid(os.getuid())[0]
 
     def cnssh(self, args):
+
+        # Check if <user> is written correctly
+        for arg in args:
+            if arg == '-l':
+                msg = "Please do not use option '-l <user>'. Instead, use '<user>@<hostname>'. "
+                print msg
+                self.log.info(self.USER + ": " + msg)
+                return 1
+
         hostname = self.get_hostname(args)
         # TODO: If host is given by its IP, we should search the hostname of that ip
 
@@ -35,10 +44,13 @@ class cnssh:
 
         state = get_state.get_state().node_state(hostname)
         cnreq.cnreq().request_node(hostname)# Request it anyway
-        if state == 1 and self.try_ssh(args) == 0:
-            if rel_after_ssh:
-                cnrel.cnrel().release_node(hostname)
-            return 0
+        if state == 1:
+            if self.try_ssh(args) == 0:
+                if rel_after_ssh:
+                    cnrel.cnrel().release_node(hostname)
+                    return 0
+            else:
+                return 1
 
         # If host is in OFF or UNKNOWN state
         # Request it
@@ -78,10 +90,13 @@ class cnssh:
 
         state = get_state.get_state().node_state(hostname)
         cnreq.cnreq().request_node(hostname)# Request it anyway
-        if state == 1 and self.try_scp(args) == 0:
-            if rel_after_scp:
-                cnrel.cnrel().release_node(hostname)
-            return 0
+        if state == 1:
+            if self.try_scp(args) == 0:
+                if rel_after_scp:
+                    cnrel.cnrel().release_node(hostname)
+                    return 0
+            else:
+                return 1
 
         # If host is in OFF or UNKNOWN state
         # Request it
@@ -121,10 +136,13 @@ class cnssh:
 
         state = get_state.get_state().node_state(hostname)
         cnreq.cnreq().request_node(hostname)# Request it anyway
-        if state == 1 and self.try_rsync(args) == 0:
-            if rel_after_rsync:
-                cnrel.cnrel().release_node(hostname)
-            return 0
+        if state == 1:
+            if self.try_rsync(args) == 0:
+                if rel_after_rsync:
+                    cnrel.cnrel().release_node(hostname)
+                    return 0
+            else:
+                return 1
 
         # If host is in OFF or UNKNOWN state
         # Request it
@@ -218,16 +236,10 @@ class cnssh:
 
     # TODO (new): Lets make convention that we always use username, 
     # and do not use -l option. Instead lets use user@hostname.
-    # TODO: We should validate the hostname!
     def get_hostname(self, args):
         tmp_args = args[:]
 
-#        for arg in args:
-#            if arg == '-l':
-#                msg = "Please do not use option '-l <user>'. Instead, use '<user>@<hostname>'. "
-#                print msg
-#                self.log.info(self.USER + ": " + msg)
-#                exit(1)
+
             
         for arg in args:
             if '@' in arg:
