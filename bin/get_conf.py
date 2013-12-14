@@ -18,7 +18,7 @@ class get_conf:
         self.errorlog = logset.get("get_conf_error", "error.log")
 
         self.CONF_DIR        = os.path.dirname(os.path.abspath(__file__)) + "/../config/"
-	self.CONF_FILES = [f for f in os.listdir(self.CONF_DIR) if f.endswith('.conf')]
+        self.CONF_FILES = [f for f in os.listdir(self.CONF_DIR) if f.endswith('.conf')]
         self.STATE_DIR       = os.path.dirname(os.path.abspath(__file__)) + "/../state/nodes/"
 
         # Gets command informations from respective COMM_CONF_FILES
@@ -27,7 +27,7 @@ class get_conf:
         self.TYPES    = {}
 
         # Get configurations for "nodes", "commands", and "types"
- 	for conf_file in self.CONF_FILES:
+        for conf_file in self.CONF_FILES:
             conf_file = self.CONF_DIR + conf_file
             tmp_nodes = {}
             tmp_comms = {}

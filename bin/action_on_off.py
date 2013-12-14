@@ -194,7 +194,7 @@ class action_on_off:
         
 
     # Creates ON/OFF command
-    def create_cmd(self, host, path_script, user):
+    def create_cmd_old(self, host, path_script, user):
         cmd  = "ssh -t -q root@" + host
         cmd += " \'su - " + user
         cmd += " -c " + " \"" + path_script + "\"  \'"
@@ -202,6 +202,14 @@ class action_on_off:
         cmd =shlex.split(cmd)
         return cmd
 
+    def create_cmd(self, host, path_script, user):
+        cmd  = "ssh -t -q " + user + "@" + host
+#        cmd += " \'su - " + user
+ #       cmd += " -c " + " \"" + path_script + "\"  \'"
+        cmd += " " + path_script 
+        self.log.info(cmd)
+        cmd =shlex.split(cmd)
+        return cmd
 
     # Checks if an OFF node is ON-able (necessary childs are ON)
     def on_able(self, node):
