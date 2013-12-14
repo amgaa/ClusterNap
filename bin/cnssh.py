@@ -50,7 +50,7 @@ class cnssh:
             if self.try_ssh(args) == 0:
                 if rel_after_ssh:
                     cnrel.cnrel().release_node(hostname)
-                    return 0
+                return 0
             else:
                 return 1
 
@@ -70,10 +70,13 @@ class cnssh:
             self.log.warning(self.USER + ": " + msg)
             return 1
 
-        if state == 1 and self.try_ssh(args) == 0:
-            if rel_after_ssh:
-                cnrel.cnrel().release_node(hostname)  # Release after connection??
-            return 0
+        if state == 1:
+            if self.try_ssh(args) == 0:
+                if rel_after_ssh:
+                    cnrel.cnrel().release_node(hostname)  # Release after connection??
+                return 0
+            else:
+                return 1
 
         msg = "Unexpected error."
         print msg
@@ -96,7 +99,7 @@ class cnssh:
             if self.try_scp(args) == 0:
                 if rel_after_scp:
                     cnrel.cnrel().release_node(hostname)
-                    return 0
+                return 0
             else:
                 return 1
 
@@ -116,10 +119,13 @@ class cnssh:
             self.log.warning(self.USER + ": " + msg)
             return 1
 
-        if state == 1 and self.try_scp(args) == 0:
-            if rel_after_scp:
-                cnrel.cnrel().release_node(hostname)  # Release after connection??
-            return 0
+        if state == 1:
+            if  self.try_scp(args) == 0:
+                if rel_after_scp:
+                    cnrel.cnrel().release_node(hostname)  # Release after connection??
+                return 0
+            else:
+                return 1
 
         msg = "Unexpected error."
         print msg
@@ -142,7 +148,7 @@ class cnssh:
             if self.try_rsync(args) == 0:
                 if rel_after_rsync:
                     cnrel.cnrel().release_node(hostname)
-                    return 0
+                return 0
             else:
                 return 1
 
@@ -162,10 +168,13 @@ class cnssh:
             self.log.warning(self.USER + ": " + msg)
             return 1
 
-        if state == 1 and self.try_rsync(args) == 0:
-            if rel_after_rsync:
-                cnrel.cnrel().release_node(hostname)  # Release after connection??
-            return 0
+        if state == 1:
+            if self.try_rsync(args) == 0:
+                if rel_after_rsync:
+                    cnrel.cnrel().release_node(hostname)  # Release after connection??
+                return 0
+            else:
+                return 1
 
         msg = "Unexpected error."
         print msg
