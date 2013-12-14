@@ -10,10 +10,12 @@ import get_conf
 import logset
 import cninfo, cnreq, cnrel
 
-max_wait = 900
-rel_after_ssh   = False
-rel_after_scp   = False
-rel_after_rsync = False
+max_wait        = os.getenv('MAX_WAIT', 900)
+rel_after_ssh   = os.getenv('SSH_RELEASE', False)
+rel_after_scp   = os.getenv('SCP_RELEASE', False)
+rel_after_rsync = os.getenv('RSYNC_RELEASE', False)
+
+
 
 class cnssh:
     def __init__ (self):
