@@ -7,10 +7,10 @@ import get_conf
 import cninfo
 import logset
 
-class cnreq:
+class cnrel:
     def __init__(self):
-        self.log          = logset.get("cnreq", "event.log")
-        self.errorlog     = logset.get("cnreqerr", "error.log")
+        self.log          = logset.get("cnrel", "event.log")
+        self.errorlog     = logset.get("cnrelerr", "error.log")
         self.REQUEST_DIR  = os.path.dirname(os.path.abspath(__file__))
         self.REQUEST_DIR += "/../requested/nodes/"
         self.USER         = pwd.getpwuid(os.getuid())[0]
@@ -30,14 +30,14 @@ class cnreq:
             msg = "'{0}': Cannot release. Not defined in ClusterNap".format(node)
             print msg
             self.log.warning(self.USER + ": " + msg)
-            return
+            return 1
         
         # If not requested, say so request
         if self.INFO[node][1] == "Free":
-            msg = "'{0}': Cannot release. Not requested".format(node)
+            msg = "'{0}': Cannot release. Already released".format(node)
             print msg
             self.log.warning(self.USER + ": " + msg)
-            return
+            return 0
 
         # If the user is "root", do whatever he pleases!
         if self.USER == "root":
@@ -46,12 +46,13 @@ class cnreq:
                 msg = "'{0}': Unexpected error!".format(node)
                 print msg
                 self.errorlog.error(self.USER + ": " + msg)
-                exit(1)
+#                exit(1)
+                return 1
 
             msg = "'{0}': released!".format(node)
             print msg
             self.log.info(self.USER + ": " + msg)
-            return
+            return 0
  
         # If requested
         if self.INFO[node][1] == "Requested":
@@ -62,18 +63,19 @@ class cnreq:
                     msg = "'{0}': Unexpected error!".format(node)
                     print msg
                     self.errorlog.error(self.USER + ": " + msg)
-                    exit(1)
-                
+#                    exit(1)
+                    return 1
+
                 msg = "'{0}': released".format(node)
                 print msg
                 self.log.info(self.USER + ": " + msg)
-                return
+                return 0
 
             # Someone else requested
-            msg = "'{0}': Cannot release. Someone else requested, not you".format(node)
+            msg = "'{0}': Cannot release. Someone else requested".format(node)
             print msg
             self.log.warn(self.USER + ": " + msg)
-            return
+            return 1
 
 
     def get_nodes(self, arglist):
@@ -172,4 +174,4 @@ class cnreq:
         return
 
 if __name__ == "__main__":
-    sys.exit(cnreq().main(sys.argv))
+    sys.exit(cnrel().main(sys.argv))
