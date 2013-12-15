@@ -15,6 +15,51 @@ rel_after_ssh   = os.getenv('SSH_RELEASE', False)
 rel_after_scp   = os.getenv('SCP_RELEASE', False)
 rel_after_rsync = os.getenv('RSYNC_RELEASE', False)
 
+# Chech Env var MAX_WAIT
+if isinstance(max_wait, basestring):
+	if max_wait.isdigit() and int(max_wait) > 0:
+		max_wait = int(max_wait)
+	else:
+		msg =  "Environmental variable MAX_WAIT has given wrong value: " + max_wait
+		msg += "\nWill be set to default value 900 seconds"
+		print msg
+		max_wait = 900
+		
+# Chech Env var SSH_RELEASE
+if isinstance(rel_after_ssh, basestring):
+	if rel_after_ssh in ['TRUE', 'True', 'true', '1']:
+		rel_after_ssh = True
+	elif rel_after_ssh in ['FALSE', 'False', 'false', '0']:
+		rel_after_ssh = False
+	else:
+		msg = "Environmental variable SSH_RELEASE has given wrong value: " + rel_after_ssh
+		msg += "\nWill be set to default value 'False'"
+		print msg
+		rel_after_ssh = False
+
+# Chech Env var SCP_RELEASE
+if isinstance(rel_after_scp, basestring):
+	if rel_after_scp in ['TRUE', 'True', 'true', '1']:
+		rel_after_scp = True
+	elif rel_after_scp in ['FALSE', 'False', 'false', '0']:
+		rel_after_scp = False
+	else:
+		msg = "Environmental variable SCP_RELEASE has given wrong value: " + rel_after_scp
+		msg += "\nWill be set to default value 'False'"
+		print msg
+		rel_after_scp = False
+
+# Chech Env var RSYNC_RELEASE
+if isinstance(rel_after_rsync, basestring):
+	if rel_after_rsync in ['TRUE', 'True', 'true', '1']:
+		rel_after_rsync = True
+	elif rel_after_rsync in ['FALSE', 'False', 'false', '0']:
+		rel_after_rsync = False
+	else:
+		rel_after_rsync = False
+		msg = "Environmental variable RSYNC_RELEASE has given wrong value: " + rel_after_rsync
+		msg += "\nWill be set to default value 'False'"
+		print msg
 
 
 class cnssh:
