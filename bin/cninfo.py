@@ -73,7 +73,7 @@ class cninfo:
 
 
     def show_help(self):
-        print " Usage: {} [-u <username>] [-r <free|requested|f|r> ] [-s <on|off|unknown|un>]  [-n <nodename*>]\n".format(sys.argv[0])
+        print " Usage: {} [-u <username>] [-r <free|requested|f|r> ] [-s <on|off|unknown|un|u>]  [-n <nodename*>]\n".format(sys.argv[0])
 
     # If any user is define in the argument, take that
     def get_user(self, arglist):
