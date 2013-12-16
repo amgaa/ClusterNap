@@ -10,64 +10,39 @@ import get_conf
 import logset
 import cninfo, cnreq, cnrel
 
-max_wait        = os.getenv('MAX_WAIT', 900)
-rel_after_ssh   = os.getenv('SSH_RELEASE', False)
-rel_after_scp   = os.getenv('SCP_RELEASE', False)
-rel_after_rsync = os.getenv('RSYNC_RELEASE', False)
-
-# Chech Env var MAX_WAIT
-if isinstance(max_wait, basestring):
-    if max_wait.isdigit() and int(max_wait) > 0:
-        max_wait = int(max_wait)
-    else:
-        msg =  "Environmental variable MAX_WAIT has given wrong value: " + max_wait
-	msg += "\nWill be set to default value 900 seconds"
-	print msg
-	max_wait = 900
-		
-# Chech Env var SSH_RELEASE
-if isinstance(rel_after_ssh, basestring):
-    if rel_after_ssh in ['TRUE', 'True', 'true', '1']:
-        rel_after_ssh = True
-    elif rel_after_ssh in ['FALSE', 'False', 'false', '0']:
-        rel_after_ssh = False
-    else:
-        msg = "Environmental variable SSH_RELEASE has given wrong value: " + rel_after_ssh
-        msg += "\nWill be set to default value 'False'"
-        print msg
-        rel_after_ssh = False
-
-# Chech Env var SCP_RELEASE
-if isinstance(rel_after_scp, basestring):
-    if rel_after_scp in ['TRUE', 'True', 'true', '1']:
-        rel_after_scp = True
-    elif rel_after_scp in ['FALSE', 'False', 'false', '0']:
-        rel_after_scp = False
-    else:
-        msg = "Environmental variable SCP_RELEASE has given wrong value: " + rel_after_scp
-        msg += "\nWill be set to default value 'False'"
-        print msg
-        rel_after_scp = False
-
-# Chech Env var RSYNC_RELEASE
-if isinstance(rel_after_rsync, basestring):
-    if rel_after_rsync in ['TRUE', 'True', 'true', '1']:
-        rel_after_rsync = True
-    elif rel_after_rsync in ['FALSE', 'False', 'false', '0']:
-        rel_after_rsync = False
-    else:
-        msg = "Environmental variable RSYNC_RELEASE has given wrong value: " + rel_after_rsync
-        msg += "\nWill be set to default value 'False'"
-        print msg
-        rel_after_rsync = False
-
 class cnssh:
     def __init__ (self):
         # Get logger
         self.log      = logset.get("cnssh_event", "event.log")
         self.errorlog = logset.get("cnssh_error", "error.log")
         self.INFO     = cninfo.cninfo().INFO.copy()
-        self.USER         = pwd.getpwuid(os.getuid())[0]
+        self.USER     = pwd.getpwuid(os.getuid())[0]
+        self.RELEASE  = os.getenv('RELEASE', False)
+        self.MAX_WAIT = os.getenv('MAX_WAIT', 900)
+        # Chech Env var RELEASE
+        if isinstance(self.RELEASE, basestring):
+            if self.RELEASE in ['TRUE', 'True', 'true', '1']:
+                self.RELEASE = True
+            elif self.RELEASE in ['FALSE', 'False', 'false', '0']:
+                self.RELEASE = False
+            else:
+                msg = "Environment variable RELEASE has given wrong value: " + self.RELEASE
+                msg += "\nWill be set to default value 'False'"
+                self.log.warn(self.USER + ": " + msg)
+                print msg
+                self.RELEASE = False
+		
+        # Chech Env var MAX_WAIT
+        if isinstance(self.MAX_WAIT, basestring):
+            if self.MAX_WAIT.isdigit() and int(self.MAX_WAIT) > 0:
+                self.MAX_WAIT = int(self.MAX_WAIT)
+            else:
+                msg =  "Environment variable MAX_WAIT has given wrong value: " + self.MAX_WAIT
+                msg += "\nWill be set to default value 900 seconds"
+                self.log.warn(self.USER + ": " + msg)
+                print msg
+                self.MAX_WAIT = 900
+
 
     def cnssh(self, args):
 
@@ -92,7 +67,7 @@ class cnssh:
         cnreq.cnreq().request_node(hostname)# Request it anyway
         if state == 1:
             if self.try_ssh(args) == 0:
-                if rel_after_ssh:
+                if self.RELEASE:
                     cnrel.cnrel().release_node(hostname)
                 return 0
             else:
@@ -116,7 +91,7 @@ class cnssh:
 
         if state == 1:
             if self.try_ssh(args) == 0:
-                if rel_after_ssh:
+                if self.RELEASE:
                     cnrel.cnrel().release_node(hostname)  # Release after connection??
                 return 0
             else:
@@ -141,7 +116,7 @@ class cnssh:
         cnreq.cnreq().request_node(hostname)# Request it anyway
         if state == 1:
             if self.try_scp(args) == 0:
-                if rel_after_scp:
+                if self.RELEASE:
                     cnrel.cnrel().release_node(hostname)
                 return 0
             else:
@@ -165,7 +140,7 @@ class cnssh:
 
         if state == 1:
             if  self.try_scp(args) == 0:
-                if rel_after_scp:
+                if self.RELEASE:
                     cnrel.cnrel().release_node(hostname)  # Release after connection??
                 return 0
             else:
@@ -190,7 +165,7 @@ class cnssh:
         cnreq.cnreq().request_node(hostname)# Request it anyway
         if state == 1:
             if self.try_rsync(args) == 0:
-                if rel_after_rsync:
+                if self.RELEASE:
                     cnrel.cnrel().release_node(hostname)
                 return 0
             else:
@@ -214,7 +189,7 @@ class cnssh:
 
         if state == 1:
             if self.try_rsync(args) == 0:
-                if rel_after_rsync:
+                if self.RELEASE:
                     cnrel.cnrel().release_node(hostname)  # Release after connection??
                 return 0
             else:
