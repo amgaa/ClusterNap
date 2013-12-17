@@ -4,7 +4,7 @@
 
 '''
 import sys
-import cnssh
+import cntools
 
 def show_help():
     msg  = "Usage: {0} <scp_arguments>\n".format(sys.argv[0])
@@ -26,7 +26,7 @@ def main(argv):
             args in [['-h'], ['--help'], ['-help']]:
         return show_help()
 
-    return cnssh.cnssh().cnscp(args)
+    return cntools.cnscp(args)
 
 
 if __name__ == "__main__":

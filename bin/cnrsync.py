@@ -4,7 +4,7 @@
 
 '''
 import sys
-import cnssh
+import cntools
 
 def show_help():
     msg  = "Usage: {0} <rsync_arguments>\n".format(sys.argv[0])
@@ -25,7 +25,7 @@ def main(argv):
             args in [['-h'], ['--help'], ['-help']]:
         return show_help()
 
-    return cnssh.cnssh().cnrsync(args)
+    return cntools.cnrsync(args)
 
 
 if __name__ == "__main__":
