@@ -185,9 +185,9 @@ class action_on_off:
         cmd = self.create_cmd(host['host'], host['command'], host['user'])
 #        self.PROCS.add(subprocess.call(cmd))
         self.PROCS.add(subprocess.Popen(cmd, stdout=self.log_event_file, stderr=self.log_error_file))
-        if len(self.PROCS) >= self.MAX_PROCS:
-            os.wait()
-            self.PROCS.difference_update(p for p in self.PROCS if p.poll is not None)
+#        if len(self.PROCS) >= self.MAX_PROCS:
+#            os.wait()
+#            self.PROCS.difference_update(p for p in self.PROCS if p.poll is not None)
         
         # Following should be reconsidered. 
         # Does not guarantee that it takes logs of all processes (actions)
