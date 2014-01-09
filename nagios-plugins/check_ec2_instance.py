@@ -29,17 +29,27 @@ conn = boto.ec2.connect_to_region(REGION,
                                   aws_access_key_id = ACCESS,
                                   aws_secret_access_key = SECRET)
 
-ret = conn.get_all_reservations(INS_ID)[0].instances[0].state_code
-
-if ret == 16: #running
-    print "OK: Running"
-    sys.exit(1)
-if ret in [0, 32, 64]:
-    print "WARNING: one of (pending, shutting-down, stopping)"
-    sys.exit(2)
-if ret in [48, 80]:
-    print "CRITICAL: one of (terminated, stopped)"
+if not conn:
+    print "UNKNOWN: Failed to connect to region %s with given ACCESS and SECRET KEY: " % REGION
     sys.exit(3)
 
-print "Unknown state: " + str(ret)
-sys.exit(-1)
+try: 
+    ret = conn.get_all_reservations(INS_ID)[0].instances[0].state_code 
+    if ret == 16: #running
+        print "OK: Running"
+        sys.exit(0)
+    if ret in [48, 80]:
+        print "CRITICAL: one of (terminated, stopped)"
+        sys.exit(2)
+    if ret in [0, 32, 64]:
+        print "UNKNOWN: one of (pending, shutting-down, stopping)"
+        sys.exit(3)
+except boto.exception.EC2ResponseError as ex:
+    print "UNKNOWN: Failed to get information of instance \"%s\" with given ACCESS and SECRET KEY" % INS_ID
+    template = "An exception of type {0} occured. Arguments:\n{1!r}"
+    message = template.format(type(ex).__name__, ex.args)
+    print message
+    sys.exit(3)
+
+print "UNKNOWN: Unexpected error: " + str(ret)
+sys.exit(3)
