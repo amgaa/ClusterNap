@@ -308,6 +308,7 @@ def torque_nodes():
 
     return request_nodes
 
+
 # Checks if nodes are requested and if not, request them 
 def check_and_request(nodes):
 
@@ -321,6 +322,9 @@ def check_and_request(nodes):
         if node in nodes and  val[1] == 'Free':
                 cnreq.cnreq().request_node(node)
     return
+
+# Check clusternap nodes and unless included in "nodes" release them
+# def check_and_release(nodes):
 
 # Runs qsub command. 
 # After submitting job by qsub, checks nodes 
