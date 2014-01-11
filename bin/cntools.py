@@ -4,6 +4,7 @@
 
 '''
 import os, sys, re, pwd, datetime, time
+import subprocess
 import itertools
 import get_state
 import get_conf
@@ -261,6 +262,80 @@ def try_rsync(args):
             return 0            # Succeeded
     else:
         return 0                # Succeeded
+
+# Returns all jobs returned by qstat -f
+# Returns list of a dictionary [{'Job Id': ID }, {'Resource_List.host': hostnames}, {'job_state': jobs_state}]
+def torque_jobs():
+    cmd = "qstat -f"
+    ret = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    ret.wait()
+    jobs = ret.communicate()[0].split("\n\n")
+    jobs = [job for job in jobs if job != ''] # exclude empty item
+    jobs = map(str.splitlines, jobs)
+    ret_jobs = {}
+
+    for job in jobs:
+        # Get necessary values: Job Id, job_state, hostnames etc.
+        key_words = ['Job Id', 'job_state', 'Resource_List.host']
+        job = [line for line in job if any(word in line for word in key_words) ]
+        job = [re.split(':|=', line)             for line in job]
+        job = [{line[0].strip():line[1].strip()} for line in job ]    
+
+        ret_jobs[job[0]['Job Id']] = {}
+        for item in job:
+            ret_jobs[job[0]['Job Id']].update(item)
+
+    return ret_jobs
+    
+# Returns name of nodes requested by jobs which have state of Q or R or ...
+def torque_nodes():
+    important_states = ['Q', 'E', 'R', 'T']
+    jobs = torque_jobs()
+    request_nodes = list()
+    
+    for key, val in jobs.items(): # 
+        # Job is finished or has not SPECIFIED necessary node name
+        if      val['job_state'] not in important_states \
+                or not val.has_key('Resource_List.host'):
+            del jobs[key]
+
+    for key, val in jobs.items():
+        nodes = val['Resource_List.host'].split('+')
+        nodes = map(str.strip, nodes)
+        for node in nodes:
+            if node not in request_nodes:
+                request_nodes.append(node)
+
+    return request_nodes
+
+# Checks if nodes are requested and if not, request them 
+def check_and_request(nodes):
+
+    for node in nodes:
+        if not INFO.has_key(node):
+            msg = "node '{0}' is not defined in ClusterNap.".format(node)
+#            print msg
+            log.warning(USER + ": " + msg)
+
+    for node, val in INFO.items():
+        if node in nodes and  val[1] == 'Free':
+                cnreq.cnreq().request_node(node)
+    return
+
+# Runs qsub command. 
+# After submitting job by qsub, checks nodes 
+# and if any qsub requested node is not requested in clusternap, request it. 
+def cnqsub(args, stdin):
+    qsub = "qsub" #It maybe should be absolute path 
+    cmd = qsub
+    for arg in args:
+        cmd += " " + arg
+
+    ret = subprocess.Popen(cmd, shell=True, stdin=stdin, stdout=subprocess.PIPE)
+    ret.wait()
+    trq_nodes = torque_nodes()
+    check_and_request(trq_nodes)
+    return 
 
 def show_help():
     msg  = "Usage: {0} <openssh_arguments>\n".format(sys.argv[0])

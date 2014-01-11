@@ -5,13 +5,13 @@ import os
 import boto.ec2
 
 def show_help():
-    print "Usage:\t%s [REGION] [AWS_ACCESS_KEY] [AWS_SECRET_KEY] [INSTANCE_ID]" % sys.argv[0]
+    print "Usage:\t%s [REGION] [AWS_ACCESS_KEY] [AWS_SECRET_KEY] [INSTANCE_ID] -H hostname" % sys.argv[0]
     print ""
     print "Example:\n\t%s us-west-w AKKLJYRTOB3M7YXBGBKA 6U+ojbLok2wQAMkZM0Z8ajE0axfNLYmj54aZg7Df i-8a7680de" % sys.argv[0]
     sys.exit(-1)
 
 
-if len(sys.argv) != 5:
+if len(sys.argv) != 7 or sys.argv[5] !='-H':
     show_help()
     sys.exit(-1)
 
