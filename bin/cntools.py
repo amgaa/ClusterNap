@@ -1,6 +1,10 @@
 #! /usr/bin/env python
 #
 ''' 
+ClusterNap tools. 1.0.0
+
+
+As of 2014 Jan, ssh scp, rsync, qsub are included. 
 
 '''
 import os, sys, re, pwd, datetime, time
@@ -338,12 +342,12 @@ def torque_nodes():
 
 
 
-# If any node in argument "nodes" list is not requested in clusternap, request that node.
+# If any node in argument "nodes" list is not requested in clusternap, 
+# request that node.
 def check_and_request(nodes):
     for node in nodes:
         if not INFO.has_key(node):
             msg = "node '{0}' is not defined in ClusterNap.".format(node)
-#            print msg
             log.warning(USER + ": " + msg)
 
     for node, val in INFO.items():
@@ -351,19 +355,22 @@ def check_and_request(nodes):
                 cnreq.cnreq().request_node(node)
 
 
-# If any node in argument "nodes" list is requested in clusternap, release that node.
+# If any node in argument "nodes" list is requested in clusternap, 
+# release that node.
 def check_and_release(nodes):
     for node in nodes:
         if not INFO.has_key(node):
             msg = "node '{0}' is not defined in ClusterNap.".format(node)
-#            print msg
             log.warning(USER + ": " + msg)
 
     for node, val in INFO.items():
         if node in nodes and  val[1] == 'Requested':
                 cnrel.cnrel().release_node(node)
 
-# Checks if nodes in pbsnodes are requested and if not, request them 
+# Checks requested hosts in qsub -f. 
+# If those nodes are not requested in ClusterNap, request them.
+# Checks all other non-requested nodes in "pbsnodes -l all". 
+# If any of these nodes are requested in ClusterNap, release them.
 def action_pbsnodes():
     qnodes = qsub_nodes()
     tnodes = torque_nodes()
