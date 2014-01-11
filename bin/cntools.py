@@ -331,10 +331,12 @@ def cnqsub(args, stdin):
     for arg in args:
         cmd += " " + arg
 
-    ret = subprocess.Popen(cmd, shell=True, stdin=stdin, stdout=subprocess.PIPE)
+#    ret = subprocess.Popen(cmd, shell=True, stdin=stdin, stdout=subprocess.PIPE)
+    ret = subprocess.Popen(cmd, shell=True, stdin=stdin)
     ret.wait()
     trq_nodes = torque_nodes()
     check_and_request(trq_nodes)
+
     return 
 
 def show_help():
@@ -348,8 +350,6 @@ def show_help():
 def get_hostname( args):
     tmp_args = args[:]
 
-
-        
     for arg in args:
         if '@' in arg:
             arg = arg.split('@')[1]
