@@ -12,12 +12,14 @@ import logset
 import cninfo, cnreq, cnrel
 
 # Get logger
-log      = logset.get("cntools_event", "event.log")
-errorlog = logset.get("cntools_error", "error.log")
-INFO     = cninfo.cninfo().INFO.copy()
-USER     = pwd.getpwuid(os.getuid())[0]
-RELEASE  = os.getenv('RELEASE', False)
-MAX_WAIT = os.getenv('MAX_WAIT', 900)
+log         = logset.get("cntools_event", "event.log")
+errorlog    = logset.get("cntools_error", "error.log")
+INFO        = cninfo.cninfo().INFO.copy()
+USER        = pwd.getpwuid(os.getuid())[0]
+RELEASE     = os.getenv('RELEASE', False)
+MAX_WAIT    = os.getenv('MAX_WAIT', 900)
+PBS_RELEASE = os.getenv('PBS_RELEASE', False)
+
 # Chech Env var RELEASE
 if isinstance(RELEASE, basestring):
     if RELEASE in ['TRUE', 'True', 'true', '1']:
@@ -30,6 +32,19 @@ if isinstance(RELEASE, basestring):
         log.warn(USER + ": " + msg)
         print msg
         RELEASE = False
+
+# Chech Env var RELEASE
+if isinstance(PBS_RELEASE, basestring):
+    if PBS_RELEASE in ['TRUE', 'True', 'true', '1']:
+        PBS_RELEASE = True
+    elif PBS_RELEASE in ['FALSE', 'False', 'false', '0']:
+        PBS_RELEASE = False
+    else:
+        msg = "Environment variable PBS_RELEASE has given wrong value: " + PBS_RELEASE
+        msg += "\nWill be set to default value 'False'"
+        log.warn(USER + ": " + msg)
+        print msg
+        PBS_RELEASE = False
 
 # Chech Env var MAX_WAIT
 if isinstance(MAX_WAIT, basestring):
@@ -288,7 +303,7 @@ def torque_jobs():
     return ret_jobs
     
 # Returns name of nodes requested by jobs which have state of Q or R or ...
-def torque_nodes():
+def qsub_nodes():
     important_states = ['Q', 'E', 'R', 'T']
     jobs = torque_jobs()
     request_nodes = list()
@@ -308,10 +323,23 @@ def torque_nodes():
 
     return request_nodes
 
+# Returns all nodes defined in torque
+def torque_nodes():
+    nodes = list()
+    cmd            = "pbsnodes -l all"
+    ret = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    ret.wait()
 
-# Checks if nodes are requested and if not, request them 
+    for pair in ret.communicate()[0].splitlines():
+        node, value = map( str.strip, pair.split() )
+        nodes.append(node)
+        
+    return nodes
+
+
+
+# If any node in argument "nodes" list is not requested in clusternap, request that node.
 def check_and_request(nodes):
-
     for node in nodes:
         if not INFO.has_key(node):
             msg = "node '{0}' is not defined in ClusterNap.".format(node)
@@ -321,6 +349,28 @@ def check_and_request(nodes):
     for node, val in INFO.items():
         if node in nodes and  val[1] == 'Free':
                 cnreq.cnreq().request_node(node)
+
+
+# If any node in argument "nodes" list is requested in clusternap, release that node.
+def check_and_release(nodes):
+    for node in nodes:
+        if not INFO.has_key(node):
+            msg = "node '{0}' is not defined in ClusterNap.".format(node)
+#            print msg
+            log.warning(USER + ": " + msg)
+
+    for node, val in INFO.items():
+        if node in nodes and  val[1] == 'Requested':
+                cnrel.cnrel().release_node(node)
+
+# Checks if nodes in pbsnodes are requested and if not, request them 
+def action_pbsnodes():
+    qnodes = qsub_nodes()
+    tnodes = torque_nodes()
+    check_and_request(qnodes)
+    if PBS_RELEASE:
+        rel_nodes = [node for node in tnodes if not node in qnodes]
+        check_and_release(rel_nodes)
     return
 
 # Check clusternap nodes and unless included in "nodes" release them
@@ -338,8 +388,7 @@ def cnqsub(args, stdin):
 #    ret = subprocess.Popen(cmd, shell=True, stdin=stdin, stdout=subprocess.PIPE)
     ret = subprocess.Popen(cmd, shell=True, stdin=stdin)
     ret.wait()
-    trq_nodes = torque_nodes()
-    check_and_request(trq_nodes)
+    action_pbsnodes()
 
     return 
 
