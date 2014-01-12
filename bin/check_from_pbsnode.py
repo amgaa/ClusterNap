@@ -20,9 +20,9 @@ def cn_state(pbs_state):
         return "1"
     if any(state in pbs_state for state in ["OFFLINE", "DOWN", "offline", "down"]):
         return "0"
-#    if any(state in pbs_state for state in ["UNKNOWN", "unknown"]):
-    return "-1"
-
+    if any(state in pbs_state for state in ["UNKNOWN", "unknown"]):
+        return "-1"
+    return "1" # <-- This should be reconsidere. This job-exclusive state just messes thing up :-/
 #    print "cn_state: Unexpected error converting pbsnode's state to clusternap's state"
 #    exit(1)
 
