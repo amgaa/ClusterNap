@@ -195,7 +195,7 @@ class action_on_off:
 
     # Creates ON/OFF command
     def create_cmd_old(self, host, path_script, user):
-        cmd  = "ssh -t -q root@" + host
+        cmd  = "/usr/bin/ssh -t -q root@" + host
         cmd += " \'su - " + user
         cmd += " -c " + " \"" + path_script + "\"  \'"
         self.log.info(cmd)
@@ -203,7 +203,7 @@ class action_on_off:
         return cmd
 
     def create_cmd(self, host, path_script, user):
-        cmd  = "ssh -t -q " + user + "@" + host
+        cmd  = "/usr/bin/ssh -t -q " + user + "@" + host
 #        cmd += " \'su - " + user
  #       cmd += " -c " + " \"" + path_script + "\"  \'"
         cmd += " " + path_script 
