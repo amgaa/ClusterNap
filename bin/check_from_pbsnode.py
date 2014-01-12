@@ -20,11 +20,11 @@ def cn_state(pbs_state):
         return "1"
     if any(state in pbs_state for state in ["OFFLINE", "DOWN", "offline", "down"]):
         return "0"
-    if any(state in pbs_state for state in ["UNKNOWN", "unknown"]):
-        return "-1"
+#    if any(state in pbs_state for state in ["UNKNOWN", "unknown"]):
+    return "-1"
 
-    print "cn_state: Unexpected error converting pbsnode's state to clusternap's state"
-    exit(1)
+#    print "cn_state: Unexpected error converting pbsnode's state to clusternap's state"
+#    exit(1)
 
 def main():
     clusternap_dir = os.path.dirname(os.path.abspath(__file__)) + "/../state/nodes/"
