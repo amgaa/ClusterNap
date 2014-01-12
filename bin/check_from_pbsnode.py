@@ -9,12 +9,20 @@ import subprocess
 import socket
 
 def cn_state(pbs_state):
-    if pbs_state in ["active", "all", "busy", "free", "up"]:
+#    if pbs_state in ["active", "all", "busy", "free", "up"]:
+#        return "1"
+#    if pbs_state in ["OFFLINE", "DOWN", "offline", "down"]:
+#        return "0"
+#    if pbs_state in ["UNKNOWN", "unknown"]:
+#        return "-1"
+
+    if any(state in pbs_state for state in ["active", "all", "busy", "free", "up"]):
         return "1"
-    if pbs_state in ["OFFLINE", "DOWN", "offline", "down"]:
+    if any(state in pbs_state for state in ["OFFLINE", "DOWN", "offline", "down"]):
         return "0"
-    if pbs_state in ["UNKNOWN", "unknown"]:
+    if any(state in pbs_state for state in ["UNKNOWN", "unknown"]):
         return "-1"
+
     print "cn_state: Unexpected error converting pbsnode's state to clusternap's state"
     exit(1)
 
