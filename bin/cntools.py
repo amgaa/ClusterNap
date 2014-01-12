@@ -300,7 +300,7 @@ def torque_jobs():
         job = [re.split(':|=', line)             for line in job]
         job = [{line[0].strip():line[1].strip()} for line in job ]    
         
-        if job[0].has_key('Job Id'):
+        if if job != [] and job[0].has_key('Job Id'):
             ret_jobs[job[0]['Job Id']] = {}
             for item in job:
                 ret_jobs[job[0]['Job Id']].update(item)
