@@ -7,8 +7,8 @@ import sys
 import cntools
 
 def show_help():
-    msg  = "Usage: {0} ssh <openssh_arguments>\n".format(sys.argv[0])
-    msg += "For more information on <openssh_arguments>, please refer to 'ssh -h'"
+    msg  = "Usage: {0} rsync <rsync_arguments>\n".format(sys.argv[0])
+    msg += "For more information on <rsync_arguments>, please refer to 'rsync -h'"
     print msg
 
 
@@ -16,8 +16,7 @@ def main(argv):
 
     args = argv[1:]
     if len(args) == 0:
-        show_help()
-        exit(1)
+        return show_help()
     if      ['-h'] in args or\
             ['--help'] in args or\
             ['-help'] in args:
@@ -26,7 +25,7 @@ def main(argv):
             args in [['-h'], ['--help'], ['-help']]:
         return show_help()
 
-    return cntools.cnssh(args)
+    return cntools.cnrsync(args)
 
 
 if __name__ == "__main__":

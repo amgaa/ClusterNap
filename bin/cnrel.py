@@ -149,7 +149,7 @@ class cnrel:
         return expr[0]
 
     def show_help(self):
-        msg1 = "Usage: {0} <nodes to release>\n".format(sys.argv[0])
+        msg1 = "Usage: {0} release <nodes to release>\n".format(sys.argv[0])
         msg2 = "Example: \n\tcommand \"{0} foo[00-02] bar\"\n".format(sys.argv[0])
         msg3 = "will try to release nodes 'foo00', 'foo01', 'foo02', and 'bar'"
         print msg1

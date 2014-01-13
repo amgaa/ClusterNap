@@ -7,7 +7,7 @@ import sys
 import cntools
 
 def show_help():
-    msg  = "Usage: {0} <scp_arguments>\n".format(sys.argv[0])
+    msg  = "Usage: {0} scp <scp_arguments>\n".format(sys.argv[0])
     msg += "For more information on <scp_arguments>, please refer to 'scp -h'"
     print msg
 

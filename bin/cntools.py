@@ -409,11 +409,6 @@ def cnqsub(args, stdin):
 
     return 
 
-def show_help():
-    msg  = "Usage: {0} <openssh_arguments>\n".format(sys.argv[0])
-    msg += "For more information <openssh_arguments>, please refer to 'ssh -h'"
-    print msg
-    return 
 
 # TODO (new): Lets make convention that we always use username, 
 # and do not use -l option. Instead lets use user@hostname.
@@ -447,23 +442,107 @@ def is_hostname( hostname):
     return all(allowed.match(x) for x in hostname.split("."))
 
 
-def main( argv):
+def show_help_main():
+    msg  = "Usage: {0} [OPTIONS] [ARGUMENTS]\n".format(sys.argv[0])
+    msg += "OPTIONS:\n"
+    msg += "\tinfo    -- shows clusternap nodes information.\n"
+    msg += "\trelease -- releases node from ClusterNap.\n"
+    msg += "\trequest -- requests node to ClusterNap.\n"
+    msg += "\tssh     -- connects to clusternap node by ssh. If node in question is not requested, request its.\n"
+    msg += "\tscp     -- scp to clusternap node. If node in question is not requested, requests it.\n"
+    msg += "\trsync   -- rsync to clusternap node. If node in question is not requested, requests it.\n"
+    msg += "\tqsub    -- submits job by qsub. If requested resource (clusternap node) is not requested, request it.\n"
+    print msg
+    return 
+
+def show_help_ssh():
+    msg  = "Usage: {0} ssh <openssh_arguments>\n".format(sys.argv[0])
+    msg += "For more information on <openssh_arguments>, please refer to 'ssh -h'"
+    print msg
+    return
+
+def show_help_scp():
+    msg  = "Usage: {0} <scp_arguments>\n".format(sys.argv[0])
+    msg += "For more information on <scp_arguments>, please refer to 'scp -h'"
+    print msg
+    return
+
+def show_help_rsync():
+    msg  = "Usage: {0} rsync <rsync_arguments>\n".format(sys.argv[0])
+    msg += "For more information on <rsync_arguments>, please refer to 'rsync -h'"
+    print msg
+    return
+
+def show_help_qsub():
+    msg  = "Usage: {0} qsub <qsub_arguments and stdin >\n".format(sys.argv[0])
+    msg += "For more information on <qsub_arguments and stdin >, please refer to 'man qsub'"
+    print msg
+    return
+
+def main(argv, stdin):
 
     args = argv[1:]
 
     if len(args) == 0:
-        show_help()
+        show_help_main()
         exit(1)
-    if      ['-h'] in args or\
-            ['--help'] in args or\
-            ['-help'] in args:
-        return show_help()
+
+#    if      ['-h'] in args or\
+#            ['--help'] in args or\
+#            ['-help'] in args:
+#        return show_help()
     
     if len(args) == 1 and \
             args in [['-h'], ['--help'], ['-help']]:
-        return show_help()
+        return show_help_main()
     
-    return cnssh(args)
+    arg_info = ['info', '--info', 'i', '--i']
+    arg_rel  = ['release', 'rel', '--release', '--rel']
+    arg_req  = ['request', 'req', '--request', '--req']
+    arg_ssh  = ['ssh', '--ssh', 'cnssh', '--cnssh']
+    arg_scp  = ['scp', '--scp', 'cnscp', '--cnscp']
+    arg_rsync= ['rsync', '--rsync', 'cnrsync', '--cnrsync']
+    arg_qsub = ['qsub', '--qsub', 'cnqsub', '--cnqsub']
+
+    if args[0] not in arg_info + arg_rel + arg_req + arg_ssh + arg_scp + arg_rsync + arg_qsub:
+        print "Wrong option: Please see help"
+        return show_help_main()
+    
+    if args[0] in arg_info:
+        return cninfo.cninfo().main(args)
+
+    if args[0] in arg_rel:
+        return cnrel.cnrel().main(args)
+
+    if args[0] in arg_req:
+        return cnreq.cnreq().main(args)
+
+    helpkeys = ['-h', '-help', '--help', 'help','--help']
+    if args[0] in arg_ssh:
+        args = args[1:]
+        if any(word in args for word in helpkeys):
+            return show_help_ssh()
+        return cnssh(args)
+
+    if args[0] in arg_scp:
+        args = args[1:]
+        if any(word in args for word in helpkeys):
+            return show_help_scp()
+        return cnscp(args)
+
+    if args[0] in arg_rsync:
+        args = args[1:]
+        if any(word in args for word in helpkeys):
+            return show_help_rsync()
+        return cnrsync(args)
+
+    if args[0] in arg_qsub:
+        args = args[1:]
+        if any(word in args for word in helpkeys):
+            return show_help_qsub()
+        return cnqsub(args, stdin)
+
+
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    sys.exit(main(sys.argv, sys.stdin))

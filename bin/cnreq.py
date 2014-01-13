@@ -144,7 +144,7 @@ class cnreq:
         return expr[0]
 
     def show_help(self):
-        msg1 = "Usage: {0} < nodes to request>\n".format(sys.argv[0])
+        msg1 = "Usage: {0} request < nodes to request>\n".format(sys.argv[0])
         msg2 = "Example: \n\tcommand \"{0} foo[00-02] bar\"\n".format(sys.argv[0])
         msg3 = "will try to request nodes 'foo00', 'foo01', 'foo02', and 'bar'"
         print msg1
