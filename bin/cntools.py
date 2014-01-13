@@ -37,7 +37,7 @@ if isinstance(RELEASE, basestring):
         print msg
         RELEASE = False
 
-# Chech Env var RELEASE
+# Check Env var RELEASE
 if isinstance(PBS_RELEASE, basestring):
     if PBS_RELEASE in ['TRUE', 'True', 'true', '1']:
         PBS_RELEASE = True
@@ -50,7 +50,7 @@ if isinstance(PBS_RELEASE, basestring):
         print msg
         PBS_RELEASE = False
 
-# Chech Env var MAX_WAIT
+# Check Env var MAX_WAIT
 if isinstance(MAX_WAIT, basestring):
     if MAX_WAIT.isdigit() and int(MAX_WAIT) > 0:
         MAX_WAIT = int(MAX_WAIT)
@@ -385,6 +385,8 @@ def action_pbsnodes():
     qnodes = qsub_nodes()
     tnodes = torque_nodes()
     check_and_request(qnodes)
+#    log.info("ACTION_PBSNODES called")
+#    log.info("PBS_RELEASE VALUE is "  + str(PBS_RELEASE))
     if PBS_RELEASE:
         rel_nodes = [node for node in tnodes if not node in qnodes]
         check_and_release(rel_nodes)
