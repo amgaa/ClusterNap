@@ -10,20 +10,20 @@ log          = logset.get("clusternapd_event", "event.log")
 errorlog     = logset.get("clusternapd_error", "error.log")
 CN_RATE      = os.getenv('CN_RATE', 5)
 CHECK_TORQUE = os.getenv('CHECK_TORQUE', False)
-#PBS_RELEASE  = os.getenv('PBS_RELEASE', False)
+PBS_RELEASE  = os.getenv('PBS_RELEASE', False)
 
 
 # Check PBS_RELEASE
-#if isinstance(PBS_RELEASE, basestring):
-#    if PBS_RELEASE in ['TRUE', 'True', 'true', '1']:
-#        PBS_RELEASE = True
-#    elif PBS_RELEASE in ['FALSE', 'False', 'false', '0']:
-#        PBS_RELEASE = False
-#    else:
-#        msg = "Environment variable PBS_RELEASE has given wrong value: " + PBS_RELEASE
-#        msg += "\nWill be set to default value 'False'"
-#        log.warn(USER + ": " + msg)
-#        PBS_RELEASE = False
+if isinstance(PBS_RELEASE, basestring):
+    if PBS_RELEASE in ['TRUE', 'True', 'true', '1']:
+        PBS_RELEASE = True
+    elif PBS_RELEASE in ['FALSE', 'False', 'false', '0']:
+        PBS_RELEASE = False
+    else:
+        msg = "Environment variable PBS_RELEASE has given wrong value: " + PBS_RELEASE
+        msg += "\nWill be set to default value 'False'"
+        log.warn(USER + ": " + msg)
+        PBS_RELEASE = False
 
 if isinstance(CHECK_TORQUE, basestring):
     if CHECK_TORQUE in ['TRUE', 'True', 'true', '1']:
@@ -51,7 +51,8 @@ class clusternapd(Daemon):
 		while True:
 			try:
 				if CHECK_TORQUE:
-					cntools.action_pbsnodes()
+                                    os.environ['PBS_RELEASE']=PBS_RELEASE
+                                    cntools.action_pbsnodes()
 
 				action_on_off.action_on_off().main()
 				time.sleep(CN_RATE)
