@@ -372,10 +372,11 @@ def check_and_release(nodes):
         if not INFO.has_key(node):
             msg = "node '{0}' is not defined in ClusterNap.".format(node)
             log.warning(USER + ": " + msg)
-
+    log.info("Release node passed: " + str(nodes))        
     for node, val in INFO.items():
         if node in nodes and  val[1] == 'Requested':
-                cnrel.cnrel().release_node(node)
+            log.info("Will release: " + node)
+            cnrel.cnrel().release_node(node)
 
 # Checks requested hosts in qsub -f. 
 # If those nodes are not requested in ClusterNap, request them.
