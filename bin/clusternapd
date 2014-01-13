@@ -53,8 +53,7 @@ class clusternapd(Daemon):
         while True:
             try:
                 if CHECK_TORQUE:
-                    os.environ['PBS_RELEASE']=PBS_RELEASE
-                    cntools.action_pbsnodes()
+                    cntools.action_pbsnodes(PBS_RELEASE)
                     
                 action_on_off.action_on_off().main()
                 time.sleep(CN_RATE)

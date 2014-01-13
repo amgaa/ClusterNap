@@ -381,13 +381,13 @@ def check_and_release(nodes):
 # If those nodes are not requested in ClusterNap, request them.
 # Checks all other non-requested nodes in "pbsnodes -l all". 
 # If any of these nodes are requested in ClusterNap, release them.
-def action_pbsnodes():
+def action_pbsnodes(pbs_release):
     qnodes = qsub_nodes()
     tnodes = torque_nodes()
     check_and_request(qnodes)
     log.info("ACTION_PBSNODES called")
     log.info("PBS_RELEASE VALUE is: "  + str(PBS_RELEASE))
-    if PBS_RELEASE:
+    if pbs_release:
         rel_nodes = [node for node in tnodes if not node in qnodes]
         check_and_release(rel_nodes)
     return
@@ -407,7 +407,7 @@ def cnqsub(args, stdin):
 #    ret = subprocess.Popen(cmd, shell=True, stdin=stdin, stdout=subprocess.PIPE)
     ret = subprocess.Popen(cmd, shell=True, stdin=stdin)
     ret.wait()
-    action_pbsnodes()
+    action_pbsnodes(PBS_RELEASE)
 
     return 
 
