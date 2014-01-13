@@ -295,7 +295,7 @@ def torque_jobs():
 
     for job in jobs:
         # Get necessary values: Job Id, job_state, hostnames etc.
-        key_words = ['Job Id', 'job_state', 'Resource_List.host']
+        key_words = ['Job Id', 'job_state', 'Resource_List.host', 'Resource_List.nodes']
         job = [line for line in job if any(word in line for word in key_words) ]
         job = [re.split(':|=', line)             for line in job]
         job = [{line[0].strip():line[1].strip()} for line in job ]    
@@ -315,15 +315,24 @@ def qsub_nodes():
     
     for key, val in jobs.items(): # 
         # Job is finished or has not SPECIFIED necessary node name
-        if      val['job_state'] not in important_states \
-                or not val.has_key('Resource_List.host'):
+        if val['job_state'] not in important_states:
             del jobs[key]
 
     for key, val in jobs.items():
-        nodes = val['Resource_List.host'].split('+')
+        if val.has_key('Resource_List.host'):
+            nodes = val['Resource_List.host'].split('+')
+            nodes = map(str.strip, nodes)
+            for node in nodes:
+                if node not in request_nodes:
+                    request_nodes.append(node)
+
+        # Syntax of Resource_List.nodes: 
+        # {<node_count> | <hostname>} [:ppn=<ppn>][:gpus=<gpu>] [:<property>[:<property>]...] [+ ...]
+        nodes = val['Resource_List.nodes'].split('+')
         nodes = map(str.strip, nodes)
         for node in nodes:
-            if node not in request_nodes:
+            node = node.split(':')[0]
+            if not node.isdigit()and node not in request_nodes:
                 request_nodes.append(node)
 
     return request_nodes
