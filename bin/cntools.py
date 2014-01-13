@@ -393,13 +393,13 @@ def action_pbsnodes(pbs_release):
     qnodes = qsub_nodes()
     tnodes = torque_nodes()
     check_and_request(qnodes)
-    log.info("ACTION_PBSNODES called")
-    log.info("PBS_RELEASE VALUE is: "  + str(pbs_release))
-    log.info("qsub nodes: " + str(qnodes))
-    log.info("torque nodes: " + str(tnodes))
+#    log.info("ACTION_PBSNODES called")
+#    log.info("PBS_RELEASE VALUE is: "  + str(pbs_release))
+#    log.info("qsub nodes: " + str(qnodes))
+#    log.info("torque nodes: " + str(tnodes))
     if pbs_release:
         rel_nodes = [node for node in tnodes if not node in qnodes]
-        log.info("release nodes are: " + str(rel_nodes))
+#        log.info("release nodes are: " + str(rel_nodes))
         check_and_release(rel_nodes)
     return
 
