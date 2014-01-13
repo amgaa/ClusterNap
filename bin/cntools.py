@@ -508,41 +508,49 @@ def main(argv, stdin):
         print "Wrong option: Please see help"
         return show_help_main()
     
+    # INFO
     if args[0] in arg_info:
         return cninfo.cninfo().main(args)
 
+    # RELEASE
     if args[0] in arg_rel:
         return cnrel.cnrel().main(args)
 
+    # REQUEST
     if args[0] in arg_req:
         return cnreq.cnreq().main(args)
 
     helpkeys = ['-h', '-help', '--help', 'help','--help']
+
+    # SSH
     if args[0] in arg_ssh:
         args = args[1:]
-        if any(word in args for word in helpkeys):
+        if any(word in args for word in helpkeys) or len(args) == 0:
             return show_help_ssh()
         return cnssh(args)
 
+    # SCP
     if args[0] in arg_scp:
         args = args[1:]
-        if any(word in args for word in helpkeys):
+        if any(word in args for word in helpkeys) or len(args) == 0:
             return show_help_scp()
         return cnscp(args)
 
+    # RSYNC
     if args[0] in arg_rsync:
         args = args[1:]
-        if any(word in args for word in helpkeys):
+        if any(word in args for word in helpkeys) or len(args) == 0:
             return show_help_rsync()
         return cnrsync(args)
-
+    
+    # QSUB
     if args[0] in arg_qsub:
         args = args[1:]
+        if len(args) == 0 and stdin.isatty(): # stdin.isatty() returns false if there is data 
+            return show_help_qsub()
         if any(word in args for word in helpkeys):
             return show_help_qsub()
         return cnqsub(args, stdin)
-
-
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv, sys.stdin))
