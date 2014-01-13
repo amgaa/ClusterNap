@@ -2,6 +2,7 @@
 
 import os, sys, time
 import action_on_off
+import check_from_pbsnode
 import cntools
 import logset
 from daemon import Daemon
@@ -53,6 +54,7 @@ class clusternapd(Daemon):
         while True:
             try:
                 if CHECK_TORQUE:
+                    check_from_pbsnode.main()
                     cntools.action_pbsnodes(PBS_RELEASE)
                     
                 action_on_off.action_on_off().main()
