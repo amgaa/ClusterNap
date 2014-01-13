@@ -46,35 +46,38 @@ if isinstance(CN_RATE, basestring):
         CN_RATE = 5
 
 class clusternapd(Daemon):
-	def run(self):
-		log.info("DAEMON clusternapd started")
-		while True:
-			try:
-				if CHECK_TORQUE:
-                                    os.environ['PBS_RELEASE']=PBS_RELEASE
-                                    cntools.action_pbsnodes()
+    def run(self):
+        log.info("DAEMON clusternapd started")
+        log.info("CHECK_TORQUE: " + str(CHECK_TORQUE))
+        log.info("PBS_RELEASE: " + str(PBS_RELEASE))
+        while True:
+            try:
+                if CHECK_TORQUE:
+                    os.environ['PBS_RELEASE']=PBS_RELEASE
+                    cntools.action_pbsnodes()
+                    
+                action_on_off.action_on_off().main()
+                time.sleep(CN_RATE)
 
-				action_on_off.action_on_off().main()
-				time.sleep(CN_RATE)
-			except Exception as ex:
-				msg1 = "An error occured while running clusternapd. Error is: "
-				errorlog.error("clusternapd: " + msg1)
-				errorlog.error(str(ex))
-				
+            except Exception as ex:
+                msg1 = "An error occured while running clusternapd. Error is: "
+                errorlog.error("clusternapd: " + msg1)
+                errorlog.error(str(ex))
+                
 
 if __name__ == "__main__":
-	daemon = clusternapd('/tmp/clusternapd.pid')
-	if len(sys.argv) == 2:
-		if 'start' == sys.argv[1]:
-			daemon.start()
-		elif 'stop' == sys.argv[1]:
-			daemon.stop()
-		elif 'restart' == sys.argv[1]:
-			daemon.restart()
-		else:
-			print "Unknown command"
-			sys.exit(2)
-		sys.exit(0)
-	else:
-		print "usage: %s start|stop|restart" % sys.argv[0]
-		sys.exit(2)
+    daemon = clusternapd('/tmp/clusternapd.pid')
+    if len(sys.argv) == 2:
+        if 'start' == sys.argv[1]:
+            daemon.start()
+        elif 'stop' == sys.argv[1]:
+            daemon.stop()
+        elif 'restart' == sys.argv[1]:
+            daemon.restart()
+        else:
+            print "Unknown command"
+            sys.exit(2)
+        sys.exit(0)
+    else:
+        print "usage: %s start|stop|restart" % sys.argv[0]
+        sys.exit(2)
