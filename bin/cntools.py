@@ -24,6 +24,7 @@ RELEASE     = os.getenv('RELEASE', False)
 MAX_WAIT    = os.getenv('MAX_WAIT', 900)
 PBS_RELEASE = os.getenv('PBS_RELEASE', False)
 
+
 # Chech Env var RELEASE
 if isinstance(RELEASE, basestring):
     if RELEASE in ['TRUE', 'True', 'true', '1']:
@@ -61,9 +62,11 @@ if isinstance(MAX_WAIT, basestring):
         print msg
         MAX_WAIT = 900
 
+def get_info():
+    return cninfo.cninfo().INFO.copy()
 
 def cnssh(args):
-
+    INFO = get_info()
     # Check if <user> is written correctly
     for arg in args:
         if arg == '-l':
@@ -122,6 +125,7 @@ def cnssh(args):
 
 def cnscp(args):
     hostname = get_hostname(args)
+    INFO = get_info()
     # TODO: If host is given by its IP, we should search the hostname of that ip
 
     if not hostname in INFO.keys():
@@ -171,6 +175,7 @@ def cnscp(args):
 
 def cnrsync(args):
     hostname = get_hostname(args)
+    INFO = get_info()
     # TODO: If host is given by its IP, we should search the hostname of that ip
 
     if not hostname in INFO.keys():
@@ -355,6 +360,7 @@ def torque_nodes():
 # If any node in argument "nodes" list is not requested in clusternap, 
 # request that node.
 def check_and_request(nodes):
+    INFO = get_info()
     for node in nodes:
         if not INFO.has_key(node):
             msg = "node '{0}' is not defined in ClusterNap.".format(node)
@@ -368,6 +374,7 @@ def check_and_request(nodes):
 # If any node in argument "nodes" list is requested in clusternap, 
 # release that node.
 def check_and_release(nodes):
+    INFO = get_info()
     for node in nodes:
         if not INFO.has_key(node):
             msg = "node '{0}' is not defined in ClusterNap.".format(node)
