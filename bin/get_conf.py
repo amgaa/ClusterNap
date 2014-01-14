@@ -343,7 +343,7 @@ class get_conf:
                 for i in range(int(items[0]), int(items[1]) + 1 ):
                     itemlist.append(str(i).zfill(len(items[1])))
             else:
-                itemlist.append(''.join(items))  # For example, in case of ec2 instance ID [i-sdhvbc, i-cxfjhs]
+                itemlist.append('-'.join(items))  # For example, in case of ec2 instance ID [i-sdhvbc, i-cxfjhs]
 #            else:
 #                print "Error in config. Unknown config: " + exprs
 #                self.errorlog.error("Error in config. Unknown config: " + exprs)
