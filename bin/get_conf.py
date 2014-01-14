@@ -239,7 +239,8 @@ class get_conf:
     # Parses heads and bodies of config parts
     # Ex: 
     # " name:  foo[0-2]
-    #   bar:   xxx
+    #   bar:   xxx 
+    # "
     # Returns dictionary:
     # {"name": ["foo0", "foo1", "foo2"], "bar":"xxx"}
     def get_heads_bodies(self, f):
@@ -342,11 +343,13 @@ class get_conf:
                 for i in range(int(items[0]), int(items[1]) + 1 ):
                     itemlist.append(str(i).zfill(len(items[1])))
             else:
-                print "Error in config. Unknown config: " + exprs
-                self.errorlog.error("Error in config. Unknown config: " + exprs)
-                print "Expression inside [] might be wrong: " + exprs
-                self.errorlog.error("Expression inside [] might be wrong: " + exprs)
-                exit(1)
+                itemlist.append(''.join(items))  # For example, in case of ec2 instance ID [i-sdhvbc, i-cxfjhs]
+#            else:
+#                print "Error in config. Unknown config: " + exprs
+#                self.errorlog.error("Error in config. Unknown config: " + exprs)
+#                print "Expression inside [] might be wrong: " + exprs
+#                self.errorlog.error("Expression inside [] might be wrong: " + exprs)
+#                exit(1)
                 
         return itemlist
 
