@@ -14,13 +14,14 @@ class cnreq:
         self.REQUEST_DIR  = os.path.dirname(os.path.abspath(__file__))
         self.REQUEST_DIR += "/../requested/nodes/"
         self.USER         = pwd.getpwuid(os.getuid())[0]
-        self.INFO         = cninfo.cninfo().INFO.copy()
-        self.INFO_LIST    = cninfo.cninfo().INFO_LIST[:]
+#        self.INFO         = cninfo.cninfo().INFO.copy()
+#        self.INFO_LIST    = cninfo.cninfo().INFO_LIST[:]
 
 
     def request_node(self, node):
         # If node is not defined in ClusterNap, say so. return
-        if not self.INFO.has_key(node):
+        INFO         = cninfo.cninfo().get_info()
+        if not INFO.has_key(node):
             msg = "'{0}': not defined in ClusterNap. Request cannot be done!".format(node)
             print msg
             self.log.warn(self.USER + ": " + msg)
@@ -44,7 +45,7 @@ class cnreq:
             return 0
  
         # If not requested, do request
-        if self.INFO[node][1] == "Free":
+        if INFO[node][1] == "Free":
             if not open(self.REQUEST_DIR + node, 'a'):
                 msg = "'{0}': Request error!".format(node)
                 print msg
@@ -58,9 +59,9 @@ class cnreq:
             return 0
 
         # If already requested, say so
-        if self.INFO[node][1] == "Requested":
+        if INFO[node][1] == "Requested":
             # Requested by the user itself
-            if self.USER == self.INFO[node][2]:
+            if self.USER == INFO[node][2]:
                 msg = "'{0}': You already requested".format(node)
                 print msg
                 self.log.info(self.USER + ": " + msg)

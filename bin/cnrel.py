@@ -14,26 +14,31 @@ class cnrel:
         self.REQUEST_DIR  = os.path.dirname(os.path.abspath(__file__))
         self.REQUEST_DIR += "/../requested/nodes/"
         self.USER         = pwd.getpwuid(os.getuid())[0]
-        self.INFO         = cninfo.cninfo().INFO.copy()
-        self.INFO_LIST    = cninfo.cninfo().INFO_LIST[:]
+#        self.INFO         = cninfo.cninfo().INFO.copy()
+#        self.INFO_LIST    = cninfo.cninfo().INFO_LIST[:]
 
+#        self.INFO         = cninfo.cninfo().get_info()
+#        self.INFO_LIST    = cninfo.cninfo().get_info_list()
         
     def release_all(self):
-        for node in self.INFO.keys():
-            if self.INFO[node][2] == self.USER:
+        INFO = cninfo.cninfo().get_info()
+        for node in INFO.keys():
+            if INFO[node][2] == self.USER:
                 self.release_node(node)
         return
 
     def release_node(self, node):
+        INFO = cninfo.cninfo().get_info()
+
         # If node is not defined in ClusterNap, say so. return
-        if not self.INFO.has_key(node):
+        if not INFO.has_key(node):
             msg = "'{0}': Cannot release. Not defined in ClusterNap".format(node)
             print msg
             self.log.warning(self.USER + ": " + msg)
             return 1
         
         # If not requested, say so request
-        if self.INFO[node][1] == "Free":
+        if INFO[node][1] == "Free":
             msg = "'{0}': Cannot release. Already released".format(node)
             print msg
             self.log.warning(self.USER + ": " + msg)
@@ -55,9 +60,9 @@ class cnrel:
             return 0
  
         # If requested
-        if self.INFO[node][1] == "Requested":
+        if INFO[node][1] == "Requested":
             # if requested by the user itself, release
-            if self.USER == self.INFO[node][2]:
+            if self.USER == INFO[node][2]:
                 os.remove(self.REQUEST_DIR + node)
                 if os.path.exists(self.REQUEST_DIR + node):
                     msg = "'{0}': Unexpected error!".format(node)

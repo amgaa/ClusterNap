@@ -32,7 +32,7 @@ class get_state:
         if name not in self.NODES_IN_STATE_DIR:
             print "Node state file \"" + name + "\" is not in the folder \"" + self.STATE_DIR + "\""
             self.errorlog.error("Node state file \"" + name + "\" is not in the folder \"" + self.STATE_DIR + "\"")
-            return -1
+            return 1
 
         f = open( self.STATE_DIR + name, "r" )
         state = f.readline()
@@ -46,6 +46,38 @@ class get_state:
         else:
 #            print "Node \"" + name + "\" has unknown state: \"" + state + "\""
 #            self.log.warn("Node \"" + name + "\" has unknown state: \"" + state + "\"")
+            return -1
+
+    def set_state(self, nodename, state):
+
+        if nodename not in self.NODES_IN_STATE_DIR:
+            print "Node state file \"" + nodename + "\" is not in the folder \"" + self.STATE_DIR + "\""
+            self.errorlog.error("Node state file \"" + nodename + "\" is not in the folder \"" + self.STATE_DIR + "\"")
+            return -1
+
+        on  = ['ON', 'on', 'On', '1', 1]
+        off = ['OFF', 'off', 'Off', '0', 0]
+        un  = ['UNKNOWN', 'Unknown', 'unknown', '-1', -1]
+
+        if state in on:
+            val = '1'
+        elif state in off:
+            val = '0'
+        elif state in un:
+            val = '-1'
+        else:
+            msg = "Unknown state given: " + str(state)
+            print msg
+            self.errorlog.error(msg)
+            return 1
+
+        try:
+            f = open( self.STATE_DIR + nodename, "w" )
+            f.write(val + '\n')
+            f.close()
+
+        except:
+            print "Unknown error occured setting node state!"
             return -1
 
     def check(self):

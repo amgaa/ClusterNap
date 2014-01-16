@@ -568,7 +568,7 @@ def main(argv, stdin):
 
 
 class clusternap(object):
-    """ API of ClusterNap"""
+    """ API of ClusterNap """
     
     def __init__(self):
         pass
@@ -581,88 +581,108 @@ class clusternap(object):
 
     def get_info(self):
         """ 
-        Returns information of all nodes define in ClusterNap.
-        list of dictionary of nodes:
+        Returns information of all nodes defined in ClusterNap.
+         dictionary of nodes and their info:
+         example:
+                    {nodename:[powerstate, request_state, request_user, request_date]}
         """
         return cninfo.cninfo().get_info()
-
 
     def get_nodes(self):
         """
         Returns list of ClusterNap defined nodes.
+        CAUTIONS: Maybe, we should not disclose this information to users!!!!
         """
-        return
-    
+        return cninfo.cninfo().get_nodes()
 
     def get_node_info(self, nodename):
         """
         returns info of given node.
-        info: power state: 'On', 'Off', 'Unknown', 
-              request state: 'Requested', 'Free', 
-              requested username(if requested): Username, or N/A, 
-              requested date (if requested): Date, or N/A
-             
-        example: ['On', 'Free', 'root', '2014-01-16 20:47:35']
+        info: power state, 
+              request state, 
+              requested username(if requested), 
+              requested date (if requested)
         """
         return cninfo.cninfo().get_node_info(nodename)
 
     def get_power_state(self, nodename):
         """ 
         Returns powerstate of given node. 
-        One of 'On', 'Off', 'Unknown'.
+        Return value, one of: 'On', 'Off', 'Unknown'
         """
-        return cninfo.cninfo().get_node_info(nodename)
-    
+        return cninfo.cninfo().get_node_info(nodename)[0]
+
     def get_request_state(self, nodename):
         """
-        Returns 1 if node is reserved at the moment.
-        else, return 0
+        Returns one of 'Free' or 'Requested'
         """
-        return
+        return cninfo.cninfo().get_node_info(nodename)[1]
 
     def get_request_user(self, nodename):
         """
-        If fiven node is reserved, returns who reserved that node
+        If fiven node is reserved, returns who reserved that node.
+        Else, returns 'N/A'
         """
-        return
+        return cninfo.cninfo().get_node_info(nodename)[2]
+
 
     def get_request_date(self, nodename):
         """
         If node is requested, returns the date of reservation.
-        Else, return False. 
+        Else, returns 'N/A'. 
         """
-        return
+        return cninfo.cninfo().get_node_info(nodename)[3]
 
-    def get_dependencies(self):
-        """
-        Returns list of dictionaries of nodes.
-        Each dictionary contains ON, OFF, RUN dependencies of a single node. 
-        """
-        return
 
     def get_dependency(self, nodename):
         """
-        Returns ON, OFF, RUN dependency of a given node.
+        Returns the dictionary of ON, OFF, RUN dependency of a given node.
+        {'on_dependency':value, 'off_dependency':value, 'run_dependency:value'}
         """
-        return
+        try: 
+            ret = {}
+            ret['on_dependency']  = self.get_on_dependency(nodename)
+            ret['off_dependency'] = self.get_off_dependency(nodename)
+            ret['run_dependency'] = self.get_run_dependency(nodename)
+            
+            for k, v in ret.items():
+                if v == 1:
+                    print "Some unexpected error occured!"
+                    return 1
+            return ret
+        except:
+            print "Some unexpected error occured!"
+            return 1
 
     def get_on_dependency(self, nodename):
         """
         Returns ON dependency of a give node.
         """
-        return
+        try:
+            return self.get_nodes()[nodename]['on_dependencies']
+        except KeyError:
+            print "Error occured. Unknown node? "
+            return 1
 
     def get_off_dependency(self, nodename):
         """
         Returns OFF dependency of a given node.
         """
-        return
+        try:
+            return self.get_nodes()[nodename]['off_dependencies']
+        except KeyError:
+            print "Error occured. Unknown node? "
+            return 1
 
     def get_run_dependency(self, nodename):
         """
         Returns RUN dependency of a given node.
         """
-        return
+        try:
+            return self.get_nodes()[nodename]['run_dependencies']
+        except KeyError:
+            print "Error occured. Unknown node? "
+            return 1
 
     def release(self, nodename):
         """
@@ -670,7 +690,7 @@ class clusternap(object):
         If released or node is already released, return 0
         If could not release for some reason (someone else requested, etc.), return 1
         """
-        return
+        return cnrel.cnrel().release_node(nodename)
 
     def request(self, nodename):
         """
@@ -679,14 +699,21 @@ class clusternap(object):
         If already requested, return 1
         If could not request, return 2
         """
-        return
+        return cnreq.cnreq().request_node(nodename)
 
     def set_power_state(self, nodename, state):
         """ 
         Sets power state of given node.
-        The argument "state" is a string of either "on", "off", "unknown"
+        The argument "state" is a string of either 
+                   "on"      (or one of 'ON',       1, 'On'     ), 
+                   "off"     (or one of 'OFF',      0, 'Off'    ), 
+                   "unknown" (or one of 'UNKNOWN', -1, 'Unknown')
+
+        CAUTIONS: Setting power states to a node might cause serious malfunction in the system.
+                  Be very careful!!!!
         """
-        return
+        return get_state.get_state().set_state(nodename, state)
+
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv, sys.stdin))

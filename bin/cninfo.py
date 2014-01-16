@@ -20,27 +20,47 @@ class cninfo:
         self.REQUEST_DIR        += "/../requested/nodes/"
         self.NODES_REQUESTED     = os.listdir(self.REQUEST_DIR)
 	self.NODES	         = get_conf.get_conf().NODES
-        self.STATES              = {}
-        self.STATES              = get_state.get_state().STATES.copy()
+#        self.STATES              = {}
+#        self.STATES              = get_state.get_state().STATES.copy()
         self.USER                = pwd.getpwuid(os.getuid())[0]       
-        self.INFO   = {}
+ #       self.INFO   = {}
         
-        for node in self.NODES.keys():
-            self.INFO[node] = self.get_node_info(node)
+#        for node in self.NODES.keys():
+#            self.INFO[node] = self.get_node_info(node)
             
-        self.INFO_LIST = self.INFO.items()
-        self.INFO_LIST = sorted(self.INFO_LIST, key=lambda element:   (  element[1][0], \
+#        self.INFO_LIST = self.INFO.items()
+#        self.INFO_LIST = sorted(self.INFO_LIST, key=lambda element:   (  element[1][0], \
+#                                                                         element[1][1], \
+#                                                                         element[1][2], \
+#                                                                         element[1][3], \
+#                                                                         element[0]   ) )
+    def get_nodes(self):
+        return get_conf.get_conf().NODES
+
+    def get_info(self):
+        INFO   = {}
+        for node in self.NODES.keys():
+            INFO[node] = self.get_node_info(node)
+        return INFO
+
+    def get_info_list(self):
+        INFO = self.get_info()
+        INFO_LIST = INFO.items()
+        INFO_LIST = sorted(INFO_LIST, key=lambda element:   (  element[1][0], \
                                                                          element[1][1], \
                                                                          element[1][2], \
                                                                          element[1][3], \
                                                                          element[0]   ) )
-    
+        return INFO_LIST
+
+
     # Returns node's state, requested_or_not, owner_name, and last_requested_date
     def get_node_info(self, node):
-
-        if self.STATES[node] == 1:
+        STATES              = {}
+        STATES              = get_state.get_state().STATES.copy()
+        if STATES[node] == 1:
             state = "On"
-        elif self.STATES[node] == 0:
+        elif STATES[node] == 0:
             state = "Off"
         else:
             state = "Unknown"
@@ -61,6 +81,7 @@ class cninfo:
             modified = str(datetime.datetime.fromtimestamp(t))[:-7]
 
         return state, requested, owner, modified
+
 
     def print_list(self, lis):
         print " --------------------------------------------------------------------------------- "
@@ -165,7 +186,8 @@ class cninfo:
 
     def main(self, argv):
 
-        info_list = self.INFO_LIST[:]
+#        info_list = self.INFO_LIST[:]
+        info_list = self.get_info_list()
         user   = "" # user name
         pstate = "" # power state
         rstate = "" # request state
