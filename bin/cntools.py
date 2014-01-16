@@ -638,6 +638,10 @@ class clusternap(object):
         """
         Returns the dictionary of ON, OFF, RUN dependency of a given node.
         {'on_dependency':value, 'off_dependency':value, 'run_dependency:value'}
+        Each depependency is in Conjunctive Normal Form (CNF).
+        Example dependncy value : (nodeA and nodeB) or (nodeC) .... is represented as
+        [['nodeA', 'nodeB'], ['nodeC']]
+
         """
         try: 
             ret = {}
@@ -656,7 +660,10 @@ class clusternap(object):
 
     def get_on_dependency(self, nodename):
         """
-        Returns ON dependency of a give node.
+        Returns ON dependency of a give node. 
+        Dependency is in Conjunctive Normal Form (CNF).
+        Example: (nodeA and nodeB) or (nodeC) .... is represented as
+        [['nodeA', 'nodeB'], ['nodeC']]
         """
         try:
             return self.get_nodes()[nodename]['on_dependencies']
@@ -667,6 +674,9 @@ class clusternap(object):
     def get_off_dependency(self, nodename):
         """
         Returns OFF dependency of a given node.
+        Dependency is in Conjunctive Normal Form (CNF).
+        Example: (nodeA and nodeB) or (nodeC) .... is represented as
+        [['nodeA', 'nodeB'], ['nodeC']]
         """
         try:
             return self.get_nodes()[nodename]['off_dependencies']
@@ -677,6 +687,9 @@ class clusternap(object):
     def get_run_dependency(self, nodename):
         """
         Returns RUN dependency of a given node.
+        Dependency is in Conjunctive Normal Form (CNF).
+        Example: (nodeA and nodeB) or (nodeC) .... is represented as
+        [['nodeA', 'nodeB'], ['nodeC']]
         """
         try:
             return self.get_nodes()[nodename]['run_dependencies']
@@ -687,7 +700,7 @@ class clusternap(object):
     def release(self, nodename):
         """
         Try to release given node.
-        If released or node is already released, return 0
+        If successfully released or node is already released, return 0
         If could not release for some reason (someone else requested, etc.), return 1
         """
         return cnrel.cnrel().release_node(nodename)
@@ -695,9 +708,8 @@ class clusternap(object):
     def request(self, nodename):
         """
         Try to request given node.
-        If successful, return 0
-        If already requested, return 1
-        If could not request, return 2
+        If successfully requested or node is already requested, return 0
+        If could not request for some reason, return 1
         """
         return cnreq.cnreq().request_node(nodename)
 
