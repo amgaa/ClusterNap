@@ -72,18 +72,13 @@ class get_dependency:
         deps = {}
         deps = self.get_run_dep()
 
-
         for node in deps.keys():
       	  
-
-		    
             if on_deps.has_key(node):
 
                 if deps[node] == []:  #Otherwise, it returns wrong value. Does not do cartesian product when it is empty. 
 		    deps[node] = on_deps[node]
 		
-
-
                 # Get the cartesian product of two dependencies
 #                product = [ x+y for x in deps[node] for y in on_deps[node]]
                 product = [ x+y for x in on_deps[node] for y in deps[node]]
@@ -127,10 +122,8 @@ class get_dependency:
         print "NEW RUN ON DEPENDENCIES:"
         for item in get_dependency().get_run_on_dep().items():
             print item
-            
     
         return
-
     
 if __name__ == "__main__":
     sys.exit(get_dependency().main(sys.argv))
