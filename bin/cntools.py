@@ -745,7 +745,31 @@ class clusternap(object):
         arg1: node name. For example, 'nodeA'
         arg2: which dependency? one of ('on', 'off', 'run')
         arg3: dependency list in CNF. For example, [['nodeA', 'nodeB'], ['nodeC', 'nodeA'], ['nodeF']]
+        CAUTION: A given node must node be define by using [ ] with other nodes in config file.
+                 For example, if a node is define with other nodes like below, we CANNOT set dependency for them from this API. 
+                 
+                 define node {
+                       name:            node[0-5]
+                       on_dependencies: ...
+                 }
+                 
+
+                 Instead, please define the node separately as below.
+
+                 define node {
+                        name:           node0
+                        ...
+                 }
+
+                 define node {
+                        name:           node1
+                        ...
+                 }
+                 .
+                 .
+                 .
         """
+
         try:
             return get_conf.get_conf().set_dependency(nodename, dep_type, dependency)
         except Exception as m:
