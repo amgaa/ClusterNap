@@ -37,6 +37,13 @@ class cninfo:
     def get_nodes(self):
         return get_conf.get_conf().NODES
 
+    
+    def get_commands(self):
+        return get_conf.get_conf().COMMANDS
+
+    def get_types(self):
+        return get_conf.get_conf().TYPES
+
     def get_info(self):
         INFO   = {}
         for node in self.NODES.keys():

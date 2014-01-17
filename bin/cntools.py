@@ -573,12 +573,6 @@ class clusternap(object):
     def __init__(self):
         pass
     
-    def __str__(self):
-        pass
-    
-    def __repr__(self):
-        pass
-
     def get_info(self):
         """ 
         Returns information of all nodes defined in ClusterNap.
@@ -588,13 +582,60 @@ class clusternap(object):
         """
         return cninfo.cninfo().get_info()
 
-    def get_nodes(self):
+    def get_nodes_conf(self):
         """
         Returns list of ClusterNap defined nodes.
         CAUTIONS: Maybe, we should not disclose this information to users!!!!
         """
-        return cninfo.cninfo().get_nodes()
+        return get_conf.get_conf().get_nodes_conf()
+       
+#    def get_commands_conf(self):
+#        """
+#        Returns list of ClusterNap defined commands.
+#        CAUTIONS: Maybe, we should not disclose this information to users!!!!
+#        """
+#        return cninfo.cninfo().get_commands()
+#        return get_conf.get_conf().COMMANDS
+#        return get_conf.get_conf().get_commands_conf()
 
+#    def get_types_conf(self):
+#        """
+#        Returns list of ClusterNap defined commands.
+#        """
+#        return get_conf.get_conf().get_types_conf()
+
+#    def get_configs(self):
+#        """
+#        Returns dictionary of configs:
+#        {
+#         'nodes'   :{dict of nodes' configs}, 
+#         'commands':{dict of commands configs}, 
+#         'types'   :{dict of types' configs}
+#         }
+#        """
+
+#        configs = {}
+
+#        configs['nodes']    = {}
+#        configs['commands'] = {}
+#        configs['types']    = {}
+
+#        configs['nodes'].update(self.get_nodes_conf())
+#        configs['commands'].update(self.get_commands_conf())
+#        configs['types'].update(self.get_types_conf())
+
+#        return configs
+        
+#    def update_configs(self, configs):
+#        """
+#        Gets dictionary of configs.
+#        Updates config files according that dictionary. 
+#        If it seems some configs are deleted in the input dictionary,
+#        in config files, that configs should be commented out (not deleted). 
+#        """
+
+#        return get_conf.get_conf().update_configs(config)
+        
     def get_node_info(self, nodename):
         """
         returns info of given node.
@@ -633,69 +674,41 @@ class clusternap(object):
         """
         return cninfo.cninfo().get_node_info(nodename)[3]
 
-
-    def get_dependency(self, nodename):
-        """
-        Returns the dictionary of ON, OFF, RUN dependency of a given node.
-        {'on_dependency':value, 'off_dependency':value, 'run_dependency:value'}
-        Each depependency is in Conjunctive Normal Form (CNF).
-        Example dependncy value : (nodeA and nodeB) or (nodeC) .... is represented as
-        [['nodeA', 'nodeB'], ['nodeC']]
-
-        """
-        try: 
-            ret = {}
-            ret['on_dependency']  = self.get_on_dependency(nodename)
-            ret['off_dependency'] = self.get_off_dependency(nodename)
-            ret['run_dependency'] = self.get_run_dependency(nodename)
-            
-            for k, v in ret.items():
-                if v == 1:
-                    print "Some unexpected error occured!"
-                    return 1
-            return ret
-        except:
-            print "Some unexpected error occured!"
-            return 1
-
-    def get_on_dependency(self, nodename):
-        """
-        Returns ON dependency of a give node. 
-        Dependency is in Conjunctive Normal Form (CNF).
-        Example: (nodeA and nodeB) or (nodeC) .... is represented as
-        [['nodeA', 'nodeB'], ['nodeC']]
-        """
-        try:
-            return self.get_nodes()[nodename]['on_dependencies']
-        except KeyError:
-            print "Error occured. Unknown node? "
-            return 1
-
-    def get_off_dependency(self, nodename):
+    def get_dependency(self, nodename, dep_type):
         """
         Returns OFF dependency of a given node.
+        arg1: node name
+        arg2: dependency type. One of 'on', 'off', 'run'
         Dependency is in Conjunctive Normal Form (CNF).
         Example: (nodeA and nodeB) or (nodeC) .... is represented as
         [['nodeA', 'nodeB'], ['nodeC']]
         """
+        on  = ['on',  'ON',  'On',  'on_dependency' ]
+        off = ['off', 'OFF', 'Off', 'off_dependency']
+        run = ['run', 'RUN', 'Run', 'run_dependency']
+
+        if dep_type in on:
+            dep_type = 'on'
+        elif dep_type in off:
+            dep_type = 'off'
+        elif dep_type in run:
+            dep_type = 'run'
+        else:
+            print "Unknown dependency type give: " + str(dep_type)
+            return 1
+            
+        dep_type = dep_type + "_dependencies"
+ 
         try:
-            return self.get_nodes()[nodename]['off_dependencies']
+            dep = list()
+            tmp = self.get_nodes_conf()[nodename][dep_type]
+            dep = map(str.strip,  tmp.strip().split('|') )
+            dep = [map(str.strip, clause.split(',')) for clause in dep]
+            return dep
         except KeyError:
             print "Error occured. Unknown node? "
             return 1
 
-    def get_run_dependency(self, nodename):
-        """
-        Returns RUN dependency of a given node.
-        Dependency is in Conjunctive Normal Form (CNF).
-        Example: (nodeA and nodeB) or (nodeC) .... is represented as
-        [['nodeA', 'nodeB'], ['nodeC']]
-        """
-        try:
-            return self.get_nodes()[nodename]['run_dependencies']
-        except KeyError:
-            print "Error occured. Unknown node? "
-            return 1
 
     def release(self, nodename):
         """
@@ -726,6 +739,19 @@ class clusternap(object):
         """
         return get_state.get_state().set_state(nodename, state)
 
+    def set_dependency(self, nodename, dep_type, dependency):
+        """
+        Sets dependency for a node. Overwrites old dependency. 
+        arg1: node name. For example, 'nodeA'
+        arg2: which dependency? one of ('on', 'off', 'run')
+        arg3: dependency list in CNF. For example, [['nodeA', 'nodeB'], ['nodeC', 'nodeA'], ['nodeF']]
+        """
+        try:
+            return get_conf.get_conf().set_dependency(nodename, dep_type, dependency)
+        except Exception as m:
+            print m
+            print "Some error occured setting dependency for node '" + nodename + "'. Please check you node and dependency values!"          
+            return 1
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv, sys.stdin))

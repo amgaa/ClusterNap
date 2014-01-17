@@ -6,6 +6,7 @@ This program gets the configurations of nodes from corresponding files.
 '''
 
 import sys, os, re
+import fileinput
 import itertools
 import time
 import logset
@@ -41,6 +42,19 @@ class get_conf:
         # Create state files for newly define nodes
         # Remove state files of removed nodes
         self.create_state_files()
+
+
+    def get_nodes_conf(self):
+        self.__init__()
+        return self.NODES
+
+    def get_commands_conf(self):
+        self.__init__()
+        return self.COMMANDS
+
+    def get_types_conf(self):
+        self.__init__()
+        return self.TYPES
 
 
     # Returns  hash table of:
@@ -153,7 +167,124 @@ class get_conf:
             exit(1)
 
         return command
-            
+
+    
+    # Sets dependency for given node in the config file. 
+    # arg1: node name
+    # arg2: dependecy type ('on', 'off', 'run')
+    # arg3: dependency in list. Example [['nodeA'], ['nodeB', 'nodeC'], ['nodeD']]
+    def set_dependency(self, nodename, dep_type, dependency):
+        nodenames = self.NODES.keys()
+        # Check if correct names are given
+        if nodename not in nodenames:
+            msg = "Error! Given nodename '" + nodename + "' is not defined in ClusterNap!"
+            print msg
+            self.errorlog.error(msg)
+            return 1
+
+        # Check undefined node in given dependency
+        for nodes in dependency:
+            for node in nodes:
+                if node not in nodenames: 
+                    msg = "Error! Given nodename '" + node + "' is not defined in ClusterNap!"
+                    print msg
+                    self.errorlog.error(msg)
+                    return 1
+
+        
+        on= ["ON", "on", "On", "on_dependency", "on_dependencies"]
+        off= ["OFF", "off", "Off", "off_dependency", "off_dependencies"]
+        run= ["RUN", "run", "Run", "run_dependency", "run_dependencies"]
+        if dep_type in on:
+            dep_type = "on_dependencies"
+        elif dep_type in off:
+            dep_type = "off_dependencies"
+        elif dep_type in run:
+            dep_type = "run_dependencies"
+        else:
+            msg = "Unknown dependency type give: " + dep_type
+            print msg
+            errorlog.error(msg)
+            return 1
+        print "Dep type: " + dep_type
+
+
+        try:
+            dep_string = ""
+            for nodes in dependency:
+                for node in nodes:
+                    dep_string += node
+                    dep_string += ", "
+                dep_string = dep_string[:-2] + " | "
+            dep_string = dep_string[:-2]
+            print "Dep string: " + dep_string
+
+            # Find and replace dependency. 
+            for conf_file in self.CONF_FILES:
+                f = open(self.CONF_DIR + conf_file, 'r')
+                data = f.readlines()
+                f.close()
+                line_num = self.find_dep_place(data, nodename, dep_type)
+                if line_num >=0:
+                    data = self.delete_line(data, line_num)
+                    data[line_num] = '\t' + dep_type + ':\t' + dep_string + '\n'
+                    f = open(self.CONF_DIR + conf_file, 'w')
+                    f.writelines(data)
+                    f.close()
+                    return 0
+
+            msg = "could not find node '" + nodename +  "' in config files!"
+            print msg
+            errorlog.error(msg)
+            return 1
+
+        except Exception as m:
+            print m
+            msg = "Unexpected error occured while setting dependency for node: " + nodename
+            print msg
+            self.errorlog.error(m)
+            self.errorlog.error(msg)
+            return 1
+
+    # Delete (make empty string) given line of file data. 
+    # If line ends with '\' delete next line too.
+    def delete_line(self, data, line_num):
+        if line_num < len(data) - 1 and data[line_num].strip().split('#')[0].strip().endswith('\\'):
+            data[line_num] = ''
+            data = self.delete_line(data, line_num + 1)
+            return data
+        else:
+            data[line_num] = ''
+            return data
+
+    # Finds where given node's given dependency is in given file data. 
+    # Returns the index number.
+    def find_dep_place(self, data, nodename, dep_type):
+        
+        try:
+            for i in range(0, len(data)):
+                line = data[i].strip().split("#")[0] + '\n'
+                if 'define' in line and '{' in line and 'node' in line: # Entered in a node definition
+                    while '}' not in line and i < len(data)-1:          # <- is -1 ok? 
+                        i += 1
+                        line = data[i].strip().split("#")[0] + '\n'
+                        head_body  = map(str.strip, line.split(':'))
+                        if head_body[0] == 'name' and len(head_body) == 2 and head_body[1] == nodename: # Node found!
+                            while '}' not in head_body[0] and '}' not in head_body[len(head_body) -1] and i < len(data)-1:          # <- is -1 ok? 
+                                i += 1
+                                line = data[i].strip().split("#")[0] + '\n'
+                                head_body  = map(str.strip, line.split(':'))
+                                if head_body[0] == dep_type: # Type found!
+                                    return i
+
+            return -1
+        except Exception as m:
+            msg =  "Error occured while searching node's dependency line number in file!"
+            print m
+            print msg
+            self.errorlog.error(m)
+            self.errorlog.error(msg)
+            return -1
 
     # Parses config file and returns hash table of config
     # config[node] = {'name': 'NodeA', 'address':'192.168...', 'run_dependency': ... }
@@ -190,6 +321,7 @@ class get_conf:
 
         return nodes , commands, types
 
+    
     
     # Gets config of node(s)
     def get_object(self, f, nodes, filename):
