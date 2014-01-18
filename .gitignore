@@ -7,12 +7,12 @@
 #*#
 *~
 state/nodes/*
-!state/nodes/head
+!state/nodes/localhost
 config/*
 !config/example_*
-!config/head.conf
+!config/localhost.conf
 requested/*
-!requested/head.conf
+!requested/localhost
 graphs/*
 !graphs/.README
 logs/*

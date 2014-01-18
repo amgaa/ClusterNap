@@ -54,7 +54,7 @@ class get_dependency:
 
             for clause in tmp_body:
                 for dep_node in clause:
-                    if node == dep_node and node != "clusternap":
+                    if node == dep_node and not 'localhost' == node:
                         msg = "Node cannot be ON-dependent on itself!"
                         msg += "\n"
                         msg += "Node '" + node + "' has ON-dependent on itself! Please fix it!"
