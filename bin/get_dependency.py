@@ -51,6 +51,15 @@ class get_dependency:
                     tmp_body = []
 
             self.on_deps[node] = tmp_body
+
+            for clause in tmp_body:
+                for dep_node in clause:
+                    if node == dep_node and node != "clusternap":
+                        msg = "Node cannot be ON-dependent on itself!"
+                        msg += "\n"
+                        msg += "Node '" + node + "' has ON-dependent on itself! Please fix it!"
+                        print msg
+                        self.errorlog.error(msg)
         return self.on_deps
 
     def get_off_dep(self):

@@ -383,7 +383,9 @@ class get_conf:
             if line.endswith("}"):
                 line = line[:-1]
                 trap = 1
-            head, body = line.split(":")
+            head_body = line.split(":")
+            head = head_body[0]
+            body = ':'.join(head_body[1:])
             head = head.strip()
             body = body.strip()
             body = self.create_lines(body)
