@@ -22,8 +22,8 @@ $ git clone https://github.com/amgaa/ClusterNap.git
 
 $ export PATH=$PATH:/path/to/ClusterNap/bin/
 ```
-Since you might want to use ClusterNap permanently, it is might be better to add 
-```export PATH=$PATH:/path/to/ClusterNap/bin/ ``` to your .profile* file too. 
+Since you might want to use ClusterNap permanently, it might be better to add 
+```export PATH=$PATH:/path/to/ClusterNap/bin/ ``` to your *.profile* file too. 
 
 Once you added ClusterNap/bin directory to your system's path, now you may use **cntools** from your command line. Try following: 
 
