@@ -48,20 +48,21 @@ If you have come to this point, you most probably are wondering how to add new n
 
 Configuring nodes (servers, VMs, cloud instances, switches, RAIDS)
 ==================================================================
+Configuration files have to be written in *ClusterNap/config/* folder. Each configuration file should have **.conf** extension. As long as config files have *.conf* extension, you can have several or single config file. To keep the convenience, we advise you to divide your config files into several files such as *servers.conf*, *switches.conf*, *commands.conf* etc.
 
-Let's say you have a cluster with 101 worker nodes with hostname of ***worker_node000 - worker_node100***. 
+Now let's see how we might configure some servers. Say you have a cluster with 100 worker nodes with hostname of ***worker_node000 - worker_node099***. 
 Moreover, let's consider your worker\_nodes are all connected to filesystem node ***filesystem\_node***
 
 ```
 define node{
-        name:                   worker_node[000-100]
+        name:                   worker_node[000-099]
         run_dependencies:       filesystem_node
         on_dependencies:        management_node | filesystem_node
         off_dependencies:       management_node | filesystem_noe
-        on_command:             management_node, root, ipmi!10.1.2.[100-200] | \
-                                filesystem_node, root, ipmi!10.1.2.[100-200]
-        off_command:            management_node, root, ssh_shutdown!worker_node[000-100] | \
-                                filesystem_node, root, ssh_shutdown!worker_node[000-100]
+        on_command:             management_node, root, ipmi!10.1.2.[100-199] | \
+                                filesystem_node, root, ipmi!10.1.2.[100-199]
+        off_command:            management_node, root, ssh_shutdown!worker_node[000-099] | \
+                                filesystem_node, root, ssh_shutdown!worker_node[000-099]
 }
 ```
  Here, above configuration says, *worker\_node000 ~ worker\_node100* are all RUN-dependent on *filesystem_node*. 
@@ -83,5 +84,8 @@ define command {
 
 
 cntools (ClusterNap's user interface tool)
+==========================================
+
+To be continued soon ...
 
 
