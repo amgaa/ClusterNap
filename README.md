@@ -65,6 +65,10 @@ define node{
                                 filesystem_node, root, ssh_shutdown!worker_node[000-100]
 }
 
+# Here, above configuration says, worker_node000 ~ worker_node100 are all RUN-dependent on filesystem_node. 
+#
+# Also on the line containing on_dependencies, we see that  we can turn-on worker_node000 ~ worker_node100 when one of management_node or filesystem_node is ON. Vertical bas character shows logical OR expression. 
+# The same goes to off_dependency. 
 
 define_command {
        name:            ssh_shutdown
