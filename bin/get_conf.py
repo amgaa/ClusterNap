@@ -354,14 +354,15 @@ class get_conf:
                 elif len(tmp_nodes[key]) == len(tmp_nodes["name"]):
                     tmp_node[key] = tmp_nodes[key][i]
                 else:
-                    print "Configuration error!. Number of items inside [] does not match in config file: " + filename
-                    self.errorlog.error("Configuration error!. Number of items inside [] does not match in config file: " + filename )
+                    print "Configuration error!. Number of items inside [] does not match. :  " + str(tmp_nodes[key])
+                    self.errorlog.error("Configuration error!. Number of items inside [] does not match.!:  " + str(tmp_nodes[key]) )
                     exit(1)
         
             # If a node with same name already defined:
             if nodes.has_key(tmp_node["name"]):
-                print "Configuration error!. Duplicate definition of node: " + tmp_node["name"]  + " in " + filename 
-                self.errorlog.error("Configuration error!. Duplicate definition of node: " + tmp_node["name"] + " in " + filename)
+                msg = "Configuration error!. Duplicate definition of node: " + tmp_node["name"]  + " in config file"
+                print  msg
+                self.errorlog.error(msg)
                 exit(1)
 
             nodes[tmp_node["name"]] = tmp_node

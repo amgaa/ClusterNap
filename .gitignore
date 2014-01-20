@@ -12,7 +12,7 @@ config/*
 !config/example_*
 !config/localhost.conf
 requested/*
-!requested/localhost
+!requested/nodes/localhost
 graphs/*
 !graphs/.README
 logs/*
