@@ -13,14 +13,38 @@ How to install
 It is easy to install. Just clone the repository and add ClusterNap's bin/ directory to your PATH. 
 
 ```
-git clone https://github.com/amgaa/ClusterNap.git
+$ git clone https://github.com/amgaa/ClusterNap.git
 
-export PATH=$PATH:/path/to/ClusterNap/bin/
+$ export PATH=$PATH:/path/to/ClusterNap/bin/
 ```
+
+Once you added ClusterNap/bin directory to your system's path, now you may use **cntools** from your command line. Try following: 
+
+```
+$ cntools info
+ --------------------------------------------------------------------------------- 
+|   Node name    | Power state | Request state | Request user |   Request date    |
+ --------------------------------------------------------------------------------- 
+|localhost       |On           |Requested      |amgaa         |2014-01-20 15:55:29|
+ ---------------------------------------------------------------------------------
+```
+and you will see something like above. What it says is that you have configured only one node which is called ***localhost***. Moreover, from the table above, we know node ***localhost***'s 
+present power state is ***On***, 
+it's been already ***requested*** 
+and user ***amgaa*** requested it 
+at ***2014-01-20 15:55:29***. 
+
+While you never configured any node yet, somehow you see there is node here. It is because *localhost* is preconfigured, and you can see how it is configured in ClusterNap/config/localhost.conf. 
+
+If you have come to this point, you most probably are wondering how to add new nodes to ClusterNap. Easy, you see next section. 
+
 
 
 Configuring nodes (servers, VMs, cloud instances, switches, RAIDS)
 ==================================================================
+
+Let's say you have a cluster with 101 worker nodes with hostname of ***worker_node000 - worker_node100***. 
+Moreover, let's consider your worker\_nodes are all connected to filesystem node ***filesystem\_node***
 
 ```
 define node{
