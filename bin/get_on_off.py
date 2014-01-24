@@ -71,10 +71,37 @@ class get_on_off:
                     self.NODES_REQUESTED_OFF.append(node)
 
         
-        self.DEP_RUN_ON = get_dependency.get_dependency().get_run_on_dep()
-        self.DEP_RUN    = get_dependency.get_dependency().get_run_dep()
-        self.DEP_OFF    = get_dependency.get_dependency().get_off_dep()
+        self.DEP_RUN_ON  = get_dependency.get_dependency().get_run_on_dep()
+        self.DEP_RUN     = get_dependency.get_dependency().get_run_dep()
+        self.DEP_OFF     = get_dependency.get_dependency().get_off_dep()
+        self.DEP_RUN_OFF = get_dependency.get_dependency().get_run_off_dep()
+        
 
+    # Pseudo Algorithm. All dirty codes in the main() should be changed to this function below. 
+    # For now, do not have time to do it with writing my thesis :)
+    def on_on_nodes(D_run, D_on, D_off, State_min, State_current):
+        Nodes_to_on  = set(self.OFF_UNKNOWN_NODES) & State_min
+        Nodes_to_off = set(self.ON_NODES) - Nodes_to_on
+        Nodes_to_on  = Nodes_to_on | min_power_state(self.DEP_RUN_ON, Nodes_to_on)
+        Nodes_to_on  = Nodes_to_on | min_power_state(self.DEP_RUN_OFF, Nodes_to_off)
+        Nodes_to_on  = Nodes_to_on - Nodes_to_off
+
+        for node in Nodes_to_on:
+            if not any(all_members_on(clause) for clause in D_run_on[node]):
+                Nodes_to_on.remove(node)
+                
+        for node in Nodes_to_off:
+            if not any(all_members_on(clause) for clause in D_off[node]):
+                Nodes_to_off.remove(node)
+
+        for node in Nodes_to_off:
+            if another_run_dependent_node(node):
+                Nodes_to_off.remove(node)
+
+        if not State_min <= Nodes_to_on:
+            return on_off_nodes(D_run, D_on, D_off, State_min | Nodes_to_on, State_current)
+
+        return Nodes_to_on, Nodes_to_off
 
     # Returns a pair of lists:
     # list 1: nodes that should be ON (currently ON or OFF) 

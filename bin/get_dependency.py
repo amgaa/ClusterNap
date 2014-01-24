@@ -110,6 +110,38 @@ class get_dependency:
         return deps
 
 
+    def get_run_off_dep(self):
+        off_deps = self.get_off_dep()
+        deps = {}
+        deps = self.get_run_dep()
+
+        for node in deps.keys():
+            if off_deps.has_key(node):
+
+                if deps[node] == []:  #Otherwise, it returns wrong value. Does not do cartesian product when it is empty. 
+		    deps[node] = off_deps[node]
+		
+                # Get the cartesian product of two dependencies
+#                product = [ x+y for x in deps[node] for y in on_deps[node]]
+                product = [ x+y for x in off_deps[node] for y in deps[node]]
+
+                # Remove some items which occur more than once in the same clause
+                tmp_product = []
+                for clause in product:
+                    tmp_clause = []
+                    for elem in clause:
+                        if not elem in tmp_clause:
+                            tmp_clause.append(elem)
+                    tmp_product.append(tmp_clause)
+                deps[node] = tmp_product
+            
+        # If off dependency have some nodes whoch run_dep does not have, add that too
+        for node in off_deps.keys():
+            if not deps.has_key(node):
+                deps[node] = off_deps[node]
+        return deps
+
+
     def main(self, argv):
         self.args = argv
 
