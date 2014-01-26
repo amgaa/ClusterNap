@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 
 ''' 
 Returns OFF nodes those should be turned-ON and ON nodes those should be turned-OFF.

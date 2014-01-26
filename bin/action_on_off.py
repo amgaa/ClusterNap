@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/env python
 
 #'''
 # Tries to change states of nodes according to the information (what nodes should be ON and which ones should b#e off)
