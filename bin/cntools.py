@@ -7,8 +7,10 @@ ClusterNap tools. 1.0.0
 As of 2014 Jan, ssh scp, rsync, qsub are included. 
 
 '''
-import os, sys, re, pwd, datetime, time
+import os, sys, re, pwd
+import datetime, time
 import subprocess
+import json
 import itertools
 import get_state
 import get_conf
@@ -738,6 +740,44 @@ class clusternap(object):
                   Be very careful!!!!
         """
         return get_state.get_state().set_state(nodename, state)
+
+
+    def dependency_to_file(self, dependency, filename):
+        """
+        Saves dictionary of dependencies to a JSON file. 
+        """
+        try:
+            f = open(filename, 'w')
+            f.write(json.dumps(dependency))
+            f.close()
+            return 0
+        except Exception as m:
+            print m
+            print "Some error occured saving dependencies to a json file!" + filename
+            return 1
+
+
+    def dependency_from_file(self, filename):
+        """
+        Reads dependencies from JSON file.
+        Returns a dictionary of nodes and their dependencies.
+        """
+        try:
+            f_dep = open('dep.txt', 'r').read()
+            read_deps = json.loads(f_dep)
+            deps = {}
+            for key, val in read_deps.items():
+                key = key.encode('ascii', 'replace')
+
+                for i in range(len(val)):
+                    for j in range(len(val[i])):
+                        val[i][j] = val[i][j].encode('ascii', 'replace')
+                deps[key] = val
+            return deps
+        except Exception as m:
+            print m
+            print "Some error occured reading dependencies from json file " + filename
+            return 1
 
     def set_dependency(self, nodename, dep_type, dependency):
         """
