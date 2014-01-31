@@ -101,18 +101,62 @@ define command {
 Following is an example of adding RAIDs and switches to ClusterNap.
 
 ```
-define node{                                                                                                                    name:             raid_A                                                                                                      run_dependencies: switch_A                                                                                                    on_dependencies:  localhost                                                                                                   off_dependencies: localhost                                                                                                   on_command:       localhost, root, snmp_on!snmp_ip!snmp_port_no                                                               off_command:      localhost, root, snmp_off!snmp_ip!snmp_port_no                                                            }                                                                                                                                  
-define node{                                                                                                                    name:             switch_A                                                                                                    run_dependencies:                                                                                                             on_dependencies:  localhost                                                                                                   off_dependencies: localhost                                                                                                   on_command:       localhost, root, snmp_on!snmp_ip!snmp_port_no                                                               off_command:      localhost, root, snmp_off!snmp_ip!snmp_port_no                                                            }                                                                                                                                  
-define command {                                                                                                                name:             snmp_off                                                                                                    command_line:     snmpset -c comm_str -v 2c $ARG1 .1.3.6.1.4.1.13742.4.1.2.2.1.3.$ARG2 i 0                                  }                                                                                                                                  
-define_command {                                                                                                                name:             snmp_on                                                                                                     command_line:     snmpset -c comm_str -v 2c $ARG1 .1.3.6.1.4.1.13742.4.1.2.2.1.3.$ARG2 i 1                                  }         
+define node{
+    name:             raid_A
+    run_dependencies: switch_A
+    on_dependencies:  localhost
+    off_dependencies: localhost
+    on_command:       localhost, root, snmp_on!snmp_ip!snmp_port_no
+    off_command:      localhost, root, snmp_off!snmp_ip!snmp_port_no
+    }
+
+define node{
+    name:             switch_A
+    run_dependencies:
+    on_dependencies:  localhost
+    off_dependencies: localhost
+    on_command:       localhost, root, snmp_on!snmp_ip!snmp_port_no
+    off_command:      localhost, root, snmp_off!snmp_ip!snmp_port_no
+    }
+
+define command {
+    name:             snmp_off
+    command_line:     snmpset -c comm_str -v 2c $ARG1 .1.3.6.1.4.1.13742.4.1.2.2.1.3.$ARG2 i 0
+    }
+
+define_command {
+    name:             snmp_on
+    command_line:     snmpset -c comm_str -v 2c $ARG1 .1.3.6.1.4.1.13742.4.1.2.2.1.3.$ARG2 i 1
+    }         
 ```
 
 And, you can also easily control Amazon's instances from ClusterNap too. An example is:
 
 ```
-define node{                                                                                                                    name:                ec2-instant                                                                                              run_dependencies:    localhost                                                                                                on_dependencies:     localhost                                                                                                off_dependencies:    localhost                                                                                                on_command:          localhost, amgaa, ctl_ec2_inst\                                                                                               !ap-northeast-1 (or other region)\                                                                                            !EC2-ACCESS-KEY \                                                                                                             !EC2-SECRET-KEY \                                                                                                             !instant-ID \                                                                                                                 !on                                                                                                      off_command:         localhost, amgaa, ctl_ec2_inst \                                                                                              !ap-northeast-1 (or other region)\                                                                                            !EC2-ACCESS-KEY \                                                                                                             !EC2-SECRET-KEY \                                                                                                             !instant-ID \                                                                                                                 !off                                                                                                   }                                                                                                                                  
-define command{                                                                                                                 name:           ctl_ec2_inst                                                                                                  command_line:  /path/to/ClusterNap/nagios-plugins/ctl_ec2_instance.py \                                                                                                $ARG1 $ARG2 $ARG3 $ARG4 $ARG5
-}
+define node{
+    name:                ec2-instant
+    run_dependencies:    localhost
+    on_dependencies:     localhost
+    off_dependencies:    localhost
+    on_command:          localhost, amgaa, ctl_ec2_inst\
+                         !ap-northeast-1 (or other region)\
+                         !EC2-ACCESS-KEY \
+                         !EC2-SECRET-KEY \
+                         !instant-ID \
+                         !on
+    off_command:         localhost, amgaa, ctl_ec2_inst \
+                         !ap-northeast-1 (or other region)\
+                         !EC2-ACCESS-KEY \
+                         !EC2-SECRET-KEY \
+                         !instant-ID \
+                         !off
+   }
+   
+define command{
+   name:           ctl_ec2_inst
+   command_line:  /path/to/ClusterNap/nagios-plugins/ctl_ec2_instance.py \
+                                            $ARG1 $ARG2 $ARG3 $ARG4 $ARG5
+   }
 ```
 
 
