@@ -28,14 +28,13 @@ For now, it might be easy for you to figure out that you should first turn-ON *m
 How to install
 ==============
 ClusterNap runs on Linux computer (however, it controls any computer or resource). 
-It is very easy to install. Just clone the repository and add ClusterNap's bin/ directory to your *PATH*. 
+It is very easy to install. Just clone the repository and add symbolic link of ClusterNap's daemon **clusternapd** and user interface tool **cntools** to your path. 
 
 ```
 $ git clone https://github.com/amgaa/ClusterNap.git
-$ export PATH=$PATH:/path/to/ClusterNap/bin/
-```
-Since you might want to use ClusterNap permanently, it might be better to add 
-```export PATH=$PATH:/path/to/ClusterNap/bin/ ``` to your *.profile* file too. 
+$ ln -s PATH=$PATH:/path/to/ClusterNap/bin/clusternapd /usr/local/bin/clusternapd
+$ ln -s PATH=$PATH:/path/to/ClusterNap/bin/cntools /usr/local/bin/cntools
+ 
 
 Once you added ClusterNap/bin directory to your system's path, you can use **cntools** from your command line. Try following: 
 
