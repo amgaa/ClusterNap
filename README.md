@@ -94,10 +94,7 @@ define command {
 
 ```
 
-```
 
-
-```
 Following is an example of adding RAIDs and switches to ClusterNap.
 
 ```
