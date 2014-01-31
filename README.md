@@ -36,7 +36,7 @@ $ ln -s PATH=$PATH:/path/to/ClusterNap/bin/clusternapd /usr/local/bin/clusternap
 $ ln -s PATH=$PATH:/path/to/ClusterNap/bin/cntools /usr/local/bin/cntools
 ```
 
-Once you added ClusterNap/bin directory to your system's path, you can use **cntools** from your command line. Try following: 
+Now, you can use **cntools** from your command line. Try following: 
 
 ```
 $ cntools info
