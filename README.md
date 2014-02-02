@@ -19,7 +19,7 @@ Getting started
 
 How to install
 --------------
-ClusterNap runs on Linux computer (however, it controls any computer or resource). 
+ClusterNap runs on Linux (checked on Debian and Ubuntu) computer (however, it controls any computer or resource). 
 It is very easy to install. Just clone the repository and add symbolic link of ClusterNap's daemon **clusternapd** and user interface tool **cntools** to your path. 
 
 ```
