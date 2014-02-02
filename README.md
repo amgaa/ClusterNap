@@ -75,6 +75,9 @@ The same goes to *off\_dependency*.
 
 In the line where *on_command* is written, it says "to make these nodes ON, ClusterNap should execute **ipmi** command with the argument of *10..1.2.100* (to 199) on the node management node as a user *root*. **Or** on the node filesystem_node". Same analogy applies to *off_command*.
 
+
+Following show how we define the commands which change node's state. For example the command **ipmi** which turns on nodes is define as below. It takes one argument from the node definition, and runs the comman ```ipmitool``` with other certain options such as ipmi password, execution user, desired action (chassis power on etc...). 
+
 ```
 define_command {
        name:            ssh_shutdown
