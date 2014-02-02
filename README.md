@@ -11,7 +11,7 @@ After simply configuring node dependencies and ON/OFF commands for each node, al
 CASE 1:
  For example, you have a worker node called *worker1* and it is connected to central filesystem node called *master*. In most cases, if you want to use node *worker1*, then node *master* has to be ON ***before*** we turn-ON *worker1*. In ClusterNap language, we call this situation "*worker1* is ***RUN-dependent*** on *master*". 
 
-For now, it might be easy for you to figure out that you should first turn-ON *master* and then *worker1*. Now, let's consider you have hundreds of nodes with very *complex* **RUN dependency**!! Not a funny job to do by your hand, is it? ClusterNap deals with this situation. 
+For now, it might be easy for you to figure out that you should first turn-ON *master* and then *worker1*. Now, let's consider you have hundreds of nodes with very *complex* ***RUN dependency***!! Not a funny job to do by your hand, is it? ClusterNap deals with this situation. 
 
 
 Getting started
