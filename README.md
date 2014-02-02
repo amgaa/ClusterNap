@@ -71,7 +71,9 @@ define node{
 ```
  Here, above configuration says, *worker\_node000 ~ worker\_node100* are all RUN-dependent on *filesystem_node*. 
 Also on the line containing *on\_dependencies*, we see that  we can turn-on *worker\_node000 ~ worker\_node100* when one of *management\_node* or *filesystem\_node* is ON. Vertical bar "|" shows logical **OR** expression. 
-The same goes to *off\_dependency*. 
+The same goes to *off\_dependency*.  
+
+In the line where *on_command* is written, it says "to make these nodes ON, ClusterNap should execute **ipmi** command with the argument of *10..1.2.100* (to 199) on the node management node as a user *root*. **Or** on the node filesystem_node". Same analogy applies to *off_command*.
 
 ```
 define_command {
