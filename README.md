@@ -24,8 +24,8 @@ It is very easy to install. Just clone the repository and add symbolic link of C
 
 ```
 $ git clone https://github.com/amgaa/ClusterNap.git
-$ ln -s PATH=$PATH:/path/to/ClusterNap/bin/clusternapd /usr/local/bin/clusternapd
-$ ln -s PATH=$PATH:/path/to/ClusterNap/bin/cntools /usr/local/bin/cntools
+$ ln -s /path/to/ClusterNap/bin/clusternapd /usr/local/bin/clusternapd
+$ ln -s /path/to/ClusterNap/bin/cntools /usr/local/bin/cntools
 ```
 
 Now, you can use **cntools** from your command line. Try following: 
