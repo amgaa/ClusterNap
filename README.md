@@ -157,7 +157,7 @@ There are files generated automatically with the same name of each nodes defined
 Inside these files in the ```state/nodes/``` directory, either **1**, **0**, or **-1** should be written. When the node is ON, it should be **1**, when OFF **0**, when UNKNOWN **-1** should be written inside these files. To update nodes' states means, therefore, to update these files. 
 
 
-** Using Torque to update node states **  
+**Using Torque to update node states**  
 
 When the node names match with the host names used in Torque resource manager, we can use Torque as node state updater. ClusterNap uses Torque's ```$ pbsnodes``` command and updates its nodes' statuses. 
 To use Torque, we should just set environment variable ```CHECK_TORQUE``` to ```True``` when we start ```clusternapd```. Therefore, it is as simple as executing following command:
@@ -166,7 +166,7 @@ $ CHECK_TORQUE=True clusternapd start
 ```
 
 
-** Using Nagios to update node states **  
+**Using Nagios to update node states**  
 
 When the user uses Nagios resource monitoring system, it is also good idea to take the advantage of its scalable resource checking engine. Nagios uses either its default or user defined plugins to check its resources. Just by changing those plugins or using the plugins we provide (in the directory ```/path/to/ClusterNap/nagios-plugins/```), we can make Nagios to update ClusterNap's nodes' statuses. Following is an example of how we use ClusterNap's plugins in Nagios' config file (Remember it is **NOT** ClusterNap's config file, but Nagios'. Nagios3's config files, for example, reside in ```/etc/nagios3/conf.d/``` directory by default).
 
