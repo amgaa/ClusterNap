@@ -232,7 +232,7 @@ $ cntools release nodename
 ```
 or just ```$ cntools rel nodename ```. For more exciting features of releasing nodes, try ```$ cntools release -h```.
 
-To see what other things cntools can do, try 
+To see what other interesting things cntools can do, try 
 
 ```
 $ cntools -h
