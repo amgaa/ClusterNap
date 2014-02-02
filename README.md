@@ -4,7 +4,7 @@ ClusterNap
 ClusterNap is a simple, configurable power control interface tool for IT infrastructures. 
 
 ClusterNap controls the power states of your nodes (servers, VMs, switches, RAIDS, cloud instances, *whatever you can imagine*) in your system. 
-After simply configuring node dependencies and ON/OFF commands for each node, all you have to do is just tell the ClusterNap which nodes you need. It will take care of the rest; for example, what other nodes it should turn-on/off in order to turn-on/off you requested/derequested nodes. Moreover, ClusterNap knows exactly in what order it should take turn-on/off actions for the nodes while keeping the system graceful. 
+After simply configuring node dependencies, ON/OFF commands for each node, and setting up node state update module, all you have to do is just tell the ClusterNap which nodes you need. It will take care of the rest; for example, what other nodes it should turn-on/off in order to turn-on/off you requested/derequested nodes. Moreover, ClusterNap knows exactly in what order it should take turn-on/off actions for the nodes while keeping the system graceful. 
 
 
 
