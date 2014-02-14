@@ -258,3 +258,8 @@ and to track error logs,
 ```
 $ tail -f /path/to/ClusterNap/logs/2014-05-15_error.log
 ```
+
+
+
+If you have any ideas regarding this tool, contact to:
+amgaa.hpc [at] gmail [dot] com
