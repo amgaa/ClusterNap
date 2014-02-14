@@ -5,8 +5,8 @@ ClusterNap is a simple, configurable power control interface tool for IT infrast
 
 Well there are plenty of other power controller tools for IT infras. How is ClusterNap different from them? 
 
-1) Dependency-awareness. When there are complex dependencies among the IT resources, it is not always clear how we should turn-on/off those resources (by *resource*, we mean any thing, like servers, switches, RAIDS, services, instances ...). ClusterNap takes care of it. 
-2) It is generic. Other tools are mainly focused on "servers only". ClusterNap is not. It controls servers, switches, RAIDs, VMs, instances, services... pretty much whatever a user can imagine as a node.
+1) **Dependency-awareness**. When there are complex dependencies among the IT resources, it is not always clear how we should turn-on/off those resources (by *resource*, we mean any thing, like servers, switches, RAIDS, services, instances ...). ClusterNap takes care of it.  
+2) **It is generic**. Other tools are mainly focused on "servers only". ClusterNap is not. It controls servers, switches, RAIDs, VMs, instances, services... pretty much whatever a user can imagine as a node.
 
 
 ClusterNap controls the power states of your nodes (servers, VMs, switches, RAIDS, cloud instances, *whatever you can imagine*) in your system. 
