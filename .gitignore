@@ -15,6 +15,7 @@ requested/*
 !requested/nodes/localhost
 graphs/*
 !graphs/.README
+!graphs/index.html
 logs/*
 !logs/.README
 bin/gen_img.sh
