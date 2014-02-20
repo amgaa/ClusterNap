@@ -154,7 +154,7 @@ define node{
    
 define command{
    name:           ctl_ec2_inst
-   command_line:  /path/to/ClusterNap/nagios-plugins/ctl_ec2_instance.py \
+   command_line:  /path/to/ClusterNap/plugins/ctl_ec2_instance.py \
                                             $ARG1 $ARG2 $ARG3 $ARG4 $ARG5
    }
 ```
@@ -179,13 +179,13 @@ $ CHECK_TORQUE=True clusternapd start
 
 **Using Nagios to update node states**  
 
-When the user uses Nagios resource monitoring system, it is also good idea to take the advantage of its scalable resource checking engine. Nagios uses either its default or user defined plugins to check its resources. Just by changing those plugins or using the plugins we provide (in the directory ```/path/to/ClusterNap/nagios-plugins/```), we can make Nagios to update ClusterNap's nodes' statuses. Following is an example of how we use ClusterNap's plugins in Nagios' config file (Remember it is **NOT** ClusterNap's config file, but Nagios'. Nagios3's config files, for example, reside in ```/etc/nagios3/conf.d/``` directory by default).
+When the user uses Nagios resource monitoring system, it is also good idea to take the advantage of its scalable resource checking engine. Nagios uses either its default or user defined plugins to check its resources. Just by changing those plugins or using the plugins we provide (in the directory ```/path/to/ClusterNap/plugins/```), we can make Nagios to update ClusterNap's nodes' statuses. Following is an example of how we use ClusterNap's plugins in Nagios' config file (Remember it is **NOT** ClusterNap's config file, but Nagios'. Nagios3's config files, for example, reside in ```/etc/nagios3/conf.d/``` directory by default).
 
 
 ```
 define command{
         command_name            check_host_CN
-        command_line            /path/to/ClusterNap/nagios-plugins/check_ping_CN.py\
+        command_line            /path/to/ClusterNap/plugins/check_ping_CN.py\
                                                                   -H $HOSTADDRESS$ \
                                                                   -w 5000,100%     \                                               
                                                                   -c 5000,100%     \                                               
@@ -194,7 +194,7 @@ define command{
 
 define command{
         command_name            check_ec2_instance
-        command_line            /path/to/ClusterNap/nagios-plugins/check_ec2_instance_CN.py \
+        command_line            /path/to/ClusterNap/plugins/check_ec2_instance_CN.py \
                                                                         $ARG1$ $ARG2$ $ARG3$ \
                                                                             $ARG4$ -H $ARG5$
         }
