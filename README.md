@@ -250,6 +250,27 @@ $ cntools -h
 ```
 
 
+API
+---
+ClusterNap has API for python. Following is an example of using the API,
+```
+$ python
+>>> import cntools
+>>> cn = cntools.clusternap()
+>>> cn.request('nodeA')
+>>> cn.release('nodeB')
+...
+
+```
+To see the more information, about the API functions
+
+```
+>>> help(cn)
+
+```
+
+The ```help(cn)``` will display the API functions and their roles.
+
 Logging and troubleshooting
 ---------------------------
 
