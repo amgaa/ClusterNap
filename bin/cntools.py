@@ -468,6 +468,7 @@ def show_help_main():
     msg += "\tscp     -- scp to clusternap node. If node in question is not requested, requests it.\n"
     msg += "\trsync   -- rsync to clusternap node. If node in question is not requested, requests it.\n"
     msg += "\tqsub    -- submits job by qsub. If requested resource (clusternap node) is not requested, request it.\n"
+    msg += "\tgenimg  -- updates system's dependency graph in the folder /path/to/ClusterNap/graphs/"
     print msg
     return 
 
@@ -519,8 +520,9 @@ def main(argv, stdin):
     arg_scp  = ['scp', '--scp', 'cnscp', '--cnscp']
     arg_rsync= ['rsync', '--rsync', 'cnrsync', '--cnrsync']
     arg_qsub = ['qsub', '--qsub', 'cnqsub', '--cnqsub']
+    arg_gen_img = ['genimg', 'gi', 'generate_image']
 
-    if args[0] not in arg_info + arg_rel + arg_req + arg_ssh + arg_scp + arg_rsync + arg_qsub:
+    if args[0] not in arg_info + arg_rel + arg_req + arg_ssh + arg_scp + arg_rsync + arg_qsub + arg_gen_img:
         print "Wrong option: Please see help"
         return show_help_main()
     
@@ -568,6 +570,12 @@ def main(argv, stdin):
             return show_help_qsub()
         return cnqsub(args, stdin)
 
+    # GENERATE IMAGE
+    if args[0] in arg_gen_img:
+        if len(args) == 1:
+            if not os.system('./gen_img.sh'):
+                print "Graph updated"
+        
 
 class clusternap(object):
     """ API of ClusterNap """
