@@ -573,8 +573,15 @@ def main(argv, stdin):
     # GENERATE IMAGE
     if args[0] in arg_gen_img:
         if len(args) == 1:
-            if not os.system('./gen_img.sh'):
-                print "Graph updated"
+            DOT_FILE  = os.path.dirname(os.path.abspath(__file__)) + '/../graphs/CN.dot'
+#            XDOT_FILE = os.path.dirname(os.path.abspath(__file__)) + '/../graphs/CN_updated.xdot'
+            OUT_IMG   = os.path.dirname(os.path.abspath(__file__)) + '/../graphs/CN.png'
+            GEN_DOT   = os.path.dirname(os.path.abspath(__file__)) + '/gen_dot.py > /dev/null'
+            GEN_IMG   = 'dot -Tpng ' + DOT_FILE + ' -o ' + OUT_IMG
+            os.system(GEN_DOT) 
+            os.system(GEN_IMG)
+#            if not os.system():
+#                print "Graph updated"
         
 
 class clusternap(object):
