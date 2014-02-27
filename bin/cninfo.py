@@ -107,7 +107,7 @@ class cninfo:
             owner = info.pw_name
             # Get last modified date (Last requested date)
             t = os.path.getmtime(self.REQUEST_DIR + node)
-            modified = str(datetime.datetime.fromtimestamp(t))#[:-17]
+            modified = str(datetime.datetime.fromtimestamp(t))[:19]
 
         return state, requested, owner, modified
 
