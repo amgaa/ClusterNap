@@ -7,7 +7,8 @@ import sys
 import cntools
 
 def show_help():
-    msg  = "Usage: {0} ssh <openssh_arguments>\n".format(sys.argv[0])
+#    msg  = "Usage: {0} ssh <openssh_arguments>\n".format(sys.argv[0])
+    msg  = "Usage: %s ssh <openssh_arguments>\n" % (sys.argv[0])
     msg += "For more information on <openssh_arguments>, please refer to 'ssh -h'"
     print msg
 

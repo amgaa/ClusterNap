@@ -85,7 +85,7 @@ class cninfo:
             owner = info.pw_name
             # Get last modified date (Last requested date)
             t = os.path.getmtime(self.REQUEST_DIR + node)
-            modified = str(datetime.datetime.fromtimestamp(t))[:-7]
+            modified = str(datetime.datetime.fromtimestamp(t))#[:-17]
 
         return state, requested, owner, modified
 
@@ -95,13 +95,14 @@ class cninfo:
         print "|   Node name    | Power state | Request state | Request user |   Request date    |"
         print " --------------------------------------------------------------------------------- "
         for line in lis:
-            print "|{:16s}|{:13s}|{:15s}|{:14s}|{:19s}|".format(line[0], line[1][0], line[1][1], line[1][2], line[1][3] )
+#            print "|{:16s}|{:13s}|{:15s}|{:14s}|{:19s}|".format(line[0], line[1][0], line[1][1], line[1][2], line[1][3] )
+            print "|%-16s|%-13s|%-15s|%-14s|%-19s|" % (line[0], line[1][0], line[1][1], line[1][2], line[1][3] )
         print " ---------------------------------------------------------------------------------\n"
 
 
-
     def show_help(self):
-        print " Usage:  {} info [-u <username>] [-r <free|requested|f|r> ] [-s <on|off|unknown|un|u>]  [-n <nodename*>]\n".format(sys.argv[0])
+#        print " Usage:  {} info [-u <username>] [-r <free|requested|f|r> ] [-s <on|off|unknown|un|u>]  [-n <nodename*>]\n".format(sys.argv[0])
+        print " Usage:  %s info [-u <username>] [-r <free|requested|f|r> ] [-s <on|off|unknown|un|u>]  [-n <nodename*>]\n" % (sys.argv[0])
 
     # If any user is define in the argument, take that
     def get_user(self, arglist):

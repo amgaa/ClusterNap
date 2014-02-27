@@ -82,7 +82,8 @@ def cnssh(args):
     # TODO: If host is given by its IP, we should search the hostname of that ip
 
     if not hostname in INFO.keys():
-        msg = "{0} is not defined in ClusterNap. Error".format(hostname)
+#        msg = "{0} is not defined in ClusterNap. Error".format(hostname)
+        msg = "%s is not defined in ClusterNap. Error" % (hostname)
         print msg
         errorlog.error(USER + ": " + msg)
         return 1
@@ -99,7 +100,7 @@ def cnssh(args):
 
     # If host is in OFF or UNKNOWN state
     # Request it
-    print "We are waking up {0}. Please be patient.".format(hostname)
+    print "We are waking up %s. Please be patient." % (hostname)
     print "It might take several minutes."
     time_passed = 0
     while state != 1 and time_passed < MAX_WAIT: 
@@ -108,7 +109,7 @@ def cnssh(args):
         state = get_state.get_state().node_state(hostname)
     
     if time_passed >= MAX_WAIT or state != 1:
-        msg = "Sorry. Could not wake up '{0}' in {1} seconds.".format(hostname, MAX_WAIT)
+        msg = "Sorry. Could not wake up '%s' in %s seconds." % (hostname, str(MAX_WAIT))
         print msg
         log.warning(USER + ": " + msg)
         return 1
@@ -132,7 +133,8 @@ def cnscp(args):
     # TODO: If host is given by its IP, we should search the hostname of that ip
 
     if not hostname in INFO.keys():
-        msg = "{0} is not defined in ClusterNap. Error".format(hostname)
+#        msg = "{0} is not defined in ClusterNap. Error".format(hostname)
+        msg = "%s is not defined in ClusterNap. Error" % (hostname)
         print msg
         errorlog.error(USER + ": " + msg)
         return 1
@@ -149,7 +151,8 @@ def cnscp(args):
 
     # If host is in OFF or UNKNOWN state
     # Request it
-    print "We are waking up {0}. Please be patient.".format(hostname)
+#    print "We are waking up {0}. Please be patient.".format(hostname)
+    print "We are waking up %s. Please be patient." % (hostname)
     print "It might take several minutes."
     time_passed = 0
     while state != 1 and time_passed < MAX_WAIT: 
@@ -158,7 +161,8 @@ def cnscp(args):
         state = get_state.get_state().node_state(hostname)
     
     if time_passed >= MAX_WAIT or state != 1:
-        msg = "Sorry. Could not wake up '{0}' in {1} seconds.".format(hostname, MAX_WAIT)
+#        msg = "Sorry. Could not wake up '{0}' in {1} seconds.".format(hostname, MAX_WAIT)
+        msg = "Sorry. Could not wake up '%s' in %s seconds." % (hostname, MAX_WAIT)
         print msg
         log.warning(USER + ": " + msg)
         return 1
@@ -182,7 +186,8 @@ def cnrsync(args):
     # TODO: If host is given by its IP, we should search the hostname of that ip
 
     if not hostname in INFO.keys():
-        msg = "{0} is not defined in ClusterNap. Error".format(hostname)
+#        msg = "{0} is not defined in ClusterNap. Error".format(hostname)
+        msg = "%s is not defined in ClusterNap. Error" % (hostname)
         print msg
         errorlog.error(USER + ": " + msg)
         return 1
@@ -199,7 +204,8 @@ def cnrsync(args):
 
     # If host is in OFF or UNKNOWN state
     # Request it
-    print "We are waking up {0}. Please be patient.".format(hostname)
+#    print "We are waking up {0}. Please be patient.".format(hostname)
+    print "We are waking up %s. Please be patient." % (hostname)
     print "It might take several minutes."
     time_passed = 0
     while state != 1 and time_passed < MAX_WAIT: 
@@ -208,7 +214,8 @@ def cnrsync(args):
         state = get_state.get_state().node_state(hostname)
     
     if time_passed >= MAX_WAIT or state != 1:
-        msg = "Sorry. Could not wake up '{0}' in {1} seconds.".format(hostname, MAX_WAIT)
+#        msg = "Sorry. Could not wake up '{0}' in {1} seconds.".format(hostname, MAX_WAIT)
+        msg = "Sorry. Could not wake up '%s' in %s seconds." % (hostname, str(MAX_WAIT))
         print msg
         log.warning(USER + ": " + msg)
         return 1
@@ -234,12 +241,14 @@ def try_ssh(args):
 
     print "Connecting through ssh."
     if not os.system(cmd) == 0: # Failed to connect
-        msg = "Failed to execute '{0}'. Will try again in 5 seconds".format(cmd)
+#        msg = "Failed to execute '{0}'. Will try again in 5 seconds".format(cmd)
+        msg = "Failed to execute '%s'. Will try again in 5 seconds" % (cmd)
         print msg
         errorlog.error(USER + ": " + msg)
         time.sleep(5)
         if not os.system(cmd) == 0: 
-            msg = "Sorry. Command '{0}' failed!".format(cmd)
+#            msg = "Sorry. Command '{0}' failed!".format(cmd)
+            msg = "Sorry. Command '%s' failed!" % (cmd)
             print msg
             errorlog.error(USER + ": " + msg)
             return 1
@@ -255,12 +264,14 @@ def try_scp(args):
         cmd += " " + arg
     print "Trying scp."
     if not os.system(cmd) == 0: # Failed to connect
-        msg = "Failed to execute '{0}'. Will try again in 5 seconds".format(cmd)
+#        msg = "Failed to execute '{0}'. Will try again in 5 seconds".format(cmd)
+        msg = "Failed to execute '%s'. Will try again in 5 seconds" % (cmd)
         print msg
         errorlog.error(USER + ": " + msg)
         time.sleep(5)
         if not os.system(cmd) == 0: 
-            msg = "Sorry. Command '{0}' failed!".format(cmd)
+#            msg = "Sorry. Command '{0}' failed!".format(cmd)
+            msg = "Sorry. Command '%s' failed!" % (cmd)
             print msg
             errorlog.error(USER + ": " + msg)
             return 1
@@ -276,12 +287,14 @@ def try_rsync(args):
 
     print "Connecting ..."
     if not os.system(cmd) == 0: # Failed to connect
-        msg = "Failed to execute '{0}'. Will try again in 5 seconds".format(cmd)
+       # msg = "Failed to execute '{0}'. Will try again in 5 seconds".format(cmd)
+        msg = "Failed to execute '%s'. Will try again in 5 seconds" % (cmd)
         print msg
         errorlog.error(USER + ": " + msg)
         time.sleep(5)
         if not os.system(cmd) == 0: 
-            msg = "Sorry. Command '{0}' failed!".format(cmd)
+#            msg = "Sorry. Command '{0}' failed!".format(cmd)
+            msg = "Sorry. Command '%s' failed!" % (cmd)
             print msg
             errorlog.error(USER + ": " + msg)
             return 1
@@ -366,7 +379,8 @@ def check_and_request(nodes):
     INFO = get_info()
     for node in nodes:
         if not INFO.has_key(node):
-            msg = "node '{0}' is not defined in ClusterNap.".format(node)
+#            msg = "node '{0}' is not defined in ClusterNap.".format(node)
+            msg = "node '%s' is not defined in ClusterNap." % (node)
             log.warning(USER + ": " + msg)
 
     for node, val in INFO.items():
@@ -380,7 +394,8 @@ def check_and_release(nodes):
     INFO = get_info()
     for node in nodes:
         if not INFO.has_key(node):
-            msg = "node '{0}' is not defined in ClusterNap.".format(node)
+#            msg = "node '{0}' is not defined in ClusterNap.".format(node)
+            msg = "node '%s' is not defined in ClusterNap." % (node)
             log.warning(USER + ": " + msg)
 #    log.info("Release node passed: " + str(nodes))        
     for node, val in INFO.items():
@@ -459,7 +474,8 @@ def is_hostname( hostname):
 
 
 def show_help_main():
-    msg  = "Usage: {0} [OPTIONS] [ARGUMENTS]\n".format(sys.argv[0])
+#    msg  = "Usage: {0} [OPTIONS] [ARGUMENTS]\n".format(sys.argv[0])
+    msg  = "Usage: %s [OPTIONS] [ARGUMENTS]\n" % (sys.argv[0])
     msg += "OPTIONS:\n"
     msg += "\tinfo    -- shows clusternap nodes information.\n"
     msg += "\trelease -- releases node from ClusterNap.\n"
@@ -473,25 +489,29 @@ def show_help_main():
     return 
 
 def show_help_ssh():
-    msg  = "Usage: {0} ssh <openssh_arguments>\n".format(sys.argv[0])
+#    msg  = "Usage: {0} ssh <openssh_arguments>\n".format(sys.argv[0])
+    msg  = "Usage: %s ssh <openssh_arguments>\n" % (sys.argv[0])
     msg += "For more information on <openssh_arguments>, please refer to 'ssh -h'"
     print msg
     return
 
 def show_help_scp():
-    msg  = "Usage: {0} <scp_arguments>\n".format(sys.argv[0])
+#    msg  = "Usage: {0} <scp_arguments>\n".format(sys.argv[0])
+    msg  = "Usage: %s <scp_arguments>\n" % (sys.argv[0])
     msg += "For more information on <scp_arguments>, please refer to 'scp -h'"
     print msg
     return
 
 def show_help_rsync():
-    msg  = "Usage: {0} rsync <rsync_arguments>\n".format(sys.argv[0])
+#    msg  = "Usage: {0} rsync <rsync_arguments>\n".format(sys.argv[0])
+    msg  = "Usage: %s rsync <rsync_arguments>\n" % (sys.argv[0])
     msg += "For more information on <rsync_arguments>, please refer to 'rsync -h'"
     print msg
     return
 
 def show_help_qsub():
-    msg  = "Usage: {0} qsub <qsub_arguments and stdin >\n".format(sys.argv[0])
+#    msg  = "Usage: {0} qsub <qsub_arguments and stdin >\n".format(sys.argv[0])
+    msg  = "Usage: %s qsub <qsub_arguments and stdin >\n" % (sys.argv[0])
     msg += "For more information on <qsub_arguments and stdin >, please refer to 'man qsub'"
     print msg
     return

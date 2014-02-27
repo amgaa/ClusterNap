@@ -32,14 +32,16 @@ class cnrel:
 
         # If node is not defined in ClusterNap, say so. return
         if not INFO.has_key(node):
-            msg = "'{0}': Cannot release. Not defined in ClusterNap".format(node)
+#            msg = "'{0}': Cannot release. Not defined in ClusterNap".format(node)
+            msg = "'%s': Cannot release. Not defined in ClusterNap" % (node)
             print msg
             self.log.warning(self.USER + ": " + msg)
             return 1
         
         # If not requested, say so request
         if INFO[node][1] == "Free":
-            msg = "'{0}': Cannot release. Already released".format(node)
+#            msg = "'{0}': Cannot release. Already released".format(node)
+            msg = "'%s': Cannot release. Already released" % (node)
             print msg
             self.log.warning(self.USER + ": " + msg)
             return 0
@@ -48,13 +50,15 @@ class cnrel:
         if self.USER == "root":
             os.remove(self.REQUEST_DIR + node)
             if os.path.exists(self.REQUEST_DIR + node):
-                msg = "'{0}': Unexpected error!".format(node)
+#                msg = "'{0}': Unexpected error!".format(node)
+                msg = "'%s': Unexpected error!" % (node)
                 print msg
                 self.errorlog.error(self.USER + ": " + msg)
 #                exit(1)
                 return 1
 
-            msg = "'{0}': released!".format(node)
+#            msg = "'{0}': released!".format(node)
+            msg = "'%s': released!" % (node)
             print msg
             self.log.info(self.USER + ": " + msg)
             return 0
@@ -65,19 +69,22 @@ class cnrel:
             if self.USER == INFO[node][2]:
                 os.remove(self.REQUEST_DIR + node)
                 if os.path.exists(self.REQUEST_DIR + node):
-                    msg = "'{0}': Unexpected error!".format(node)
+#                    msg = "'{0}': Unexpected error!".format(node)
+                    msg = "'%s': Unexpected error!" % (node)
                     print msg
                     self.errorlog.error(self.USER + ": " + msg)
 #                    exit(1)
                     return 1
 
-                msg = "'{0}': released".format(node)
+#                msg = "'{0}': released".format(node)
+                msg = "'%s': released" % (node)
                 print msg
                 self.log.info(self.USER + ": " + msg)
                 return 0
 
             # Someone else requested
-            msg = "'{0}': Cannot release. Someone else requested".format(node)
+#            msg = "'{0}': Cannot release. Someone else requested".format(node)
+            msg = "'%s': Cannot release. Someone else requested" % (node)
             print msg
             self.log.warn(self.USER + ": " + msg)
             return 1
@@ -93,7 +100,8 @@ class cnrel:
     # Should be further fixed. Checks more
     def check_arg(self, arg):
         if arg.startswith("-"):
-            msg = "Error in argument. Wrong argument: '{0}'".format(arg)
+#            msg = "Error in argument. Wrong argument: '{0}'".format(arg)
+            msg = "Error in argument. Wrong argument: '%s'" % (arg)
             print msg
             self.errorlog.error(self.USER + ": " + msg)
             exit(1)
@@ -133,7 +141,8 @@ class cnrel:
                 for i in range(int(items[0]), int(items[1]) + 1 ):
                     itemlist.append(str(i).zfill(len(items[1])))
             else:
-                msg = "Error in argument. Unknown expression: '{0}'".format(exprs)
+#                msg = "Error in argument. Unknown expression: '{0}'".format(exprs)
+                msg = "Error in argument. Unknown expression: '%s'" % (exprs)
                 print msg
                 self.errorlog.error(self.USER + ": " + msg)
                 exit(1)
@@ -146,7 +155,8 @@ class cnrel:
         if expr == []: #empt
             return 0
         if len(expr) != 1:
-            msg = "Wrong argument in '{0}'.".format(arg)
+#            msg = "Wrong argument in '{0}'.".format(arg)
+            msg = "Wrong argument in '%s'." % (arg)
             print msg
             self.errorlog.error(self.USER + ": " + msg)
             exit(1)
@@ -154,8 +164,10 @@ class cnrel:
         return expr[0]
 
     def show_help(self):
-        msg1 = "Usage: {0} release <nodes to release>\n".format(sys.argv[0])
-        msg2 = "Example: \n\tcommand \"{0} foo[00-02] bar\"\n".format(sys.argv[0])
+#        msg1 = "Usage: {0} release <nodes to release>\n".format(sys.argv[0])
+        msg1 = "Usage: %s release <nodes to release>\n" % (sys.argv[0])
+#        msg2 = "Example: \n\tcommand \"{0} foo[00-02] bar\"\n".format(sys.argv[0])
+        msg2 = "Example: \n\tcommand \"%s foo[00-02] bar\"\n" % (sys.argv[0])
         msg3 = "will try to release nodes 'foo00', 'foo01', 'foo02', and 'bar'"
         print msg1
         print msg2

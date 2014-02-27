@@ -100,7 +100,8 @@ class update_xdot:
 
     def find_sub_string(raw_string, start_marker, end_marker):
         return re.sub(
-            r'(?<={}).*?(?={})'.format(re.escape(start_marker), re.escape(end_marker)),
+#            r'(?<={}).*?(?={})'.format(re.escape(start_marker), re.escape(end_marker)),
+            r'(?<=%s).*?(?=%s)' % (re.escape(start_marker), re.escape(end_marker)),
             lambda m: m.group().strip().replace(' ', '_'),
             raw_string)
 
