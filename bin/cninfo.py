@@ -34,6 +34,28 @@ class cninfo:
 #                                                                         element[1][2], \
 #                                                                         element[1][3], \
 #                                                                         element[0]   ) )
+
+
+    def clusternapd_running(self):
+        pid_file = "/tmp/clusternapd.pid"
+
+        # if PID file does not exist
+        if not os.path.isfile(pid_file):
+            return False
+
+        # get PID of clusternapd
+        f = open(pid_file, 'r')
+        pid = int(f.readline().strip()) 
+        f.close()
+
+        # PID exists
+        try:
+            os.kill(pid, 0)
+            return True  
+        except OSError:
+            return False
+
+        
     def get_nodes(self):
         return get_conf.get_conf().NODES
 
@@ -88,6 +110,19 @@ class cninfo:
             modified = str(datetime.datetime.fromtimestamp(t))#[:-17]
 
         return state, requested, owner, modified
+
+    def print_info(self):
+        state = "NOT RUNNING"
+        pid   = "N/A" 
+        if self.clusternapd_running():
+            pid_file = "/tmp/clusternapd.pid"
+            f = open(pid_file, 'r')
+            pid = f.readline().strip()
+            f.close()
+            state = "RUNNING"
+
+        print "clusternapd: %s" % (state)
+        print "pid: %s\n" % (pid)
 
 
     def print_list(self, lis):
@@ -211,6 +246,7 @@ class cninfo:
             exit(1)
 
         info_list = self.get_list(info_list, user, pstate, rstate, node)
+        self.print_info()
         self.print_list(info_list)
 
         return

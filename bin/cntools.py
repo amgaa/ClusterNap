@@ -64,8 +64,27 @@ if isinstance(MAX_WAIT, basestring):
         print msg
         MAX_WAIT = 900
 
+def clusternapd_running():
+    pid_file = "/tmp/clusternapd.pid"
+
+    # if PID file does not exist
+    if not os.path.isfile(pid_file):
+        return False
+
+    # get PID of clusternapd
+    f = open(pid_file, 'r')
+    pid = int(f.readline().strip()) 
+    f.close()
+
+    # PID exists
+    try:
+        os.kill(pid, 0)
+        return True  
+    except OSError:
+        return False
+
+
 def get_info():
-#    return cninfo.cninfo().INFO.copy()
     return clusternap().get_info()
 
 def cnsetstate(args):
