@@ -68,6 +68,34 @@ def get_info():
 #    return cninfo.cninfo().INFO.copy()
     return clusternap().get_info()
 
+def cnsetstate(args):
+    INFO  = get_info()
+    node  = args[0]
+    state = args[1]
+
+    on  = ['ON', 'on', 'On', '1', 1]
+    off = ['OFF', 'off', 'Off', '0', 0]
+    un  = ['UNKNOWN', 'Unknown', 'unknown', '-1', -1]
+
+    if node not in INFO.keys():
+        msg = "Error. Node '%s' is not defined in ClusterNap. Check your node name" % (node)
+        log.warn(USER + ": " + msg)
+        print msg
+        return 1
+
+    if state not in on + off + un:
+        msg = "Error. Unknown state '%s' is given.\n" % (state) 
+        msg += "State should be one of 'ON', 'OFF', 'UNKNOWN', 'on', 'off', 'unknown', 'UN', 'un', '1', '0', '-1'"
+        log.warn(USER + ": " + msg)
+        print msg
+        return 1
+
+    return clusternap().set_power_state(node, state)
+
+
+#End of setstate
+
+
 def cnssh(args):
     INFO = get_info()
     # Check if <user> is written correctly
@@ -477,16 +505,32 @@ def show_help_main():
 #    msg  = "Usage: {0} [OPTIONS] [ARGUMENTS]\n".format(sys.argv[0])
     msg  = "Usage: %s [OPTIONS] [ARGUMENTS]\n" % (sys.argv[0])
     msg += "OPTIONS:\n"
-    msg += "\tinfo    -- shows clusternap nodes information.\n"
-    msg += "\trelease -- releases node from ClusterNap.\n"
-    msg += "\trequest -- requests node to ClusterNap.\n"
-    msg += "\tssh     -- connects to clusternap node by ssh. If node in question is not requested, request its.\n"
-    msg += "\tscp     -- scp to clusternap node. If node in question is not requested, requests it.\n"
-    msg += "\trsync   -- rsync to clusternap node. If node in question is not requested, requests it.\n"
-    msg += "\tqsub    -- submits job by qsub. If requested resource (clusternap node) is not requested, request it.\n"
-    msg += "\tgenimg  -- updates system's dependency graph in the folder /path/to/ClusterNap/graphs/"
+    msg += "\tinfo           -- shows clusternap nodes information.\n"
+    msg += "\trelease        -- releases node from ClusterNap.\n"
+    msg += "\trequest        -- requests node to ClusterNap.\n"
+    msg += "\tsetstate, set  -- changes a node's power state information in ClusterNap.\n"
+    msg += "\tssh            -- connects to clusternap node by ssh. If node in question is not requested, request its.\n"
+    msg += "\tscp            -- scp to clusternap node. If node in question is not requested, requests it.\n"
+    msg += "\trsync          -- rsync to clusternap node. If node in question is not requested, requests it.\n"
+    msg += "\tqsub           -- submits job by qsub. If requested resource (clusternap node) is not requested, request it.\n"
+    msg += "\tgenimg         -- updates system's dependency graph in the folder /path/to/ClusterNap/graphs/"
     print msg
     return 
+
+def show_help_setstate():
+    msg  = "\nUsage: %s setstate <nodename> <power_state>\n\n\n" % (sys.argv[0])
+    msg += "This command changes a node's power state information \n"
+    msg += "in ClusterNap into given state. Remember this command \n"
+    msg += "DOES NOT literally changes (i.e., turns-on/off) a node's\n"
+    msg += "REAL power state. Rather, it changes a node's state \n"
+    msg += "information in ClusterNap.\n\n"
+    msg += "For example:\n"
+    msg += "                  %s nodeA on\n\n" %(sys.argv[0])
+    msg += "will changes nodeA's state information in ClusterNap to \"ON\" \n"
+    msg += "so that it will be seen as \"ON\" when you do \"cntools info\"\n"
+    msg += "But it will not actually changes nodeA's real power state.\n"
+    print msg
+    return
 
 def show_help_ssh():
 #    msg  = "Usage: {0} ssh <openssh_arguments>\n".format(sys.argv[0])
@@ -541,8 +585,10 @@ def main(argv, stdin):
     arg_rsync= ['rsync', '--rsync', 'cnrsync', '--cnrsync']
     arg_qsub = ['qsub', '--qsub', 'cnqsub', '--cnqsub']
     arg_gen_img = ['genimg', 'gi', 'generate_image']
+    arg_setstate = ['setstate', 'setst', 'ss', 'set']
+    helpkeys = ['-h', '-help', '--help', 'help','--help']
 
-    if args[0] not in arg_info + arg_rel + arg_req + arg_ssh + arg_scp + arg_rsync + arg_qsub + arg_gen_img:
+    if args[0] not in arg_info + arg_rel + arg_req + arg_ssh + arg_scp + arg_rsync + arg_qsub + arg_gen_img + arg_setstate:
         print "Wrong option: Please see help"
         return show_help_main()
     
@@ -558,7 +604,12 @@ def main(argv, stdin):
     if args[0] in arg_req:
         return cnreq.cnreq().main(args)
 
-    helpkeys = ['-h', '-help', '--help', 'help','--help']
+    #SET STATE
+    if args[0] in arg_setstate:
+        args = args[1:]
+        if any(word in args for word in helpkeys) or len(args) != 2:
+            return show_help_setstate()
+        return cnsetstate(args)
 
     # SSH
     if args[0] in arg_ssh:
