@@ -8,6 +8,7 @@ As of 2014 Jan, ssh scp, rsync, qsub are included.
 
 '''
 import os, sys, re, pwd
+import subprocess
 import datetime, time
 import subprocess
 import json
@@ -662,7 +663,18 @@ def main(argv, stdin):
 
     # GENERATE IMAGE
     if args[0] in arg_gen_img:
+
         if len(args) == 1:
+            # Check if graphviz is installed
+            devnull = open(os.devnull,"w")
+            retval = subprocess.call(["dpkg","-s","graphviz"],stdout=devnull,stderr=subprocess.STDOUT)
+            devnull.close()
+            if retval != 0:
+                msg = "Sorry. The package \"graphviz\" is not installed. To use this feature please install it."
+                print msg
+                errorlog.error(USER + ": " + msg)
+                return 1
+
             DOT_FILE  = os.path.dirname(os.path.abspath(__file__)) + '/../graphs/CN.dot'
 #            XDOT_FILE = os.path.dirname(os.path.abspath(__file__)) + '/../graphs/CN_updated.xdot'
             OUT_IMG   = os.path.dirname(os.path.abspath(__file__)) + '/../graphs/CN.png'
