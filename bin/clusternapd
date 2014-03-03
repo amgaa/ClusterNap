@@ -62,10 +62,12 @@ class clusternapd(Daemon):
 
             except Exception as ex:
                 msg1 = "An error occured while running clusternapd. Error is: "
+                print msg1
+                print ex
                 errorlog.error("clusternapd: " + msg1)
                 errorlog.error(str(ex))
+                exit(1)
                 
-
 if __name__ == "__main__":
     daemon = clusternapd('/tmp/clusternapd.pid')
     if len(sys.argv) == 2:

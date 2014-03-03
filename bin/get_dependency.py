@@ -28,6 +28,11 @@ class get_dependency:
     def get_run_dep(self):
         for node in self.NODES.keys():
             tmp_body = list()
+
+            # When no RUN-dependency is defined for the node
+            if not self.NODES[node].has_key("run_dependencies"):
+                self.NODES[node]["run_dependencies"] = ''
+
             body = self.NODES[node]["run_dependencies"].split("|")
             for items in body:
                 items = items.split(",")
@@ -42,6 +47,10 @@ class get_dependency:
     def get_on_dep(self):
         for node in self.NODES.keys():
             tmp_body = list()
+
+            if not self.NODES[node].has_key("on_dependencies"):
+                self.NODES[node]["on_dependencies"] = ''
+
             body = self.NODES[node]["on_dependencies"].split("|")
             for items in body:
                 items = items.split(",")
@@ -65,6 +74,10 @@ class get_dependency:
     def get_off_dep(self):
         for node in self.NODES.keys():
             tmp_body = list()
+
+            if not self.NODES[node].has_key("off_dependencies"):
+                self.NODES[node]["off_dependencies"] = ''
+
             body = self.NODES[node]["off_dependencies"].split("|")
             for items in body:
                 items = items.split(",")
