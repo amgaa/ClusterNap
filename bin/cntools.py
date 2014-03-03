@@ -532,7 +532,7 @@ def show_help_main():
     msg += "\tscp            -- scp to clusternap node. If node in question is not requested, requests it.\n"
     msg += "\trsync          -- rsync to clusternap node. If node in question is not requested, requests it.\n"
     msg += "\tqsub           -- submits job by qsub. If requested resource (clusternap node) is not requested, request it.\n"
-    msg += "\tgenimg         -- updates system's dependency graph in the folder /path/to/ClusterNap/graphs/"
+    msg += "\tgenimg         -- updates system's dependency graph in the folder /path/to/ClusterNap/graphs/. \"graphviz\" must be installed to use this feature."
     print msg
     return 
 
