@@ -1,7 +1,7 @@
 ClusterNap
 ==========
 
-ClusterNap is a dependency-aware, configurable power controller tool for IT infrastructures. 
+ClusterNap is a simple, dependency-aware power controller tool for IT infrastructures. 
 
 Well there are plenty of other power controller tools for IT infras. How is ClusterNap different from them? 
 
